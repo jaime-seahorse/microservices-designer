@@ -1,0 +1,103 @@
+{
+	"info": {
+		"_postman_id": "c8eec5e6-dadf-4446-a795-5e84054f02fa",
+		"name": "Auth MS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "35028751"
+	},
+	"item": [
+		{
+			"name": "Sign In",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"pepe\",\n  \"email\": \"pepe@email.com\",\n  \"password\": \"changeme\",\n  \"nameOrganization\": \"Pepeland\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/auth",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Log in",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"pepe@email.com\",\n  \"password\": \"changeme\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/auth/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get projects by organizationId",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX3JvbGUiOiJhZG1pbiIsInVzZXJuYW1lIjoicGVwZSIsIm9yZ2FuaXphdGlvbiI6eyJpZF9vcmdhbml6YXRpb24iOjEsInJvbGVfb3JnYW5pemF0aW9uIjoiYWRtaW4iLCJwcm9qZWN0cyI6W119LCJpYXQiOjE3MTY0MTAzODUsImV4cCI6MTcxNjQxMzk4NX0.MotBsEjcWO3T_cvV1ftYuajjpnSLC4GKuXoRXO27LRc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/projects/{2}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"projects",
+						"{2}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

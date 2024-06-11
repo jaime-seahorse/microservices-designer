@@ -1,0 +1,323 @@
+openapi: 3.0.0
+paths:
+  /:
+    get:
+      operationId: AppController_getHello
+      parameters: []
+      responses:
+        '200':
+          description: ''
+  /api/v1/auth:
+    post:
+      operationId: AuthController_signIn
+      summary: Sign In
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignUpRequestDto'
+      responses:
+        '201':
+          description: The user has been created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignInResponseDto'
+        '400':
+          description: Invalid format of datas
+        '409':
+          description: The user already exist
+        '500':
+          description: The user could not be created
+      tags:
+        - Auth
+      security:
+        - bearer: []
+  /api/v1/auth/user:
+    post:
+      operationId: AuthController_login
+      summary: Log In
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequestDto'
+      responses:
+        '200':
+          description: The user has been logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogInResponseDto'
+        '400':
+          description: Invalid format of datas
+        '401':
+          description: Invalid credentials
+        '404':
+          description: User not found
+        '500':
+          description: The user could not be logged
+      tags:
+        - Auth
+      security:
+        - bearer: []
+  /api/v1/projects:
+    post:
+      operationId: ProjectsController_create
+      summary: Create a project
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProjectRequestDto'
+      responses:
+        '201':
+          description: Project has been created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateProjectResponseDto'
+        '500':
+          description: The project could not be created
+      tags:
+        - Projects
+      security:
+        - bearer: []
+  /api/v1/projects/{userId}:
+    get:
+      operationId: ProjectsController_findAllProjectsByUserId
+      summary: Get list of projects by userId
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: The projects by userId have been found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectsFindedByIdResponseDto'
+        '404':
+          description: The projects were not found
+        '500':
+          description: The projects by userId could not be found
+      tags:
+        - Projects
+      security:
+        - bearer: []
+  /api/v1/bounded-contexts:
+    post:
+      operationId: BoundedContextsController_create
+      summary: Create a bounded context
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBoundedContextRequestDto'
+      responses:
+        '201':
+          description: The bounded context has been created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateBoundedContextResponseDto'
+        '500':
+          description: The bounded context could not be created
+      tags:
+        - Bounded Contexts
+      security:
+        - bearer: []
+  /api/v1/bounded-contexts/{projectId}:
+    get:
+      operationId: BoundedContextsController_getBoundedContextsByProjectId
+      summary: Get list of bounded context by projectId
+      parameters:
+        - name: projectId
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Bounded contexts by project id have been finded
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GetBoundedContextByUserIdResponse'
+        '404':
+          description: Bounded contexts were not found
+        '500':
+          description: The bounded contexts by project id could not be found
+      tags:
+        - Bounded Contexts
+      security:
+        - bearer: []
+  /api/v1/users/{userId}:
+    get:
+      operationId: UsersController_findOneUserById
+      summary: Get user
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '201':
+          description: The user has been created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserResponseDto'
+        '400':
+          description: Invalid format of datas
+        '409':
+          description: The user already exist
+        '500':
+          description: The user could not be created
+      tags:
+        - Users
+      security:
+        - bearer: []
+info:
+  title: Auth
+  description: The Auth API description
+  version: '1.0'
+  contact: {}
+tags: []
+servers: []
+components:
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+  schemas:
+    SignUpRequestDto:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        nameOrganization:
+          type: string
+      required:
+        - username
+        - email
+        - password
+        - nameOrganization
+    SignInResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+    LoginRequestDto:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - email
+        - password
+    LogInResponseDto:
+      type: object
+      properties:
+        userId:
+          type: number
+        token:
+          type: string
+        message:
+          type: string
+        organizationId:
+          type: number
+      required:
+        - userId
+        - token
+        - message
+        - organizationId
+    CreateProjectRequestDto:
+      type: object
+      properties:
+        peojectName:
+          type: string
+      required:
+        - peojectName
+    CreateProjectResponseDto:
+      type: object
+      properties:
+        projectId:
+          type: number
+        projectName:
+          type: string
+      required:
+        - projectId
+        - projectName
+    ProjectsFindedByIdResponseDto:
+      type: object
+      properties:
+        projectId:
+          type: number
+        projectName:
+          type: string
+      required:
+        - projectId
+        - projectName
+    CreateBoundedContextRequestDto:
+      type: object
+      properties:
+        boundeContextName:
+          type: string
+      required:
+        - boundeContextName
+    CreateBoundedContextResponseDto:
+      type: object
+      properties:
+        boundeContextId:
+          type: number
+        boundeContextName:
+          type: string
+      required:
+        - boundeContextId
+        - boundeContextName
+    GetBoundedContextByUserIdResponse:
+      type: object
+      properties:
+        boundeContextId:
+          type: number
+        boundeContextName:
+          type: string
+      required:
+        - boundeContextId
+        - boundeContextName
+    GetUserResponseDto:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+      required:
+        - username
+        - email

@@ -1,0 +1,93 @@
+image: node:latest
+
+pipelines:
+  branches:
+    develop:
+      - stage:
+          name: Backend
+          condition:
+            changesets:
+              includePaths:
+                - "backend/**"
+          steps:
+            # - step:
+            #     name: Backend Test
+            #     script:
+            #       - cd backend && npm install
+            #       - npm test
+            #     caches:
+            #       - node
+            - step:
+                name: Build
+                caches:
+                  - node
+                script:
+                  - cd backend && npm install
+                  - npm run build
+                artifacts:
+                  - build/**
+            # - step:
+            #     name: docker
+            #     script:
+            #       - docker version
+            #     services:
+            #       - docker
+      - stage:
+          name: Frontend
+          condition:
+            changesets:
+              includePaths:
+                - "frontend/**"
+          steps:
+            # - step:
+            #     name: Frontend Test
+            #     script:
+            #       - cd frontend && npm install
+            #       - npm test
+            #     caches:
+            #       - node
+            - step:
+                name: Testing
+                caches:
+                  - node
+                script:
+                   - cd frontend && npm install
+                   - npm test
+                artifacts:
+                  - build/**
+            - step:
+                name: Linting
+                caches:
+                  - node
+                script:
+                  - cd frontend && npm lint
+                artifacts:
+                  - build/**
+            - step:
+                name: Scaning 
+                caches:
+                  - node
+                script:
+                  - cd frontend && npm audit
+                  - npm install -g snyk && npm snyk
+                artifacts:
+                  - build/**
+            - step:
+                name: Building
+                caches:
+                  - node
+                script:
+                  - cd frontend && npm build
+                  # - npm build:aot --configuration development
+                artifacts:
+                  - build/**
+            - step:
+                name: Deploying
+                script:
+                  - pipe: atlassian/aws-s3-deploy:latest
+                    variables:
+                      AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                      AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                      AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+                      S3_BUCKET: $S3_BUCKET
+                      LOCAL_PATH: 'artifacts'

@@ -1,0 +1,26 @@
+<form
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+>
+		@if (this.form.disabled) {
+			<mat-spinner/>
+		}
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input
+        type="text"
+        matInput
+        formControlName="projectName"
+      >
+      <!-- email error -->
+      @if(getControl('projectName')?.errors) {
+        <mat-error>
+          @if(getControl('projectName')?.hasError('required')) {project name is required}
+          @else if(getControl('projectName')?.hasError('maxlength')) {project name must not be greater than 100 characters}
+					@else if(getControl('projectName')?.hasError('invalid')) { {{ getControl('projectName')?.errors?.['invalid'] }} }
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <button mat-raised-button>Create Project</button>
+</form>

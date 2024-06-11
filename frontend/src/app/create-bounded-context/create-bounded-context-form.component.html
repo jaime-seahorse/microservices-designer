@@ -1,0 +1,26 @@
+<form
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+>
+		@if (this.form.disabled) {
+			<mat-spinner/>
+		}
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input
+        type="text"
+        matInput
+        formControlName="boundedContextName"
+      >
+      <!-- email error -->
+      @if(getControl('boundedContextName')?.errors) {
+        <mat-error>
+          @if(getControl('boundedContextName')?.hasError('required')) {bounded context name is required}
+          @else if(getControl('boundedContextName')?.hasError('maxlength')) {bounded context name must not be greater than 100 characters}
+					@else if(getControl('boundedContextName')?.hasError('invalid')) { {{ getControl('boundedContextName')?.errors?.['invalid'] }} }
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <button mat-raised-button>Create Bounded Context</button>
+</form>

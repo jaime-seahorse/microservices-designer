@@ -1,0 +1,24 @@
+<button mat-button [matMenuTriggerFor]="projectMenu" aria-label="Project menu trigger button">
+  <span>Projects</span>
+  <mat-icon iconPositionEnd>keyboard_arrow_down</mat-icon>
+</button>
+<mat-menu #projectMenu="matMenu">
+  @if (this.isLoading) {
+    <div mat-menu-item>
+      <mat-spinner />
+    </div>
+  } @else {
+    @for (project of this.projects; track $index) {
+      <button mat-menu-item (click)="selectProject(project.projectId)">
+        <span>{{ project.projectName }}</span>
+      </button>
+    } @empty {
+      <div mat-menu-item>
+        <span>No projects.</span>
+      </div>
+    }
+    <button mat-menu-item>
+      <mat-icon>add</mat-icon>
+    </button>
+  }
+</mat-menu>

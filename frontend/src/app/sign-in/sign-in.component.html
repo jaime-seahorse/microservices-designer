@@ -1,0 +1,84 @@
+<form
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+>
+  <h2>Sign In</h2>
+
+    <mat-form-field>
+      <mat-label>Username</mat-label>
+      <input
+        type="text"
+        matInput
+        formControlName="username"
+      >
+      <!-- username errors -->
+        @if(form.get('username')?.hasError('required')) {
+          <mat-error>username is required</mat-error>
+        }
+    </mat-form-field>
+    
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input
+        type="email"
+        matInput
+        formControlName="email"
+      >
+      <!-- email errors -->
+        @if(form.get('email')?.errors) {
+          <mat-error>
+            @if(form.get('email')?.hasError('email')) {email is invalid}
+            @else if(form.get('email')?.hasError('required')) {email is required}
+          </mat-error>
+        }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Organization Name</mat-label>
+      <input
+        type="text"
+        matInput
+        formControlName="organizationName"
+      >
+      <!-- organizationName errors -->
+        @if(form.get('organizationName')?.hasError('required')) {
+          <mat-error>organization name is required</mat-error>
+        }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input
+        #password
+        type="password"
+        matInput
+        formControlName="password"
+      >
+      <!-- <mat-hint align="end">{{password.value.length}}/{{ minlength }}</mat-hint> -->
+      <!-- password errors -->
+      @if(form.get('password')?.errors) {
+        <mat-error>
+          @if(form.get('password')?.hasError('required')) {password is required}
+          @else if(form.get('password')?.hasError('minlength') || form.get('password')?.hasError('maxlength')) {
+            password must be between 8 and 50 characters
+          }
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Confirm Password</mat-label>
+      <input
+        type="password"
+        matInput
+        formControlName="passwordConfirm"
+      >
+      <!-- passwordConfirm errors -->
+        @if(form.hasError('unconfirmed')) {
+          <mat-error>both passwords must be the same</mat-error>
+        }
+    </mat-form-field>
+
+    <button mat-raised-button>Sign In</button>
+
+</form>
