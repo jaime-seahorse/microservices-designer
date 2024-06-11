@@ -1,23 +1,4 @@
-<mat-toolbar color="accent">
-  @if (isHandset$ | async) {
-    <button
-      type="button"
-      aria-label="Toggle drawer"
-      mat-icon-button
-      (click)="drawer.toggle()"
-    >
-      <mat-icon aria-label="Drawer toggle icon">menu</mat-icon>
-    </button>
-  }
-  
-  <a mat-button routerLink="home">Home</a>
-
-  <span class="spacer"></span>
-  @if (!(isHandset$ | async)) {
-    <a mat-button routerLink="login">Log In</a>
-    <a mat-button routerLink="signin">Sign In</a>
-  }
-</mat-toolbar>
+<app-toolbar (onHandsetDrawerClick)="drawer.toggle()"></app-toolbar>
 <mat-drawer-container class="drawer-container">
   <mat-drawer
     #drawer
@@ -34,9 +15,7 @@
     </mat-nav-list>
   </mat-drawer>
 
-  <mat-drawer-content>
-		<main class="container">
-      <router-outlet />
-    </main>
-  </mat-drawer-content>
+<main class="container">
+		<router-outlet />
+</main>
 </mat-drawer-container>
