@@ -10,7 +10,7 @@ export class UserEntity {
     @IsString({ message: 'Should be a valid username' })
     @Length(3, 18)
     @Column({ type: 'varchar', length: 100, unique: true, nullable: false })
-    username: string;
+    name: string;
 
     @IsEmail({}, { message: 'Should be a valid email' })
     @Column({ type: 'varchar', length: 100, unique: true, nullable: false })
