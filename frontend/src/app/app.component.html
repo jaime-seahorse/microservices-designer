@@ -1,21 +1,3 @@
-<app-toolbar (onHandsetDrawerClick)="drawer.toggle()"></app-toolbar>
-<mat-drawer-container class="drawer-container">
-  <mat-drawer
-    #drawer
-    id="drawer"
-    class="drawer"
-    fixedInViewport
-    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-		[ngClass]="{hidden: !(isHandset$ | async)}"
-	>
-    <mat-toolbar color="accent">Menu</mat-toolbar>
-    <mat-nav-list>
-    <a mat-list-item routerLink="login">Log In</a>
-    <a mat-list-item routerLink="signin">Sign In</a>
-    </mat-nav-list>
-  </mat-drawer>
-
-<main class="container">
+<main>
 		<router-outlet />
 </main>
-</mat-drawer-container>
