@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 
 
-export class CreateUserRequest {
+export class SignInRequest {
     @ApiProperty()
     name: string;
     @ApiProperty()

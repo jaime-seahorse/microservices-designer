@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CreateUserService } from './create-user.service';
+import { CreateUserService } from './signin.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '../user.entity';
 import { Repository } from 'typeorm';
-import { CreateUserRequest } from './create-user-request.dto';
-import { CreateUserResponse } from './create-user-response.dto';
+import { CreateUserRequest } from './signin-request.dto';
+import { CreateUserResponse } from './signin-response.dto';
 
 describe('UsersService', () => {
   let service: CreateUserService;
