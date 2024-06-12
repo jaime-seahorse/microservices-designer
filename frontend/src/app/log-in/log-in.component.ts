@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { NgClass } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { ReactiveFormsModule, FormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { LogInRequest } from './log-in-request.dto';
+import { LogInService } from './log-in.service';
 
 // import { usernameOrEmailValidator } from './username-or-email-validator';
 
@@ -31,6 +33,8 @@ export class LogInComponent {
 
   constructor(
     private formBuilder: FormBuilder,
+		private logInService: LogInService,
+		private router: Router
   ){
     this.form = this.formBuilder.group({
       email: ['', [
@@ -47,10 +51,15 @@ export class LogInComponent {
 
   onSubmit(): void {
     if (this.form.valid) {
-//
-console.log('Logging...');
-console.log(this.form.value);
-//
+			const logInData: LogInRequest = {
+				email: this.form.get("email")?.value,
+				password: this.form.get("password")?.value,
+			}
+
+			this.logInService.logInUser(logInData).subscribe((response) => {
+				console.log(response.body?.message);
+				this.router.navigateByUrl('home');
+			})
     }
   }
 }

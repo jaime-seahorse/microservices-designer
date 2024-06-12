@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NgClass } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { AuthService } from '../resources/user/auth/auth.service';
 
@@ -11,6 +11,7 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/mat
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { SignInRequest } from '../resources/user/auth/auth.dto';
 
 @Component({
   selector: 'app-sign-in',
@@ -35,7 +36,8 @@ export class SignInComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+		private router: Router
   ){
     this.form = this.formBuilder.group({
       username: ['', Validators.required],
@@ -57,10 +59,17 @@ export class SignInComponent {
 
   onSubmit(): void {
     if (this.form.valid) {
-//
-console.log('Registring...');
-console.log(this.form.value);
-//
+			const newUserData: SignInRequest = {
+				username: this.form.get('username')?.value,
+				email: this.form.get('email')?.value,
+				organizationName: this.form.get('organizationName')?.value,
+				password: this.form.get('password')?.value,
+			}
+			
+			this.authService.signInUser(newUserData).subscribe((response) => {
+				console.log(response.body?.message);
+				this.router.navigateByUrl('login');
+			})
     }
   }
 }
