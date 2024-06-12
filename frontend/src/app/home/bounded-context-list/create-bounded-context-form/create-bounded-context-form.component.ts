@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { BoundedContextService } from '../bounded-context-list/bounded-context.service';
-import { CreateBoundedContextRequest } from '../bounded-context-list/bounded-context.dto';
+import { CreateBoundedContextRequest } from './create-bounded-context.dto';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { NgClass } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
+import { CreateBoundedContextService } from './create-bounded-context.service';
 
 @Component({
   selector: 'app-create-bounded-context-form',
@@ -23,7 +23,6 @@ import { RouterLink } from '@angular/router';
 		MatProgressSpinner
 	],
   templateUrl: './create-bounded-context-form.component.html',
-  styleUrl: './create-bounded-context-form.component.css'
 })
 export class CreateBoundedContextFormComponent {
   form: FormGroup;
@@ -31,7 +30,7 @@ export class CreateBoundedContextFormComponent {
 
 	constructor(
     private formBuilder: FormBuilder,
-		private boundedContextService: BoundedContextService
+		private boundedContextService: CreateBoundedContextService
   ){
     this.form = this.formBuilder.group({
       boundedContextName: ['', [

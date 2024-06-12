@@ -7,10 +7,10 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/mat
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
-import { CreateProjectRequest, CreateProjectResponse } from '../resources/project/project.dto';
+import { CreateProjectRequest, CreateProjectResponse } from '../../../../resources/project/project.dto';
 import { HttpResponse } from '@angular/common/http';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { ProjectService } from '../resources/project/project.service';
+import { ProjectService } from '../../../../resources/project/project.service';
 
 @Component({
   selector: 'app-log-in',
@@ -29,7 +29,6 @@ import { ProjectService } from '../resources/project/project.service';
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}}
   ],
   templateUrl: './create-project-form.component.html',
-	styleUrl: './create-project-form.component.css'
 })
 export class CreateProjectFormComponent {
   form: FormGroup;

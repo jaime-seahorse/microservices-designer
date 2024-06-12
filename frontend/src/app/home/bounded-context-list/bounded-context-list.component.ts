@@ -23,8 +23,7 @@ interface BoundedContext {
     MatIconModule,
     MatExpansionModule
   ],
-  templateUrl: './bounded-context-list.component.html',
-  styleUrl: './bounded-context-list.component.css',
+  templateUrl: './bounded-context-list.component.html'
 })
 export class BoundedContextListComponent {
   boundedContexts: BoundedContext[] | null = null;

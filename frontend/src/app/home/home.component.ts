@@ -33,7 +33,6 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 		ToolbarComponent
   ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
 })
 export class HomeComponent {
 

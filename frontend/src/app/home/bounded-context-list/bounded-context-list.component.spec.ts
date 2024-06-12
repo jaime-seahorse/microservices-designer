@@ -7,7 +7,7 @@ import { MatNavListHarness } from '@angular/material/list/testing';
 import { MatButtonHarness } from '@angular/material/button/testing';
 
 import { provideRouter } from '@angular/router';
-import { routes } from '../app.routes';
+import { routes } from '../../app.routes';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 

@@ -3,7 +3,7 @@ import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu'; 
 import { MatToolbar } from '@angular/material/toolbar';
-import { User } from '../../resources/user/user';
+import { User } from '../../../../resources/user/user';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 // import { MatGridListModule } from '@angular/material/grid-list';
 @Component({
@@ -18,7 +18,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 		// MatGridListModule
 	],
   templateUrl: './print-avatar.component.html',
-  styleUrl: './print-avatar.component.css'
 })
 export class AvatarComponent {
 	user: User | null = null;
