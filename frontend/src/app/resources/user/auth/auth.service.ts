@@ -4,11 +4,9 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 
 import {
   SignInRequest,
-  LogInRequest,
   // ForgotPasswordRequest,
   // SignOutRequest,
   SignInResponse,
-  LogInResponse,
   LogOutResponse,
   // ForgotPasswordResponse,
   // SignOutResponse
@@ -18,26 +16,13 @@ import {
   providedIn: 'root',
 })
 export class AuthService {
-  readonly apiURL: string = 'http://localhost:3000/api';
+  readonly apiURL: string = 'http://localhost:3001/api';
 
   constructor(private httpClient: HttpClient) {}
 
-  SignInUser(userData: SignInRequest): Observable<HttpResponse<SignInResponse>> {
+  signInUser(userData: SignInRequest): Observable<HttpResponse<SignInResponse>> {
     return this.httpClient.post<SignInResponse>(
       `${this.apiURL}/signin`,
-      userData,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        observe: 'response' as const,
-      }
-    );
-  }
-
-  logInUser(userData: LogInRequest): Observable<HttpResponse<LogInResponse>> {
-    return this.httpClient.post<LogInResponse>(
-      `${this.apiURL}/login`,
       userData,
       {
         headers: {

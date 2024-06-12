@@ -10,7 +10,7 @@
     "lint": "ng lint",
     "audit": "ng audit",
     "snyk": "snyk test",
-    "mock:server": "nodemon server/server.js --ext js,ts,json,html"
+    "mock:server": "node server/server.js"
   },
   "private": true,
   "dependencies": {
@@ -41,7 +41,6 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "nodemon": "^3.1.3",
     "typescript": "~5.4.2"
   }
 }

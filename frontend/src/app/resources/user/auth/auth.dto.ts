@@ -9,11 +9,6 @@ export interface SignInRequest {
 	password: string
 }
 
-export interface LogInRequest {
-	email: string,
-	password: string
-}
-
 // export interface ForgotPasswordRequest {
 // 	oldPassword: string,
 // 	newPassword: string
@@ -28,11 +23,6 @@ export interface LogInRequest {
 export interface SignInResponse {
 	errors?: SignInErrorResponse,
 	message?: string
-}
-
-export interface LogInResponse {
-	token: string,
-	message: string
 }
 
 export interface LogOutResponse {
