@@ -1,19 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CreateUserService } from './signin.service';
+import { SignInService } from './signin.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '../user.entity';
 import { Repository } from 'typeorm';
-import { CreateUserRequest } from './signin-request.dto';
-import { CreateUserResponse } from './signin-response.dto';
+import { SignInRequest } from './signin-request.dto';
+import { SignInResponse } from './signin-response.dto';
 
 describe('UsersService', () => {
-  let service: CreateUserService;
+  let service: SignInService;
 
   let userRepository: Repository<UserEntity>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [CreateUserService],
+      providers: [SignInService],
       imports: [
         TypeOrmModule.forFeature([UserEntity]),
         TypeOrmModule.forRoot({
@@ -31,7 +31,7 @@ describe('UsersService', () => {
     }).compile();
 
     userRepository = module.get('UserRepository');
-    service = module.get<CreateUserService>(CreateUserService);
+    service = module.get<SignInService>(SignInService);
   });
 
   it('should be defined', () => {
@@ -40,16 +40,16 @@ describe('UsersService', () => {
 
   describe('Create a user', () => {
     it('should create a new user', async () => {
-      const createUserRequest: CreateUserRequest = new CreateUserRequest();
-        createUserRequest.email = "pepe@mail.com";
-        createUserRequest.name = "Pepe";
-        createUserRequest.password = "changme";
+      const signInRequest: SignInRequest = new SignInRequest();
+      signInRequest.email = "pepe@mail.com";
+      signInRequest.name = "Pepe";
+      signInRequest.password = "changme";
   
-        const createUserResponse: CreateUserResponse = await service.create(createUserRequest);
+        const signInResponse: SignInResponse = await service.signIn(signInRequest);
         
-        expect(createUserRequest.email).toEqual(createUserResponse.email);
-        expect(createUserRequest.name).toEqual(createUserResponse.name);
-        expect(createUserRequest.password).toEqual(createUserResponse.password);
+        expect(signInRequest.email).toEqual(signInResponse.email);
+        expect(signInRequest.name).toEqual(signInResponse.name);
+        expect(signInRequest.password).toEqual(signInResponse.password);
     });
   });
   

@@ -1,27 +1,20 @@
-// import { IsNumber, IsString } from 'class-validator';
-// import { AuthUsersOrganizationsRelation } from './entities/user-organization.relation.entity';
-// import { ProjectEntity } from '../../projects/entities/project.entity';
-// import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany, JoinTable } from 'typeorm';
-// import { IsDate } from 'class-validator';
+import { IsNumber, IsString, IsArray } from 'class-validator';
 
-// @Entity()
-// export class OrganizationEntity {
+import { Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
 
-//     @PrimaryGeneratedColumn()
-//     @IsNumber()
-//     id: number;
 
-//     @Column()
-//     @IsString()
-//     name: string;
+@Entity()
+export class OrganizationEntity {
 
-//     @OneToMany(() => ProjectEntity, (project) => project.organization)
-//     projects: ProjectEntity[];
+    @PrimaryGeneratedColumn()
+    @IsNumber()
+    id: number;
 
-//     @OneToMany(() => AuthUsersOrganizationsRelation, (authUserOrganization) => authUserOrganization.organization, { onDelete: 'CASCADE' })
-//     authUsersOrganizationsRelations: AuthUsersOrganizationsRelation[]
+    @Column()
+    @IsString()
+    name: string;
 
-//     @IsDate()
-//     @Column({ default: () => 'CURRENT_TIMESTAMP' })
-//     createdAt: Date;
-// }
+    @Column()
+    @IsArray()
+    userIds : number[]
+}
