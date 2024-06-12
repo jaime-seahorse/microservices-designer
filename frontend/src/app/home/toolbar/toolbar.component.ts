@@ -29,7 +29,7 @@ import { Observable, map, shareReplay } from 'rxjs';
   styleUrl: './toolbar.component.css'
 })
 export class ToolbarComponent {
-	@Output() onHandsetDrawerClick = new EventEmitter();
+	@Output() onHandsetDrawerClick = new EventEmitter<any>();
 	
   constructor(
     private breakpointObserver: BreakpointObserver

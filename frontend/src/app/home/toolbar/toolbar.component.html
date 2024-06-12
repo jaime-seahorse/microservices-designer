@@ -4,17 +4,16 @@
       type="button"
       aria-label="Toggle drawer"
       mat-icon-button
-			(click)="onHandsetDrawerClick.emit()"
+			(click)="onHandsetDrawerClick.emit(1)"
     >
       <mat-icon aria-label="Drawer toggle icon">menu</mat-icon>
     </button>
   }
   
-  <a mat-button routerLink="home">Home</a>
+  <a mat-button routerLink="../home">Home</a>
 
   <span class="spacer"></span>
   @if (!(isHandset$ | async)) {
-    <a mat-button routerLink="login">Log In</a>
-    <a mat-button routerLink="signin">Sign In</a>
+    <!-- * Avatar and product list. -->
   }
 </mat-toolbar>
