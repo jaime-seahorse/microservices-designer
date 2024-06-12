@@ -8,4 +8,6 @@ export class SignInRequest {
     email: string;
     @ApiProperty()
     password: string;
+    @ApiProperty()
+    organizationName: string;
 }

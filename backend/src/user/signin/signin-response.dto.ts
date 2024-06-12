@@ -8,5 +8,5 @@ export class SignInResponse {
     @ApiProperty()
     email: string;
     @ApiProperty()
-    password: string;
+    organizationName: string;
 }
