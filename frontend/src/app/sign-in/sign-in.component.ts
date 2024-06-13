@@ -5,7 +5,7 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../resources/user/auth/auth.service';
 
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { passwordValidator } from './password-validator';
+import { confirmPasswordValidator } from './sign-in-confirm-password-validator';
 
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -54,7 +54,7 @@ export class SignInComponent {
         ]
       ],
       passwordConfirm: ['', Validators.required],
-    }, {validators: passwordValidator, updateOn: 'submit'});
+    }, {validators: confirmPasswordValidator, updateOn: 'submit'});
   }
 
   onSubmit(): void {
