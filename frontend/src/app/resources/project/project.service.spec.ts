@@ -18,6 +18,10 @@ describe('ProjectService', () => {
     httpTestController = TestBed.inject(HttpTestingController);
   });
 
+	afterEach(() => {
+		httpTestController.verify();
+	});
+
   it('should be created', () => {
     expect(projectService).toBeTruthy();
   });
