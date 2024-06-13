@@ -7,7 +7,7 @@ import { MatMenuItemHarness } from '@angular/material/menu/testing';
 import { MatProgressSpinnerHarness } from '@angular/material/progress-spinner/testing';
 
 import { provideRouter } from '@angular/router';
-import { routes } from '../../../app.routes';
+import { routes } from '../../../../app.routes';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
@@ -15,18 +15,18 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 
 import { EventEmitter } from '@angular/core';
 
-import { ProjectMenuComponent } from './project-menu.component';
+import { PrintProjectsComponent } from './print-projects.component';
 
 let loader: HarnessLoader;
-let fixture: ComponentFixture<ProjectMenuComponent>;
+let fixture: ComponentFixture<PrintProjectsComponent>;
 let menu: MatMenuHarness;
 
-describe('ProjectMenuComponent', () => {
+describe('PrintProjectsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule(
       {
         imports: [
-          ProjectMenuComponent,
+          PrintProjectsComponent,
           HttpClientTestingModule
         ],
         providers: [
@@ -36,7 +36,7 @@ describe('ProjectMenuComponent', () => {
       })
       .compileComponents();
 
-    fixture = TestBed.createComponent(ProjectMenuComponent);
+    fixture = TestBed.createComponent(PrintProjectsComponent);
     loader = TestbedHarnessEnvironment.loader(fixture);
 
     menu = await loader.getHarness(MatMenuHarness.with({ selector: MatMenuHarness.hostSelector }));
@@ -68,10 +68,10 @@ describe('ProjectMenuComponent', () => {
   });
 
   it('menu should display the projects', async () => { 
-    let projectMenuComponent = fixture.componentInstance;
-    projectMenuComponent.projects = [
-      {projectId: "1", projectName: "Project 1"},
-      {projectId: "2", projectName: "Project 2"},
+    let printProjectsComponent = fixture.componentInstance;
+    printProjectsComponent.projects = [
+      {projectId: 1, projectName: "Project 1"},
+      {projectId: 2, projectName: "Project 2"},
     ];
     await menu.open();
     let menuItems: MatMenuItemHarness[] = await menu.getItems();
@@ -81,22 +81,22 @@ describe('ProjectMenuComponent', () => {
   });
 
   it('should output the project id when a menu item is clicked', async () => { 
-    let projectMenuComponent = fixture.componentInstance;
-    projectMenuComponent.projects = [
-      {projectId: "1", projectName: "Project 1"},
-      {projectId: "2", projectName: "Project 2"},
+    let printProjectsComponent = fixture.componentInstance;
+    printProjectsComponent.projects = [
+      {projectId: 1, projectName: "Project 1"},
+      {projectId: 2, projectName: "Project 2"},
     ];
     await menu.open();
     let menuItems: MatMenuItemHarness[] = await menu.getItems();
     expect(await menuItems[0].getText()).toBe('Project 1');
-    spyOn<EventEmitter<string>>(projectMenuComponent.onSelectProject, 'emit');
+    spyOn<EventEmitter<number>>(printProjectsComponent.onSelectProject, 'emit');
     await menuItems[0].click();
-    expect(projectMenuComponent.onSelectProject.emit).toHaveBeenCalledWith('1');
+    expect(printProjectsComponent.onSelectProject.emit).toHaveBeenCalledWith(1);
   });
 
   it('should display a spinner when loading the projects', async () => { 
-    let projectMenuComponent = fixture.componentInstance;
-    projectMenuComponent.isLoading = true;
+    let printProjectsComponent = fixture.componentInstance;
+    printProjectsComponent.isLoading = true;
     await menu.open();
     let menuItems: MatMenuItemHarness[] = await menu.getItems();
     let spinner = await menuItems[0].getHarness(MatProgressSpinnerHarness);
