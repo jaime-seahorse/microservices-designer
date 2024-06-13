@@ -11,36 +11,34 @@ import { provideRouter } from '@angular/router';
 import { routes } from '../../../../app.routes';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { AuthService } from '../../../../resources/user/auth/auth.service';
 
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
-import { CreateProjectFormComponent } from './create-project-form.component';
+import { CreateProjectComponent } from './create-project.component';
 
 import { MatProgressSpinnerHarness } from '@angular/material/progress-spinner/testing';
 
 let loader: HarnessLoader;
-let fixture: ComponentFixture<CreateProjectFormComponent>;
+let fixture: ComponentFixture<CreateProjectComponent>;
 let nameFormField: MatFormFieldHarness;
 let submitButton: MatButtonHarness;
 
-describe('CreateProjectFormComponent', () => {
+describe('CreateProjectComponent', () => {
   	beforeEach(async () => {
 		await TestBed.configureTestingModule(
 			{
 				imports: [
-					CreateProjectFormComponent,
+					CreateProjectComponent,
 					HttpClientTestingModule
 				],
 				providers: [
-					AuthService,
 					provideRouter(routes),
 					provideAnimationsAsync(),
 				]
 			})
 			.compileComponents();
 
-		fixture = TestBed.createComponent(CreateProjectFormComponent);
+		fixture = TestBed.createComponent(CreateProjectComponent);
 		loader = TestbedHarnessEnvironment.loader(fixture);
 
 		nameFormField = await loader.getHarness(MatFormFieldHarness);

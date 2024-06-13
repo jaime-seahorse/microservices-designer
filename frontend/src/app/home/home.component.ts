@@ -13,8 +13,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { AsyncPipe } from '@angular/common';
-import { NgClass } from '@angular/common';;
-import { ToolbarComponent } from './toolbar/toolbar.component';
+import { NgClass } from '@angular/common';
+import { AppbarComponent } from './appbar/appbar.component';
 
 @Component({
   selector: 'app-home',
@@ -30,7 +30,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     MatSidenavModule,
     MatListModule,
     MatIconModule,
-		ToolbarComponent
+		AppbarComponent
   ],
   templateUrl: './home.component.html',
 })

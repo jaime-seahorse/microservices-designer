@@ -18,6 +18,10 @@ describe('StorageService', () => {
     storageService = TestBed.inject(StorageService);
   });
 
+	afterEach(() => {
+		httpTestController.verify();
+	});
+
   it('should be created', () => {
     expect(storageService).toBeTruthy();
   });

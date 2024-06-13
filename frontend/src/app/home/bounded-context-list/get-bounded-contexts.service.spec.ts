@@ -17,6 +17,10 @@ describe('GetBoundedContextsService', () => {
     httpTestController = TestBed.inject(HttpTestingController);
   });
 
+	afterEach(() => {
+		httpTestController.verify();
+	});
+
   it('should be created', () => {
     expect(getBoundedContextsService).toBeTruthy();
   });
