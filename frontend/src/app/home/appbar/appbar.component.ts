@@ -10,7 +10,7 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { Observable, map, shareReplay } from 'rxjs';
 
 @Component({
-  selector: 'app-toolbar',
+  selector: 'app-appbar',
 	encapsulation: ViewEncapsulation.None,
   standalone: true,
 	imports: [
@@ -25,10 +25,10 @@ import { Observable, map, shareReplay } from 'rxjs';
     MatListModule,
     MatIconModule
   ],
-  templateUrl: './toolbar.component.html',
-  styleUrl: './toolbar.component.css'
+  templateUrl: './appbar.component.html',
+  styleUrl: './appbar.component.css'
 })
-export class ToolbarComponent {
+export class AppbarComponent {
 	@Output() onHandsetDrawerClick = new EventEmitter<any>();
 	
   constructor(
