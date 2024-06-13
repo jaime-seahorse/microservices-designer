@@ -1,9 +1,9 @@
 import { plainToInstance } from "class-transformer"
 import { UserRoles } from "../../auth/enums/Roles.user"
-import { UserEntity } from "./user.entity"
+import { User } from "./user.entity"
 import { validate, ValidationError } from "class-validator"
 
-describe('AuthUserEntity', () => {
+describe('AuthUser', () => {
     it('should create a new instance without errors', async () => {
         const data = {
             id: 1,
@@ -15,8 +15,8 @@ describe('AuthUserEntity', () => {
             
         }
 
-        const userEntity = plainToInstance(UserEntity, data);
-        const errors = await validate(userEntity);
+        const User = plainToInstance(User, data);
+        const errors = await validate(User);
         console.log(errors);
         expect(errors.length).toBe(0)
     })
@@ -30,8 +30,8 @@ describe('AuthUserEntity', () => {
             role: UserRoles.Admin,
             isActive: false,
         };
-        const userEntity = plainToInstance(UserEntity, data);
-        const errors = await validate(userEntity);
+        const User = plainToInstance(User, data);
+        const errors = await validate(User);
         // console.log('Error username: ',errors[1].value);
         expect(stringified(errors)).toContain('Should be a valid username')
     })
@@ -54,8 +54,8 @@ describe('AuthUserEntity', () => {
             'Should be a valid rol',
             'Should be a boolean'
         ]
-        const userEntity = plainToInstance(UserEntity, data);
-        const errorsEntity = await validate(userEntity);
+        const User = plainToInstance(User, data);
+        const errorsEntity = await validate(User);
         console.log(errorsEntity);
 
         errors.forEach((error, i) => {

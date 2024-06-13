@@ -4,8 +4,8 @@
 // import { TypeOrmModule } from '@nestjs/typeorm';
 // import { ProjectEntity } from './project.entity';
 // import { OrganizationService } from 'src/organization/services/organization.service';
-// import { OrganizationEntity } from 'src/organization/entities/organization.entity';
-// import { UserEntity } from '../users/entities/user.entity';
+// import { Organization } from 'src/organization/entities/organization.entity';
+// import { User } from '../users/entities/user.entity';
 // import { AuthUsersProjectsRelation } from './user-project.relation';
 // import { AuthUsersOrganizationsRelation } from 'src/organization/entities/user-organization.relation.entity';
 // import { UsersService } from '../users/services/users.service';
@@ -24,9 +24,9 @@
 //   imports: [
 //     TypeOrmModule.forFeature([
 //       ProjectEntity,
-//       OrganizationEntity,
+//       Organization,
 //       AuthUsersProjectsRelation,
-//       UserEntity,
+//       User,
 //       AuthUsersOrganizationsRelation,
 //       BoundedContextEntity
 //     ]),

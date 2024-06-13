@@ -6,8 +6,8 @@ import { Repository } from 'typeorm';
 import { ProjectEntity } from '../project.entity';
 import { CreateBoundedContextDto } from './create-bounded-context-request.dto';
 import { UpdateBoundedContextDto } from './update-bounded-context-request.dto';
-import { AuthUserEntity } from '../../users/entities/user.entity';
-import { OrganizationEntity } from '../../organization.entity';
+import { AuthUser } from '../../users/entities/user.entity';
+import { Organization } from '../../organization.entity';
 import { UsersProjectsRelation } from '../../projects/entities/user-project.relation.entity';
 import { UsersOrganizationsRelation } from '../../../entities/user-organization.relation.entity';
 import { UserBoundedContextRelation } from '../entities/user-bounded-context-relation.entity';
@@ -29,7 +29,7 @@ describe('BoundedContextsService', () => {
           username: "myuser",
           password: "1234",
           database: "seahorse",
-          entities: [AuthUserEntity, ProjectEntity, BoundedContextEntity, OrganizationEntity, UsersProjectsRelation,
+          entities: [AuthUser, ProjectEntity, BoundedContextEntity, Organization, UsersProjectsRelation,
             UsersOrganizationsRelation, UserBoundedContextRelation],
           synchronize: true
         }),

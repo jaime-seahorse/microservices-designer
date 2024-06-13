@@ -25,7 +25,7 @@
 
 //   async createOneProject(createProjectRequestDto: CreateProjectRequestDto): Promise<CreateProjectResponseDto> {
 //     try {
-//       //const organizationFinded: OrganizationEntity = (await this.organizationService.organizationFindById(idOrganization)).organization;
+//       //const organizationFinded: Organization = (await this.organizationService.organizationFindById(idOrganization)).organization;
 //       //const projectCreated: ProjectEntity = await this.projectRepository.save({ organization: organizationFinded, ...createProjectRequestDto, });
 //       //if (!projectCreated) throw new InternalServerErrorException({ message: 'The project could not be created' })
 //       //const userId = payload.user_id;

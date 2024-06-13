@@ -1,30 +1,31 @@
 import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { OrganizationEntity } from '../organization.entity';
+import { Organization } from '../organization.entity';
 import { CreateOrganizationRequest } from './create-organization-request.dto';
-import { UserEntity } from '../../user.entity';
+import { User } from '../../user.entity';
 import { CreateOrganizationResponse } from './create-organization-response.dto';
 
 @Injectable()
 export class CreateOrganizationService {
 
     constructor(
-        @InjectRepository(OrganizationEntity)
-        private organizationRepository: Repository<OrganizationEntity>,
+        @InjectRepository(Organization)
+        private organizationRepository: Repository<Organization>,
 
     ) { }
 
 
-    async createOrganization(createOrganizationDto: CreateOrganizationRequest): Promise<CreateOrganizationResponse> {
+    async createOrganization(createOrganizationRequest: CreateOrganizationRequest): Promise<CreateOrganizationResponse> {
         try {
-            const organizationCreated: OrganizationEntity = await this.organizationRepository.save(createOrganizationDto);
-            
+            if (await this.organizationRepository.findOneBy({ name: createOrganizationRequest.name })) {
+                throw new Error('This organization already exists')
+            }
+            const organizationCreated: Organization = await this.organizationRepository.save(createOrganizationRequest);
             const createOrganizationResponse: CreateOrganizationResponse = new CreateOrganizationResponse();
-            createOrganizationResponse.organizationName = organizationCreated.name
-
+            createOrganizationResponse.name = organizationCreated.name;
+            createOrganizationResponse.id = organizationCreated.id;
             return createOrganizationResponse;
-            
         } catch (error) {
             throw new InternalServerErrorException(error);
         }

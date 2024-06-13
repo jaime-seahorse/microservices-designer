@@ -1,20 +1,20 @@
 import { IsNumber, IsString, IsArray } from 'class-validator';
 
-import { Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 
 @Entity()
-export class OrganizationEntity {
+export class Organization {
 
     @PrimaryGeneratedColumn()
     @IsNumber()
     id: number;
 
-    @Column()
+    @Column({ unique: true })
     @IsString()
     name: string;
 
-    @Column()
-    @IsArray()
-    userIds : number[]
+    // @Column()
+    // @IsArray()
+    // userIds : number[]
 }

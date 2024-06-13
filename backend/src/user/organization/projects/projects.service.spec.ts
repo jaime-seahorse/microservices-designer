@@ -2,8 +2,8 @@
 // import { ProjectsService } from './services/projects.service';
 // import { Repository } from 'typeorm';
 // import { ProjectEntity } from './project.entity';
-// import { OrganizationEntity } from '../../organization/entities/organization.entity';
-// import { UserEntity } from '../../users/entities/user.entity';
+// import { Organization } from '../../organization/entities/organization.entity';
+// import { User } from '../../users/entities/user.entity';
 // import { TypeOrmModule } from '@nestjs/typeorm';
 // import { BoundedContextEntity } from '../../bounded-contexts/entities/bounded-context.entity';
 // import { AuthUsersProjectsRelation } from './user-project.relation';
@@ -24,12 +24,12 @@
 // describe('ProjectsService', () => {
 //   let projectService: ProjectsService;
 //   let projectRepository: Repository<ProjectEntity>
-//   let organizationRepository: Repository<OrganizationEntity>
-//   let userRepository: Repository<UserEntity>
+//   let organizationRepository: Repository<Organization>
+//   let userRepository: Repository<User>
 //   let usersProjectsRepository: Repository<AuthUsersProjectsRelation>
 //   let usersOrganizationsRepository: Repository<AuthUsersOrganizationsRelation>
 
-//   const organizationEntity: OrganizationEntity = {
+//   const Organization: Organization = {
 //     id: 1,
 //     name: 'Organization',
 //     projects: [],
@@ -43,7 +43,7 @@
 //       id: 1,
 //       name: 'Tirma',
 //       boundedContexts: [],
-//       organization: organizationEntity,
+//       organization: Organization,
 //       authUsersProjectsRelation: [],
 //       createdAt: new Date()
 //     },
@@ -51,7 +51,7 @@
 //       id: 2,
 //       name: 'Santander',
 //       boundedContexts: [],
-//       organization: organizationEntity,
+//       organization: Organization,
 //       authUsersProjectsRelation: [],
 //       createdAt: new Date()
 //     },
@@ -59,13 +59,13 @@
 //       id: 3,
 //       name: 'Zara',
 //       boundedContexts: [],
-//       organization: organizationEntity,
+//       organization: Organization,
 //       authUsersProjectsRelation: [],
 //       createdAt: new Date()
 //     },
 //   ]
 
-//   const AuthUserEntity: UserEntity = {
+//   const AuthUser: User = {
 //     id: 1,
 //     username: 'Pedro',
 //     email: 'pedro@gmail.com',
@@ -81,17 +81,17 @@
 //   const userProjectRelation: AuthUsersProjectsRelation = {
 //     id: 1,
 //     role: UserRoles.Admin,
-//     authUser: AuthUserEntity,
+//     authUser: AuthUser,
 //     project: projects[0]
 //   }
 //   const usersOrganizationRelation: AuthUsersOrganizationsRelation = {
 //     id: 1,
 //     role: UserRoles.Writter,
-//     authUser: AuthUserEntity,
-//     organization: organizationEntity
+//     authUser: AuthUser,
+//     organization: Organization
 //   }
 
-//   AuthUserEntity.authUsersProjectsRelation.push(userProjectRelation)
+//   AuthUser.authUsersProjectsRelation.push(userProjectRelation)
 
 //   beforeEach(async () => {
 //     const module: TestingModule = await Test.createTestingModule({
@@ -105,7 +105,7 @@
 //           username: "myuser",
 //           password: "1234",
 //           database: "seahorse",
-//           entities: [UserEntity, ProjectEntity, BoundedContextEntity, OrganizationEntity, AuthUsersProjectsRelation, AuthUsersOrganizationsRelation, UserBoundedContextRelation],
+//           entities: [User, ProjectEntity, BoundedContextEntity, Organization, AuthUsersProjectsRelation, AuthUsersOrganizationsRelation, UserBoundedContextRelation],
 //           synchronize: true
 //         }),
 //         JwtModule.register({
@@ -113,13 +113,13 @@
 //           secret: jwtConstants.secret,
 //           signOptions: { expiresIn: '3600s' },
 //         }),
-//         TypeOrmModule.forFeature([UserEntity, OrganizationEntity, ProjectEntity, BoundedContextEntity, AuthUsersProjectsRelation, AuthUsersOrganizationsRelation]),
+//         TypeOrmModule.forFeature([User, Organization, ProjectEntity, BoundedContextEntity, AuthUsersProjectsRelation, AuthUsersOrganizationsRelation]),
 //       ]
 //     }).compile();
 //     projectService = module.get<ProjectsService>(ProjectsService);
 //     projectRepository = module.get('ProjectEntityRepository')
-//     organizationRepository = module.get('OrganizationEntityRepository')
-//     userRepository = module.get('UserEntityRepository')
+//     organizationRepository = module.get('OrganizationRepository')
+//     userRepository = module.get('UserRepository')
 //     usersProjectsRepository = module.get('AuthUsersProjectsRelationRepository')
 //     usersOrganizationsRepository = module.get('AuthUsersOrganizationsRelationRepository')
 //   });
@@ -131,8 +131,8 @@
 //     await projectRepository.query('DELETE FROM project_entity')
 //     await organizationRepository.query('DELETE FROM organization_entity')
 
-//     await organizationRepository.save(organizationEntity)
-//     await userRepository.save(AuthUserEntity)
+//     await organizationRepository.save(Organization)
+//     await userRepository.save(AuthUser)
 //     await Promise.all(projects.map(project => projectRepository.save(project)))
 //     await usersProjectsRepository.save(userProjectRelation)
 //     await usersOrganizationsRepository.save(usersOrganizationRelation)
@@ -147,7 +147,7 @@
 //       const createProjectDto: CreateProjectRequestDto = {
 //         name: 'Hiper Dino'
 //       }
-//       let idOrganization = organizationEntity.id
+//       let idOrganization = Organization.id
 
 //       const payload = {
 //         userId: 1
@@ -164,7 +164,7 @@
 //   // describe('createManyProjects', () => {
 //   //   it('Should return all projects', async () => {
 //   //     const createManyProjectsDto: CreateManyProjectsDto = {
-//   //       idOrganization: organizationEntity.id,
+//   //       idOrganization: Organization.id,
 //   //       name: ['Bizum, Catalog']
 //   //     }
 //   //     const projectsSaved = await projectService.createManyProjects(createManyProjectsDto)
@@ -194,13 +194,13 @@
 
 //   describe('findAllProjectsByOrganization', () => {
 //     it('Should return a list of a projects by organization', async () => {
-//       const organizationFinded = await organizationRepository.findOneBy({ id: organizationEntity.id })
+//       const organizationFinded = await organizationRepository.findOneBy({ id: Organization.id })
 //       const allProjectsByOrganization = await projectRepository.find({
 //         where: {
 //           organization: organizationFinded
 //         }
 //       });
-//       const allProjectsByOrganizationResponse = await projectService.findAllProjectsByOrganization(organizationEntity.id)
+//       const allProjectsByOrganizationResponse = await projectService.findAllProjectsByOrganization(Organization.id)
 //       console.log(allProjectsByOrganization)
 //       expect(allProjectsByOrganization).toEqual(allProjectsByOrganizationResponse)
 //     })

@@ -1,8 +1,8 @@
-import { Controller, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, InternalServerErrorException, Param, Patch, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiExtraModels, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CreateUserResponse } from './signin/signin-response.dto';
-import { CreateUserRequest } from './signin/signin-request.dto';
-import { CreateUserService } from './signin/signin.service';
+import { SignInResponse } from './signin/signin-response.dto';
+import { SignInRequest } from './signin/signin-request.dto';
+import { SignInService } from './signin/signin.service';
 import { UpdateUserRequestDto } from './update-user/update-user-request.dto';
 import { UpdateUserService } from './update-user/update-user-service.service';
 
@@ -13,7 +13,7 @@ import { UpdateUserService } from './update-user/update-user-service.service';
 export class UserController {
 
   constructor(
-    private readonly createUserService: CreateUserService,
+    private readonly signinUserService: SignInService,
     private readonly updateUserServe: UpdateUserService
   ) {
 
@@ -21,12 +21,19 @@ export class UserController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @ApiResponse({ status: 201, description: 'User created.', type: CreateUserResponse })
+  @ApiResponse({ status: 201, description: 'User created.', type: SignInResponse })
   @ApiResponse({ status: 409, description: 'The user already exists.' })
-  @ApiExtraModels(CreateUserResponse)
-  async create(createUserRequest: CreateUserRequest): Promise<CreateUserResponse> {
-    let pepe: CreateUserResponse = await this.createUserService.create(createUserRequest);
-    return pepe;
+  @ApiExtraModels(SignInResponse)
+  async create(@Body() createUserRequest: SignInRequest): Promise<SignInResponse> {
+    try {
+      return await this.signinUserService.signIn(createUserRequest);;
+    } catch (error) {
+      // Do a own exception
+      if (error instanceof Error) {
+        throw new InternalServerErrorException(error.message);
+      }
+
+    }
   }
 
   @Patch()

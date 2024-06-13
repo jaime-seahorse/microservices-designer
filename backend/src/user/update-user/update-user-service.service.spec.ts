@@ -1,19 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UpdateUserService } from './update-user-service.service';
-import { UserEntity } from '../user.entity';
+import { User } from '../user.entity';
 import { Repository } from 'typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UpdateUserRequestDto } from './update-user-request.dto';
 
 describe('UpdateUserServiceService', () => {
   let service: UpdateUserService;
-  let userRepository: Repository<UserEntity>;
+  let userRepository: Repository<User>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [UpdateUserService],
       imports: [
-        TypeOrmModule.forFeature([UserEntity]),
+        TypeOrmModule.forFeature([User]),
         TypeOrmModule.forRoot({
           type: 'mysql',
           host: 'localhost',

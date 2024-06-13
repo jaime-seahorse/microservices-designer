@@ -3,10 +3,10 @@
 // import { ProjectsService } from '../services/projects.service';
 // import { CreateProjectRequestDto } from '../dto/create-project-request.dto';
 // import { ProjectEntity } from '../entities/project.entity';
-// import { OrganizationEntity } from '../../organization/entities/organization.entity';
+// import { Organization } from '../../organization/entities/organization.entity';
 // import { UpdateProjectRequestDto } from '../dto/update-project-request.dto';
 // import { TypeOrmModule } from '@nestjs/typeorm';
-// import { UserEntity } from '../../users/entities/user.entity';
+// import { User } from '../../users/entities/user.entity';
 // import { BoundedContextEntity } from '../../bounded-contexts/entities/bounded-context.entity';
 // import { AuthUsersProjectsRelation } from '../entities/user-project.relation';
 // import { AuthUsersOrganizationsRelation } from '../../organization/entities/user-organization.relation.entity';
@@ -27,7 +27,7 @@
 // describe('ProjectsController', () => {
 //   let projectController: ProjectsController;
 //   let projectService: ProjectsService;
-//   const organization: OrganizationEntity = {
+//   const organization: Organization = {
 //     id: 1,
 //     name: 'Tirma',
 //     projects: [],
@@ -59,10 +59,10 @@
 //           username: "myuser",
 //           password: "1234",
 //           database: "seahorse",
-//           entities: [UserEntity, ProjectEntity, BoundedContextEntity, OrganizationEntity, AuthUsersProjectsRelation, AuthUsersOrganizationsRelation, UserBoundedContextRelation],
+//           entities: [User, ProjectEntity, BoundedContextEntity, Organization, AuthUsersProjectsRelation, AuthUsersOrganizationsRelation, UserBoundedContextRelation],
 //           synchronize: true
 //         }),
-//         TypeOrmModule.forFeature([UserEntity, ProjectEntity, BoundedContextEntity, OrganizationEntity, AuthUsersProjectsRelation, AuthUsersOrganizationsRelation, UserBoundedContextRelation]),
+//         TypeOrmModule.forFeature([User, ProjectEntity, BoundedContextEntity, Organization, AuthUsersProjectsRelation, AuthUsersOrganizationsRelation, UserBoundedContextRelation]),
 
 //       ]
 //     }).compile();

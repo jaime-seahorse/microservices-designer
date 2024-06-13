@@ -1,7 +1,7 @@
 // import { IsNumber, IsString, IsDate, IsArray } from "class-validator";
 // import { BoundedContextEntity } from "../../bounded-contexts/entities/bounded-context.entity";
 // import { Column, Entity, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm';
-// import { OrganizationEntity } from "../../organization/entities/organization.entity";
+// import { Organization } from "../../organization/entities/organization.entity";
 // import { AuthUsersProjectsRelation } from "./user-project.relation";
 
 // @Entity()
@@ -19,9 +19,9 @@
 //         { nullable: true, onDelete: 'CASCADE' })
 //     boundedContexts: BoundedContextEntity[];
 
-//     @ManyToOne(() => OrganizationEntity, (organization) => organization.projects,
+//     @ManyToOne(() => Organization, (organization) => organization.projects,
 //         { nullable: true, onDelete: 'CASCADE' })
-//     organization: OrganizationEntity;
+//     organization: Organization;
 
 //     @OneToMany(() => AuthUsersProjectsRelation, (usersProjects) => usersProjects.project,
 //         { onDelete: 'CASCADE' })

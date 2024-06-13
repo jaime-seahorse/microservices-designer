@@ -1,15 +1,15 @@
-import { IsEmail, IsString, Length,  } from 'class-validator';
+import { IsEmail, IsNumber, IsString, Length, } from 'class-validator';
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity()
-export class UserEntity {
+export class User {
 
     @PrimaryGeneratedColumn()
     id: number;
 
     @IsString({ message: 'Should be a valid username' })
     @Length(3, 18)
-    @Column({ type: 'varchar', length: 100, unique: true, nullable: false })
+    @Column({ type: 'varchar', length: 100,  nullable: false })
     name: string;
 
     @IsEmail({}, { message: 'Should be a valid email' })
@@ -21,9 +21,9 @@ export class UserEntity {
     @Column({ type: 'varchar', length: 100, nullable: false })
     password: string;
 
+    @IsNumber({}, {message: 'Should be a valid id of organization'})
+    @Column()
+    organizationId: number;
 
-    @Column({ type: 'boolean', default: false, })
-    isActive: boolean;
 
-   
 }

@@ -1,32 +1,36 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SignInService } from './signin.service';
-import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from '../user.entity';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { User } from '../user.entity';
 import { Repository } from 'typeorm';
 import { SignInRequest } from './signin-request.dto';
 import { SignInResponse } from './signin-response.dto';
+import { CreateOrganizationService } from '../organization/create-organization/create-organization.service';
+import { Organization } from '../organization/organization.entity';
 
 describe('UsersService', () => {
   let service: SignInService;
-  let userRepository: Repository<UserEntity>;
-  const USER_REPOSITORY_TOKEN = getRepositoryToken(UserEntity);
-
+  let userRepository: Repository<User>;
+  const USER_REPOSITORY_TOKEN = getRepositoryToken(User);
+  const ORGANIZATION_REPOSITORY_TOKEN = getRepositoryToken(Organization)
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         SignInService,
+        CreateOrganizationService,
         {
           provide: USER_REPOSITORY_TOKEN,
-          useValue: {
-            create: jest.fn(),
-            update: jest.fn()
-          },
+          useValue: {},
         },
+        {
+          provide: ORGANIZATION_REPOSITORY_TOKEN,
+          useValue: {}
+        }
       ],
     }).compile();
 
     service = module.get<SignInService>(SignInService);
-    userRepository = module.get<Repository<UserEntity>>(USER_REPOSITORY_TOKEN);
+    userRepository = module.get<Repository<User>>(USER_REPOSITORY_TOKEN);
   });
 
   it('should be defined', () => {
@@ -44,14 +48,13 @@ describe('UsersService', () => {
       signInRequest.name = "Pepe";
       signInRequest.password = "changeme";
       signInRequest.organizationName = "PepeOrganization";
-      
+
       const signInResponseMock: SignInResponse = new SignInResponse();
       signInResponseMock.email = "pepe@mail.com";
       signInResponseMock.name = "Pepe";
       signInResponseMock.id = 1;
       signInResponseMock.organizationName = "PepeOrganization";
-
-
+      
       jest.spyOn(service, 'signIn').mockResolvedValue(signInResponseMock);
       let signInResponseService: SignInResponse = await service.signIn(signInRequest);
       expect(signInRequest.email).toEqual(signInResponseService.email);
@@ -61,8 +64,5 @@ describe('UsersService', () => {
       expect(1).toEqual(signInResponseService.id);
     });
   });
-
-
-
 
 });

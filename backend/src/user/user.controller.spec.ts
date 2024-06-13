@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from './user.controller';
-import { CreateUserService } from './signin/signin.service';
-import { CreateUserRequest } from './signin/signin-request.dto';
-import { CreateUserResponse } from './signin/signin-response.dto';
+import { SignInService } from './signin/signin.service';
+import { SignInRequest } from './signin/signin-request.dto';
+import { SignInResponse } from './signin/signin-response.dto';
 import { UpdateUserRequestDto } from './update-user/update-user-request.dto';
 
 describe('UsersController', () => {
@@ -20,7 +20,7 @@ describe('UsersController', () => {
       controllers: [UserController],
       providers: [
         {
-          provide: CreateUserService,
+          provide: SignInService,
           useValue: mockUserService,
         },
       ],
@@ -37,20 +37,19 @@ describe('UsersController', () => {
   describe('create usert', () => {
     it('should create a new user', async () => {
 
-      const createUserRequest: CreateUserRequest = new CreateUserRequest();
-      createUserRequest.email = "pepe@mail.com";
-      createUserRequest.name = "Pepe";
-      createUserRequest.password = "changeme";
+      const signInRequest: SignInRequest = new SignInRequest();
+      signInRequest.email = "pepe@mail.com";
+      signInRequest.name = "Pepe";
+      signInRequest.password = "changeme";
 
-      jest.spyOn(mockUserService, 'create').mockReturnValue(createUserRequest);
+      jest.spyOn(mockUserService, 'create').mockReturnValue(signInRequest);
 
-      const createUserResponse: CreateUserResponse = await controller.create(createUserRequest);
+      const signInResponse: SignInResponse = await controller.create(signInRequest);
 
       expect(mockUserService.create).toHaveBeenCalled();
-      expect(mockUserService.create).toHaveBeenCalledWith(createUserRequest)
-      expect(createUserRequest.email).toEqual(createUserResponse.email);
-      expect(createUserRequest.name).toEqual(createUserResponse.name);
-      expect(createUserRequest.password).toEqual(createUserResponse.password);
+      expect(mockUserService.create).toHaveBeenCalledWith(signInRequest)
+      expect(signInRequest.email).toEqual(signInResponse.email);
+      expect(signInRequest.name).toEqual(signInResponse.name);
     })
   })
 

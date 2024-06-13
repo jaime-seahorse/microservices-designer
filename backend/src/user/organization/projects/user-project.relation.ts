@@ -1,6 +1,6 @@
 // import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 
-// import { UserEntity } from '../../users/entities/user.entity';
+// import { User } from '../../users/entities/user.entity';
 // import { ProjectEntity } from './project.entity';
 // import { IsNumber } from 'class-validator';
 
@@ -14,8 +14,8 @@
 //     @PrimaryGeneratedColumn()
 //     id: number;
 
-//     @ManyToOne(() => UserEntity, (user) => user.authUsersProjectsRelation, { nullable: true, onDelete: 'CASCADE' })
-//     authUser: UserEntity
+//     @ManyToOne(() => User, (user) => user.authUsersProjectsRelation, { nullable: true, onDelete: 'CASCADE' })
+//     authUser: User
 
 //     @ManyToOne(() => ProjectEntity, (project) => project.authUsersProjectsRelation, { nullable: true, onDelete: 'CASCADE' })
 //     project: ProjectEntity

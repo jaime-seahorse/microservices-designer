@@ -6,8 +6,8 @@
 // import { BoundedContextEntity } from './entities/bounded-context.entity';
 // import { UpdateBoundedContextDto } from './update-bounded-context-request.dto';
 // import { TypeOrmModule } from '@nestjs/typeorm';
-// import { OrganizationEntity } from '../../organization.entity';
-// import { AuthUserEntity } from '../../users/entities/user.entity';
+// import { Organization } from '../../organization.entity';
+// import { AuthUser } from '../../users/entities/user.entity';
 
 // describe('BoundedContextsController', () => {
 //   let boundedContextController: BoundedContextsController;
@@ -24,7 +24,7 @@
 //         username: "myuser",
 //         password: "1234",
 //         database: "seahorse",
-//         entities: [AuthUserEntity, ProjectEntity, BoundedContextEntity, OrganizationEntity],
+//         entities: [AuthUser, ProjectEntity, BoundedContextEntity, Organization],
 //         synchronize: true
 //       }),
 //         TypeOrmModule.forFeature([BoundedContextEntity]),]

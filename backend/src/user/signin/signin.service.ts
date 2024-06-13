@@ -1,5 +1,5 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { UserEntity } from '../user.entity';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { User } from '../user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm'
 import { SignInRequest } from './signin-request.dto';
@@ -12,42 +12,44 @@ import { CreateOrganizationRequest } from '../organization/create-organization/c
 export class SignInService {
 
   constructor(
-    @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
-    private organizationService: CreateOrganizationService
-  ) { }
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+    private organizationService: CreateOrganizationService,
 
+  ) { }
 
   async signIn(signInRequest: SignInRequest): Promise<SignInResponse> {
     try {
-
-      const createUserEntity: UserEntity = this.createUser(signInRequest);
-      const userEntityCreated: UserEntity = await this.userRepository.save(createUserEntity);
-
       const createOrganizationDto: CreateOrganizationRequest = new CreateOrganizationRequest();
       createOrganizationDto.name = signInRequest.organizationName;
-      createOrganizationDto.userId = userEntityCreated.id;
       const organizationCreated: CreateOrganizationResponse = await this.organizationService.createOrganization(createOrganizationDto);
-
-      return this.prepareSignInResponse(userEntityCreated, organizationCreated.name);
+      // Do a transaction
+      const createUser: User = this.createUser(signInRequest, organizationCreated.id);
+      if (await this.userRepository.findOneBy({ email: signInRequest.email })) {
+        console.log('Email already exists')
+        throw new Error('This email already exists')
+      }
+      const UserCreated: User = await this.userRepository.save(createUser);
+      return this.prepareSignInResponse(UserCreated, organizationCreated.name);
     } catch (error) {
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException(error);
     }
   }
 
-  private createUser(signInRequest: SignInRequest): UserEntity {
-    const createUserEntity: UserEntity = new UserEntity();
-    createUserEntity.email = signInRequest.email;
-    createUserEntity.name = signInRequest.name;
-    createUserEntity.password = signInRequest.password;
-    return createUserEntity;
+  private createUser(signInRequest: SignInRequest, organizationId: number): User {
+    const createUser: User = new User();
+    createUser.email = signInRequest.email;
+    createUser.name = signInRequest.name;
+    createUser.password = signInRequest.password;
+    createUser.organizationId = organizationId;
+    return createUser;
   }
 
-  private prepareSignInResponse(userEntityCreated: UserEntity, organization: string): SignInResponse {
+  private prepareSignInResponse(UserCreated: User, organization: string): SignInResponse {
     const signInResponse: SignInResponse = new SignInResponse();
-    signInResponse.email = userEntityCreated.email;
-    signInResponse.name = userEntityCreated.name;
-    signInResponse.id = userEntityCreated.id;
+    signInResponse.email = UserCreated.email;
+    signInResponse.name = UserCreated.name;
+    signInResponse.id = UserCreated.id;
     signInResponse.organizationName = organization;
     return signInResponse;
 
