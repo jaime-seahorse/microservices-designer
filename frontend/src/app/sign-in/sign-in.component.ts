@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 
-import { AuthService } from '../resources/user/auth/auth.service';
-
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { confirmPasswordValidator } from './sign-in-confirm-password-validator';
 
@@ -11,7 +9,8 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/mat
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { SignInRequest } from '../resources/user/auth/auth.dto';
+import { SignInRequest } from './sign-in-request.dto';
+import { SignInService } from './sign-in.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -36,7 +35,7 @@ export class SignInComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService,
+    private signInService: SignInService,
 		private router: Router
   ){
     this.form = this.formBuilder.group({
@@ -66,7 +65,7 @@ export class SignInComponent {
 				password: this.form.get('password')?.value,
 			}
 			
-			this.authService.signInUser(newUserData).subscribe((response) => {
+			this.signInService.signInUser(newUserData).subscribe((response) => {
 				console.log(response.body?.message);
 				this.router.navigateByUrl('login');
 			})

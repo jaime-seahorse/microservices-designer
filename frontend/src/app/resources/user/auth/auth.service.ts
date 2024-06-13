@@ -20,19 +20,6 @@ export class AuthService {
 
   constructor(private httpClient: HttpClient) {}
 
-  signInUser(userData: SignInRequest): Observable<HttpResponse<SignInResponse>> {
-    return this.httpClient.post<SignInResponse>(
-      `${this.apiURL}/signin`,
-      userData,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        observe: 'response' as const,
-      }
-    );
-  }
-
   logOutUser(token: string): Observable<HttpResponse<LogOutResponse>> {
     return this.httpClient.post<LogOutResponse>(`${this.apiURL}/logout`, null, {
       headers: {

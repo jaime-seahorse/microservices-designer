@@ -42,33 +42,6 @@ describe('AuthService', () => {
     expect(authService).toBeTruthy();
   });
 
-	it('should register a new user', () => {
-		let mockUserData: SignUpData = {
-			username: "paul7777",
-			email: "paul7777@hotmail.com",
-			password: "1234"
-		};
-		
-		let mockRegisteredUser: User = {
-			username: "paul7777",
-			email: "paul7777@hotmail.com",
-			role: Roles.Reader
-		};
-
-		authService.signUpUser(mockUserData).subscribe((response) => {
-			mockUser = response.user;
-		});
-
-		mockRequest = httpTestController.expectOne(`${authService.apiURL}/signin`);
-		expect(mockRequest.request.method).toEqual("POST");
-		mockRequest.flush({
-			user: mockRegisteredUser,
-			message: "Registered correctly"
-		});
-		expect(mockUser).toEqual(mockRegisteredUser);
-	});
-
-
 	it('should log in an existing user with email', () => {
 		let mockUserData: LogInData = {
 			email: "paul7777@hotmail.com",
@@ -169,31 +142,6 @@ describe('AuthService', () => {
 			message: "Account successfully deleted"
 		});
 		expect(mockUser).toEqual(mockSignedOutUser);	
-	});
-
-	it('should be able to handle errors when trying to register a new user', () => {
-		let mockUserData: SignUpData = {
-			username: "paul7777",
-			email: "bademail",
-			password: "1234"
-		};
-
-		authService.signUpUser(mockUserData).subscribe({
-			next: () => fail("Error thrown"),
-			error: (err: HttpErrorResponse) => httpError = err
-		});
-
-		mockRequest = httpTestController.expectOne(`${authService.apiURL}/signin`);
-		mockRequest.flush('Server error', {
-			status: 400,
-			statusText: 'Bad Request'
-		} as HttpErrorResponse);
-
-		if(!httpError)
-			throw new Error("Errors can't be handled correctly");
-
-		expect(httpError.status).toEqual(400);
-		expect(httpError.statusText).toEqual('Bad Request');
 	});
 
 	it('should be able to handle errors when trying to log in an existing user', () => {
