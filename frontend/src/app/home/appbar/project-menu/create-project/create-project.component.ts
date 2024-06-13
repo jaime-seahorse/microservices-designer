@@ -9,7 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 
 import { CreateProjectRequest } from './create-project-request.dto';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { ProjectService } from '../../../../resources/project/project.service';
+import { CreateProjectService } from './create-project.service';
 
 @Component({
   selector: 'app-log-in',
@@ -35,7 +35,7 @@ export class CreateProjectComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-		private projectService: ProjectService
+		private createProjectService: CreateProjectService
   ){
     this.form = this.formBuilder.group({
       projectName: ['', [
@@ -57,7 +57,7 @@ export class CreateProjectComponent {
 				projectName: this.form.value.projectName
 			};
 
-			// this.projectService.createProject(projectData).subscribe({
+			// this.createProjectService.createProject(projectData).subscribe({
 			// 	next: (response: HttpResponse<CreateProjectResponse>) => {
 			// 		this.globalMessage = response.body!.message!;
 			// 	},
