@@ -11,7 +11,6 @@ import { provideRouter } from '@angular/router';
 import { routes } from '../../../../app.routes';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { AuthService } from '../../../../resources/user/auth/auth.service';
 
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
@@ -33,7 +32,6 @@ describe('CreateProjectFormComponent', () => {
 					HttpClientTestingModule
 				],
 				providers: [
-					AuthService,
 					provideRouter(routes),
 					provideAnimationsAsync(),
 				]
