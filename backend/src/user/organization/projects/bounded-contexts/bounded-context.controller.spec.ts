@@ -1,7 +1,7 @@
 // import { Test, TestingModule } from '@nestjs/testing';
 // import { BoundedContextsController } from './controllers/bounded-context.controller';
 // import { BoundedContextsService } from './bounded-context.service';
-// import { ProjectEntity } from '../../projects/entities/project.entity';
+// import { Project } from '../../projects/entities/project.entity';
 // import { CreateBoundedContextDto } from './create-bounded-context-request.dto';
 // import { BoundedContextEntity } from './entities/bounded-context.entity';
 // import { UpdateBoundedContextDto } from './update-bounded-context-request.dto';
@@ -24,7 +24,7 @@
 //         username: "myuser",
 //         password: "1234",
 //         database: "seahorse",
-//         entities: [AuthUser, ProjectEntity, BoundedContextEntity, Organization],
+//         entities: [AuthUser, Project, BoundedContextEntity, Organization],
 //         synchronize: true
 //       }),
 //         TypeOrmModule.forFeature([BoundedContextEntity]),]
@@ -36,7 +36,7 @@
 
 
 
-//   const project: ProjectEntity = new ProjectEntity()
+//   const project: Project = new Project()
 
 //   describe('getBoundedContext', () => {
 //     it('should return a Bounded Context', async () => {

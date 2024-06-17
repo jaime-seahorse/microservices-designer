@@ -24,7 +24,7 @@ export class SignInService {
       createOrganizationDto.name = signInRequest.organizationName;
       const organizationCreated: CreateOrganizationResponse = await this.organizationService.createOrganization(createOrganizationDto);
       // Do a transaction
-      const createUser: User = this.createUser(signInRequest, organizationCreated.id);
+      const createUser: User = this.createUserEntity(signInRequest, organizationCreated.id);
       if (await this.userRepository.findOneBy({ email: signInRequest.email })) {
         console.log('Email already exists')
         throw new Error('This email already exists')
@@ -36,7 +36,7 @@ export class SignInService {
     }
   }
 
-  private createUser(signInRequest: SignInRequest, organizationId: number): User {
+  private createUserEntity(signInRequest: SignInRequest, organizationId: number): User {
     const createUser: User = new User();
     createUser.email = signInRequest.email;
     createUser.name = signInRequest.name;
@@ -45,11 +45,11 @@ export class SignInService {
     return createUser;
   }
 
-  private prepareSignInResponse(UserCreated: User, organization: string): SignInResponse {
+  private prepareSignInResponse(userCreated: User, organization: string): SignInResponse {
     const signInResponse: SignInResponse = new SignInResponse();
-    signInResponse.email = UserCreated.email;
-    signInResponse.name = UserCreated.name;
-    signInResponse.id = UserCreated.id;
+    signInResponse.email = userCreated.email;
+    signInResponse.name = userCreated.name;
+    signInResponse.id = userCreated.id;
     signInResponse.organizationName = organization;
     return signInResponse;
 

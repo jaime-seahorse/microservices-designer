@@ -3,7 +3,7 @@ import { BoundedContextsService } from './bounded-context.service';
 import { BoundedContextEntity } from '../entities/bounded-context.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ProjectEntity } from '../project.entity';
+import { Project } from '../project.entity';
 import { CreateBoundedContextDto } from './create-bounded-context-request.dto';
 import { UpdateBoundedContextDto } from './update-bounded-context-request.dto';
 import { AuthUser } from '../../users/entities/user.entity';
@@ -16,7 +16,7 @@ import { UserBoundedContextRelation } from '../entities/user-bounded-context-rel
 describe('BoundedContextsService', () => {
   let boundedContextService: BoundedContextsService;
   let boundedContextsRepository: Repository<BoundedContextEntity>
-  let projectRepository: Repository<ProjectEntity>
+  let projectRepository: Repository<Project>
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -29,11 +29,11 @@ describe('BoundedContextsService', () => {
           username: "myuser",
           password: "1234",
           database: "seahorse",
-          entities: [AuthUser, ProjectEntity, BoundedContextEntity, Organization, UsersProjectsRelation,
+          entities: [AuthUser, Project, BoundedContextEntity, Organization, UsersProjectsRelation,
             UsersOrganizationsRelation, UserBoundedContextRelation],
           synchronize: true
         }),
-        TypeOrmModule.forFeature([BoundedContextEntity, ProjectEntity])
+        TypeOrmModule.forFeature([BoundedContextEntity, Project])
       ]
     }).compile();
     boundedContextService = module.get<BoundedContextsService>(BoundedContextsService);
@@ -49,7 +49,7 @@ describe('BoundedContextsService', () => {
   describe('findBoundedContextById', () => {
     it('should find a BoundedContext by Id', async () => {
 
-      const project: ProjectEntity = {
+      const project: Project = {
         id: 0,
         name: '',
         boundedContexts: [],
@@ -80,7 +80,7 @@ describe('BoundedContextsService', () => {
 
   describe('getBoundedContextsByProjectId', () => {
     it('should find 1 or more boundedContext by project id', async () => {
-      const project: ProjectEntity = {
+      const project: Project = {
         id: 0,
         name: '',
         boundedContexts: [],
@@ -126,7 +126,7 @@ describe('BoundedContextsService', () => {
 
   describe('updateBoundedContext', () => {
     it('should update a bounded context', async () => {
-      const project: ProjectEntity = {
+      const project: Project = {
         id: 0,
         name: '',
         boundedContexts: [],
@@ -158,7 +158,7 @@ describe('BoundedContextsService', () => {
 
   describe('deleteBoundedContext', () => {
     it('should delete a bounded context', async () => {
-      const project: ProjectEntity = {
+      const project: Project = {
         id: 0,
         name: '',
         boundedContexts: [],

@@ -34,7 +34,7 @@ describe('UsersController', () => {
   });
 
 
-  describe('create usert', () => {
+  describe('create user', () => {
     it('should create a new user', async () => {
 
       const signInRequest: SignInRequest = new SignInRequest();

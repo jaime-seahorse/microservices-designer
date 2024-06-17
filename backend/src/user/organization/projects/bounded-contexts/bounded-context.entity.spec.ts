@@ -1,11 +1,11 @@
 import { plainToInstance } from "class-transformer";
 import { validate } from "class-validator";
-import { ProjectEntity } from "../project.entity"
+import { Project } from "../project.entity"
 import { BoundedContextEntity } from "./bounded-context.entity";
 import { ValidationError } from "@nestjs/common";
 
 describe("BoundedContextEntity", () => {
-    const project = new ProjectEntity();
+    const project = new Project();
 
     it("should create a new bounded Context without errors", async () => {
         const data = {

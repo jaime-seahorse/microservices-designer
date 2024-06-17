@@ -1,35 +1,20 @@
-// import { Module } from '@nestjs/common';
-// import { ProjectsService } from './services/projects.service';
-// import { ProjectsController } from './projects.controller';
-// import { TypeOrmModule } from '@nestjs/typeorm';
-// import { ProjectEntity } from './project.entity';
-// import { OrganizationService } from 'src/organization/services/organization.service';
-// import { Organization } from 'src/organization/entities/organization.entity';
-// import { User } from '../users/entities/user.entity';
-// import { AuthUsersProjectsRelation } from './user-project.relation';
-// import { AuthUsersOrganizationsRelation } from 'src/organization/entities/user-organization.relation.entity';
-// import { UsersService } from '../users/services/users.service';
-// import { BoundedContextsService } from 'src/bounded-contexts/services/bounded-context.service';
-// import { BoundedContextEntity } from 'src/bounded-contexts/entities/bounded-context.entity';
+import { Module } from '@nestjs/common';
 
-// @Module({
-//   controllers: [ProjectsController],
-//   providers: [
-//     ProjectsService,
-//     OrganizationService,
-//     AuthUsersProjectsRelation,
-//     UsersService,
-//     BoundedContextsService
-//   ],
-//   imports: [
-//     TypeOrmModule.forFeature([
-//       ProjectEntity,
-//       Organization,
-//       AuthUsersProjectsRelation,
-//       User,
-//       AuthUsersOrganizationsRelation,
-//       BoundedContextEntity
-//     ]),
-//   ],
-// })
-// export class ProjectsModule { }
+import { ProjectsController } from './projects.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Project } from './project.entity';
+import { CreateProjectService } from './create-project/create-project.service';
+
+
+@Module({
+    controllers: [ProjectsController],
+    providers: [
+        CreateProjectService
+    ],
+    imports: [
+        TypeOrmModule.forFeature([
+            Project,
+        ]),
+    ],
+})
+export class ProjectsModule { }

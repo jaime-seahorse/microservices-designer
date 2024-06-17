@@ -4,7 +4,7 @@
 // import { BoundedContextEntity } from '../entities/bounded-context.entity';
 // import { InjectRepository } from '@nestjs/typeorm';
 // import { Repository } from 'typeorm';
-// import { ProjectEntity } from '../../projects/entities/project.entity';
+// import { Project } from '../../projects/entities/project.entity';
 
 // import { DeleteResponseBoundedContextDto } from './delete-response-bounded-context.dto';
 // import { GetBoundedContextByUserIdResponse } from './get-bounded-context-by-user-id-response.dto';
@@ -17,8 +17,8 @@
 //   constructor(
 //     @InjectRepository(BoundedContextEntity)
 //     private boundedContextRepository: Repository<BoundedContextEntity>,
-//     @InjectRepository(ProjectEntity)
-//     private projectRepository: Repository<ProjectEntity>
+//     @InjectRepository(Project)
+//     private projectRepository: Repository<Project>
 //   ) { }
 
 //   async findBoundedContextById(id: number): Promise<GetBoundedContextByUserIdResponse> {
@@ -49,7 +49,7 @@
 
 //   async createBoundedContext(createBoundedContextDto: CreateBoundedContextRequestDto, projectId: number): Promise<CreateBoundedContextResponseDto> {
 //     try {
-//       const project: ProjectEntity = await this.projectRepository.findOne({ where: { id: projectId } })
+//       const project: Project = await this.projectRepository.findOne({ where: { id: projectId } })
 //       const savedBoundedContext: BoundedContextEntity = await this.boundedContextRepository.save(
 //         { ...createBoundedContextDto, project: project }
 //       )

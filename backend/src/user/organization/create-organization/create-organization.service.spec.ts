@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
+import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateOrganizationService } from './create-organization.service';
 import { Organization } from '../organization.entity';
@@ -22,7 +22,6 @@ describe('OrganizationService', () => {
                             update: jest.fn()
                         },
                     }
-
                 ],
         }).compile();
 

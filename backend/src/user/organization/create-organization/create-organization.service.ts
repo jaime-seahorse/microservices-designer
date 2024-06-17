@@ -15,7 +15,6 @@ export class CreateOrganizationService {
 
     ) { }
 
-
     async createOrganization(createOrganizationRequest: CreateOrganizationRequest): Promise<CreateOrganizationResponse> {
         try {
             if (await this.organizationRepository.findOneBy({ name: createOrganizationRequest.name })) {
