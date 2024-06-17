@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CreateBoundedContextRequest } from './create-bounded-context.dto';
+import { CreateBoundedContextRequest } from './create-bounded-context-request.dto';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { NgClass } from '@angular/common';
@@ -22,9 +22,9 @@ import { CreateBoundedContextService } from './create-bounded-context.service';
     NgClass,
 		MatProgressSpinner
 	],
-  templateUrl: './create-bounded-context-form.component.html',
+  templateUrl: './create-bounded-context.component.html',
 })
-export class CreateBoundedContextFormComponent {
+export class CreateBoundedContextComponent {
   form: FormGroup;
 	globalMessage: string = '';
 

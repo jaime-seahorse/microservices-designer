@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreateBoundedContextFormComponent } from './create-bounded-context-form.component';
+import { CreateBoundedContextComponent } from './create-bounded-context.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatButtonHarness } from '@angular/material/button/testing';
@@ -13,17 +13,17 @@ import { MatInputHarness } from '@angular/material/input/testing';
 import { MatProgressSpinnerHarness } from '@angular/material/progress-spinner/testing';
 
 let loader: HarnessLoader;
-let fixture: ComponentFixture<CreateBoundedContextFormComponent>;
+let fixture: ComponentFixture<CreateBoundedContextComponent>;
 let nameFormField: MatFormFieldHarness;
 let submitButton: MatButtonHarness;
 
-describe('CreateBoundedContextFormComponent', () => {
+describe('CreateBoundedContextComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule(
 			{
 				imports: [
-					CreateBoundedContextFormComponent,
+					CreateBoundedContextComponent,
 					HttpClientTestingModule
 				],
 				providers: [
@@ -33,7 +33,7 @@ describe('CreateBoundedContextFormComponent', () => {
 			})
 			.compileComponents();
 
-		fixture = TestBed.createComponent(CreateBoundedContextFormComponent);
+		fixture = TestBed.createComponent(CreateBoundedContextComponent);
 		loader = TestbedHarnessEnvironment.loader(fixture);
 
 		nameFormField = await loader.getHarness(MatFormFieldHarness);

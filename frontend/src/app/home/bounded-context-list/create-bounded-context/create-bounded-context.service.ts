@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { CreateBoundedContextRequest, CreateBoundedContextResponse } from './create-bounded-context.dto';
+import { CreateBoundedContextRequest } from './create-bounded-context-request.dto';
+import { CreateBoundedContextResponse } from './create-bounded-context-response.dto';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { StorageService } from '../../../resources/storage/storage.service';
