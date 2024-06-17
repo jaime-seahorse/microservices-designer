@@ -1,3 +1,3 @@
 export interface CreateBoundedContextRequest {
-  boundedContextName: string
+  name: string
 }

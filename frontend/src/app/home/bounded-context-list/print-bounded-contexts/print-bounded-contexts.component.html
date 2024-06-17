@@ -11,8 +11,8 @@
 
     <mat-nav-list>
       @for (boundedContext of this.boundedContexts; track $index) {
-        <mat-list-item (click)="selectBoundedContext(boundedContext.boundedContextId)">
-          <a matListItemTitle>{{ boundedContext.boundedContextName }}</a>
+        <mat-list-item (click)="selectBoundedContext(boundedContext.id)">
+          <a matListItemTitle>{{ boundedContext.name }}</a>
         </mat-list-item>
       }
     </mat-nav-list>

@@ -7,28 +7,28 @@ import { MatNavListHarness } from '@angular/material/list/testing';
 import { MatButtonHarness } from '@angular/material/button/testing';
 
 import { provideRouter } from '@angular/router';
-import { routes } from '../../app.routes';
+import { routes } from '../../../app.routes';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
-import { BoundedContextListComponent } from './bounded-context-list.component';
+import { PrintBoundedContextsComponent } from './print-bounded-contexts.component';
 import { EventEmitter } from '@angular/core';
 
 let loader: HarnessLoader;
-let fixture: ComponentFixture<BoundedContextListComponent>;
-let boundedContextListComponent: BoundedContextListComponent;
+let fixture: ComponentFixture<PrintBoundedContextsComponent>;
+let printBoundedContextsComponent: PrintBoundedContextsComponent;
 let expansionPanel: MatExpansionPanelHarness ;
 let addButton: MatButtonHarness;
 let boundedContextList: MatNavListHarness;
 
-describe('BoundedContextListComponent', () => {
+describe('PrintBoundedContextsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule(
       {
         imports: [
-          BoundedContextListComponent,
+          PrintBoundedContextsComponent,
           HttpClientTestingModule
         ],
         providers: [
@@ -38,14 +38,14 @@ describe('BoundedContextListComponent', () => {
       })
       .compileComponents();
 
-    fixture = TestBed.createComponent(BoundedContextListComponent);
+    fixture = TestBed.createComponent(PrintBoundedContextsComponent);
     loader = TestbedHarnessEnvironment.loader(fixture);
 
-    boundedContextListComponent = fixture.componentInstance;
-    boundedContextListComponent.boundedContexts = [
-      {boundedContextId: '1', boundedContextName: 'Bounded Context 1'},
-      {boundedContextId: '2', boundedContextName: 'Bounded Context 2'},
-      {boundedContextId: '3', boundedContextName: 'Bounded Context 3'},
+    printBoundedContextsComponent = fixture.componentInstance;
+    printBoundedContextsComponent.boundedContexts = [
+      {id: 1, name: 'Bounded Context 1'},
+      {id: 2, name: 'Bounded Context 2'},
+      {id: 3, name: 'Bounded Context 3'},
     ];
 
     expansionPanel = (await (await loader.getHarness(MatAccordionHarness.with({ selector: MatAccordionHarness.hostSelector }))).getExpansionPanels())[0];
@@ -79,13 +79,13 @@ describe('BoundedContextListComponent', () => {
   it('should output the bounded context id when a list item is clicked', async () => {
     let boundedContextListItems = await boundedContextList.getItems();
     expect(await boundedContextListItems[0].getTitle()).toBe('Bounded Context 1');
-    spyOn<EventEmitter<string>>(boundedContextListComponent.onSelectBoundedContext, 'emit');
+    spyOn<EventEmitter<number>>(printBoundedContextsComponent.onSelectBoundedContext, 'emit');
     await boundedContextListItems[0].click();
-    expect(boundedContextListComponent.onSelectBoundedContext.emit).toHaveBeenCalledWith('1');
+    expect(printBoundedContextsComponent.onSelectBoundedContext.emit).toHaveBeenCalledWith(1);
   });
 
   it('shouldn\'t let the user display the list when there aren\'t bounded contexts', async () => {
-    boundedContextListComponent.boundedContexts = null;
+    printBoundedContextsComponent.boundedContexts = null;
     await expansionPanel.expand();
     expect(await expansionPanel.isExpanded()).toBeFalsy();
   });

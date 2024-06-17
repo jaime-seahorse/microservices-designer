@@ -7,11 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
 import { MatExpansionModule } from '@angular/material/expansion';
-
-interface BoundedContext {
-  boundedContextId: string,
-  boundedContextName: string
-}
+import { BoundedContext } from './bounded-context.dto';
 
 @Component({
   selector: 'app-bounded-context-list',
@@ -23,14 +19,14 @@ interface BoundedContext {
     MatIconModule,
     MatExpansionModule
   ],
-  templateUrl: './bounded-context-list.component.html'
+  templateUrl: './print-bounded-contexts.component.html'
 })
-export class BoundedContextListComponent {
+export class PrintBoundedContextsComponent {
   boundedContexts: BoundedContext[] | null = null;
 
-  @Output() onSelectBoundedContext = new EventEmitter<BoundedContext["boundedContextId"]>();
+  @Output() onSelectBoundedContext = new EventEmitter<BoundedContext["id"]>();
 
-  selectBoundedContext(boundedContextId: BoundedContext["boundedContextId"]) {
+  selectBoundedContext(boundedContextId: BoundedContext["id"]) {
     this.onSelectBoundedContext.emit(boundedContextId);
   }
 }

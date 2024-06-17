@@ -49,7 +49,7 @@ export class CreateBoundedContextComponent {
       this.form.disable();
 
 			let boundedContextData: CreateBoundedContextRequest = {
-				boundedContextName: this.form.value.projectName
+				name: this.form.value.projectName
 			};
 
 			this.boundedContextService.createBoundedContext(boundedContextData).subscribe({
