@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PrintBoundedContextsResponse } from './print-bounded-contexts-response.dto';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { StorageService } from '../../../resources/storage/storage.service';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -13,18 +12,15 @@ export class PrintBoundedContextsService {
 
   constructor(
 		private httpClient: HttpClient,
-		private storageService: StorageService
 	) { }
 
 	getBoundedContextsByUserId(): Observable<HttpResponse<PrintBoundedContextsResponse>> {
-		let projectId = this.storageService.getItem("ProjectId") as number;
-		let accessToken = this.storageService.getItem("AccessToken") as string;
+		let projectId = JSON.parse(localStorage.getItem("ProjectId")!) as number;
 
 		return this.httpClient.get<PrintBoundedContextsResponse>(`${this.apiURL}/${projectId}`,
 			{
 				headers: {
 					'Content-Type': 'application/json',
-					'Authorization': `Bearer ${accessToken}`
 				},
 				observe: 'response' as const,
 			}

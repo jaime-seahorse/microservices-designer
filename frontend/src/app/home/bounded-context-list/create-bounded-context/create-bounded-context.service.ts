@@ -3,7 +3,6 @@ import { CreateBoundedContextRequest } from './create-bounded-context-request.dt
 import { CreateBoundedContextResponse } from './create-bounded-context-response.dto';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { StorageService } from '../../../resources/storage/storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +13,9 @@ export class CreateBoundedContextService {
 
   constructor(
 		private httpClient: HttpClient,
-		private storageService: StorageService
 	) { }
 
 	createBoundedContext(newBoundedContext: CreateBoundedContextRequest): Observable<HttpResponse<CreateBoundedContextResponse>> {
-		let accessToken = this.storageService.getItem("AccessToken") as string;
 
 		return this.httpClient.post<CreateBoundedContextResponse>(this.apiURL,
 			newBoundedContext
@@ -26,7 +23,6 @@ export class CreateBoundedContextService {
 			{
 				headers: {
 					'Content-Type': 'application/json',
-					'Authorization': `Bearer ${accessToken}`
 				},
 				observe: 'response' as const,
 			}
