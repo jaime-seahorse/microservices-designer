@@ -44,9 +44,9 @@ describe('CreateProjectService', () => {
       createProjectResponseMock.name = "pepe-project";
 
       jest.spyOn(service, 'create').mockResolvedValue(createProjectResponseMock);
-      let createProjectResponseService: CreateProjectResponse = await service.create(createProjectRequest, 2);
-      expect(createProjectRequest.name).toEqual(createProjectResponseService.name);
-      expect(1).toEqual(createProjectResponseService.projectId);
+      let createProjectResponse: CreateProjectResponse = await service.create(createProjectRequest, 2);
+      expect(createProjectRequest.name).toEqual(createProjectResponse.name);
+      expect(1).toEqual(createProjectResponse.projectId);
       
     })
   })

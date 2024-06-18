@@ -3,20 +3,32 @@ import { ProjectsController } from './projects.controller';
 import { CreateProjectService } from './create-project/create-project.service';
 import { CreateProjectRequest } from './create-project/create-project-request.dto';
 import { CreateProjectResponse } from './create-project/create-project-response.dto';
+import { GetProjectsRequest } from './get-projects/get-project-request.dto';
+import { GetProjectsService } from './get-projects/get-projects.service';
+import { GetProjectsResponse } from './get-projects/get-projects-response.dto';
 
 describe('ProjectsController', () => {
   let controller: ProjectsController;
 
-  const mockProjectService = {
-    create: jest.fn()
+  const createProjectServiceMock = {
+    create: jest.fn(),
   }
+  const getProjectsServiceMock = {
+    getProjects: jest.fn(),
+  }
+
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ProjectsController],
       providers: [
         {
           provide: CreateProjectService,
-          useValue: mockProjectService
+          useValue: createProjectServiceMock
+        },
+        {
+          provide: GetProjectsService,
+          useValue: getProjectsServiceMock
         }
       ]
     }).compile();
@@ -33,12 +45,27 @@ describe('ProjectsController', () => {
       const createProjectRequest: CreateProjectRequest = new CreateProjectRequest();
       createProjectRequest.name = "pepe-project";
 
-      jest.spyOn(mockProjectService, 'create').mockReturnValue(createProjectRequest);
-
       const createProjectResponse: CreateProjectResponse = await controller.create(createProjectRequest, 1);
-      expect(mockProjectService.create).toHaveBeenCalled();
-      expect(mockProjectService.create).toHaveBeenCalledWith(createProjectRequest, 1)
+      jest.spyOn(createProjectServiceMock, 'create').mockReturnValue(createProjectResponse);
+
+      expect(createProjectServiceMock.create).toHaveBeenCalled();
+      expect(createProjectServiceMock.create).toHaveBeenCalledWith(createProjectRequest, 1)
       expect(createProjectRequest.name).toEqual(createProjectResponse.name);
+    })
+  });
+
+  describe('getProjects', () => {
+    it('should return all projects by organization', async () => {
+      const getProjectsRequest: GetProjectsRequest = new GetProjectsRequest();
+      getProjectsRequest.organizationId = 1;
+
+      const getProjectsResponse: GetProjectsResponse[] = await controller.getProjects(getProjectsRequest, 1);
+      jest.spyOn(getProjectsServiceMock, 'getProjects').mockReturnValue(getProjectsResponse);
+
+      expect(getProjectsServiceMock.getProjects).toHaveBeenCalled();
+      expect(getProjectsServiceMock.getProjects).toHaveBeenCalledWith(getProjectsRequest, 1);
+      expect(createPro)
+
     })
   });
 });

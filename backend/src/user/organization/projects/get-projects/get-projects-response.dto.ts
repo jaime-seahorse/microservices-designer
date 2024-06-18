@@ -1,10 +1,9 @@
 import { ApiProperty } from "@nestjs/swagger";
 
+export class GetProjectsResponse {
+    @ApiProperty()
+    projectId: number;
 
-export class CreateProjectResponse {
-    
     @ApiProperty()
-    projectId: number
-    @ApiProperty()
-    name: string
+    projectName: string;
 }

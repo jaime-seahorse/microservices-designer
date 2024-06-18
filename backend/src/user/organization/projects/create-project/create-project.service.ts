@@ -12,11 +12,11 @@ export class CreateProjectService {
         private projectRepository: Repository<Project>
     ) { }
 
-    async create(createProjectRequestDto: CreateProjectRequest, organizationId: number): Promise<CreateProjectResponse> {
+    async createProject(createProjectRequestDto: CreateProjectRequest, organizationId: number): Promise<CreateProjectResponse> {
         try {
             const projectEntityCreated = this.createProjectEntity(createProjectRequestDto);
             console.log(projectEntityCreated);
-            const projectCreated = await this.projectRepository.save({ projectEntityCreated, organizationId: organizationId });
+            const projectCreated = await this.projectRepository.save({ ...projectEntityCreated, organizationId: organizationId });
             if (!projectCreated) {
                 throw new Error('Project not been created');
             }
@@ -24,14 +24,13 @@ export class CreateProjectService {
         } catch (error) {
             throw new InternalServerErrorException(error.message);
         }
-        return
+        
     }
-    
+
     private createProjectEntity(createProjectRequestDto: CreateProjectRequest) {
         const createProject: Project = new Project();
         createProject.name = createProjectRequestDto.name;
-        return createProject;
-        
+        return createProject; 
     }
 
     private prepareCreateProjectResponse(projectCreated: Project) {
