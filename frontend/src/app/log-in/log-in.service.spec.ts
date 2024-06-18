@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 
 import { LogInService } from './log-in.service';
 import { LogInRequest } from './log-in-request.dto';
-import { User } from '../resources/user/user';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { LogInResponse } from './log-in-response.dto';
