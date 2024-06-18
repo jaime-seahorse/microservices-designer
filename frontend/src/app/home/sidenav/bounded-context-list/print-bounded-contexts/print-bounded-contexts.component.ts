@@ -10,7 +10,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { BoundedContext } from './bounded-context.dto';
 
 @Component({
-  selector: 'app-bounded-context-list',
+  selector: 'app-print-bounded-contexts',
   standalone: true,
   imports: [
     CdkAccordionModule,

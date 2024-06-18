@@ -14,7 +14,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { AsyncPipe } from '@angular/common';
 import { NgClass } from '@angular/common';
-import { AppbarComponent } from './appbar/appbar.component';
+import { SidenavComponent } from './sidenav/sidenav.component';
 
 @Component({
   selector: 'app-home',
@@ -30,7 +30,7 @@ import { AppbarComponent } from './appbar/appbar.component';
     MatSidenavModule,
     MatListModule,
     MatIconModule,
-		AppbarComponent
+		SidenavComponent
   ],
   templateUrl: './home.component.html',
 })
