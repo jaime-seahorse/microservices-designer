@@ -7,7 +7,7 @@ import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatFormFieldHarness } from '@angular/material/form-field/testing';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
-import { routes } from '../../../app.routes';
+import { routes } from '../../../../app.routes';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { MatInputHarness } from '@angular/material/input/testing';
 import { MatProgressSpinnerHarness } from '@angular/material/progress-spinner/testing';
