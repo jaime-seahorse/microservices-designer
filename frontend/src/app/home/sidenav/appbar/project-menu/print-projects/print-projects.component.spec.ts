@@ -7,7 +7,7 @@ import { MatMenuItemHarness } from '@angular/material/menu/testing';
 import { MatProgressSpinnerHarness } from '@angular/material/progress-spinner/testing';
 
 import { provideRouter } from '@angular/router';
-import { routes } from '../../../../app.routes';
+import { routes } from '../../../../../app.routes';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
