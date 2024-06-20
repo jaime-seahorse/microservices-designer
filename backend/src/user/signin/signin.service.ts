@@ -1,12 +1,10 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException} from '@nestjs/common';
 import { User } from '../user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm'
 import { SignInRequest } from './signin-request.dto';
 import { SignInResponse } from './signin-response.dto';
-import { CreateOrganizationService } from '../organization/create-organization/create-organization.service';
-import { CreateOrganizationResponse } from '../organization/create-organization/create-organization-response.dto';
-import { CreateOrganizationRequest } from '../organization/create-organization/create-organization-request.dto';
+import { Organization } from '../organization/organization.entity';
 
 @Injectable()
 export class SignInService {
@@ -14,38 +12,61 @@ export class SignInService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    private organizationService: CreateOrganizationService,
+    @InjectRepository(Organization)
+        private organizationRepository: Repository<Organization>
 
   ) { }
 
   async signIn(signInRequest: SignInRequest): Promise<SignInResponse> {
+    
     try {
-      const createOrganizationDto: CreateOrganizationRequest = new CreateOrganizationRequest();
-      createOrganizationDto.name = signInRequest.organizationName;
-      const organizationCreated: CreateOrganizationResponse = await this.organizationService.createOrganization(createOrganizationDto);
-      // Do a transaction
-      const createUser: User = this.createUserEntity(signInRequest, organizationCreated.id);
+      
+      const organization: Organization = new Organization();
+      organization.name = signInRequest.organizationName;
+      
+      const organizationCreated: Organization = await this.createOrganization(organization);
+      
+      const user: User = this.setUserEntity(signInRequest, organizationCreated.id);
+
       if (await this.userRepository.findOneBy({ email: signInRequest.email })) {
         console.log('Email already exists')
         throw new Error('This email already exists')
       }
-      const UserCreated: User = await this.userRepository.save(createUser);
-      return this.prepareSignInResponse(UserCreated, organizationCreated.name);
+      
+      const UserCreated: User = await this.userRepository.save(user);
+
+      return this.setUserResponse(UserCreated, organizationCreated.name);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
   }
 
-  private createUserEntity(signInRequest: SignInRequest, organizationId: number): User {
-    const createUser: User = new User();
-    createUser.email = signInRequest.email;
-    createUser.name = signInRequest.name;
-    createUser.password = signInRequest.password;
-    createUser.organizationId = organizationId;
-    return createUser;
+
+  async createOrganization(organization: Organization): Promise<Organization> {
+    try {
+        
+      if (await this.organizationRepository.findOneBy({ name: organization.name })) {
+            throw new Error('This organization already exists')
+        }
+       
+        const organizationCreated: Organization = await this.organizationRepository.save(organization);
+      return organizationCreated;
+       
+    } catch (error) {
+        throw new InternalServerErrorException(error);
+    }
+}
+
+  private setUserEntity(signInRequest: SignInRequest, organizationId: number): User {
+    const user: User = new User();
+    user.email = signInRequest.email;
+    user.name = signInRequest.name;
+    user.password = signInRequest.password;
+    user.organizationId = organizationId;
+    return user;
   }
 
-  private prepareSignInResponse(userCreated: User, organization: string): SignInResponse {
+  private setUserResponse(userCreated: User, organization: string): SignInResponse {
     const signInResponse: SignInResponse = new SignInResponse();
     signInResponse.email = userCreated.email;
     signInResponse.name = userCreated.name;
