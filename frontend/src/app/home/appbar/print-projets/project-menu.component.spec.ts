@@ -15,7 +15,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 
 import { EventEmitter } from '@angular/core';
 
-import { PrintProjectsComponent } from './print-projects.component';
+import { PrintProjectsComponent } from './project-menu.component';
 
 let loader: HarnessLoader;
 let fixture: ComponentFixture<PrintProjectsComponent>;

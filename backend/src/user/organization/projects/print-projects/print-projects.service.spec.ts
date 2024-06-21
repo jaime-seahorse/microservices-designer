@@ -1,19 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GetProjectsService } from './get-projects.service';
+import { PrintProjectsService } from './print-projects.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Project } from '../project.entity';
 import { Repository } from 'typeorm';
-import { GetProjectsResponse } from './get-projects-response.dto';
+import { PrintProjectsResponse } from './print-projects-response.dto';
 
 describe('GetProjectsService', () => {
-  let service: GetProjectsService;
+  let service: PrintProjectsService;
   let projectRepository: Repository<Project>;
   const PROJECT_REPOSITORY_TOKEN = getRepositoryToken(Project);
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        GetProjectsService,
+        PrintProjectsService,
         {
           provide: PROJECT_REPOSITORY_TOKEN,
           useValue: {}
@@ -21,7 +21,7 @@ describe('GetProjectsService', () => {
       ],
     }).compile();
 
-    service = module.get<GetProjectsService>(GetProjectsService);
+    service = module.get<PrintProjectsService>(PrintProjectsService);
     projectRepository = module.get<Repository<Project>>(PROJECT_REPOSITORY_TOKEN);
   });
 
@@ -37,7 +37,7 @@ describe('GetProjectsService', () => {
     it('should return all projects by organizationId', async () => {
       const organizationId = 1; // Usa un organizationId específico para la llamada
 
-      const getProjectsResponseMock: GetProjectsResponse[] = [
+      const getProjectsResponseMock: PrintProjectsResponse[] = [
         {
           projectId: 1,
           projectName: 'pepe-project1'
@@ -49,7 +49,7 @@ describe('GetProjectsService', () => {
       ];
 
       jest.spyOn(service, 'getProjects').mockResolvedValue(getProjectsResponseMock);
-      const getProjectsResponse: GetProjectsResponse[] = await service.getProjects(organizationId);
+      const getProjectsResponse: PrintProjectsResponse[] = await service.getProjects(organizationId);
 
       expect(service.getProjects).toHaveBeenCalledWith(organizationId);
       expect(getProjectsResponse).toHaveLength(2);

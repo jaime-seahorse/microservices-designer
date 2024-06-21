@@ -1,17 +1,17 @@
 import { Body, Injectable, InternalServerErrorException } from '@nestjs/common';
-import { GetProjectsResponse } from './get-projects-response.dto';
+import { PrintProjectsResponse } from './print-projects-response.dto';
 import { Repository } from 'typeorm';
 import { Project } from '../project.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
-export class GetProjectsService {
+export class PrintProjectsService {
     constructor(
         @InjectRepository(Project)
         private readonly projectRepository: Repository<Project>
     ) { }
 
-    async getProjects(organizationId: number): Promise<GetProjectsResponse[]> {
+    async printProjects(organizationId: number): Promise<PrintProjectsResponse[]> {
         try {
             const projectsByOrganization: Project[]
                 = await this.projectRepository.find({ where: { organizationId: organizationId } });
@@ -27,7 +27,7 @@ export class GetProjectsService {
     }
 
 
-    private prepareGetProjectsResponse(projectsByOrganization: Project[]): GetProjectsResponse[] {
+    private prepareGetProjectsResponse(projectsByOrganization: Project[]): PrintProjectsResponse[] {
         return projectsByOrganization.map((project: Project) => ({
             projectId: project.id,
             projectName: project.name

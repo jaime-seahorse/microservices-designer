@@ -6,12 +6,12 @@ import { SignInResponse } from './signin/signin-response.dto';
 import { CreateProjectResponse } from './organization/projects/create-project/create-project-response.dto';
 import { CreateProjectRequest } from './organization/projects/create-project/create-project-request.dto';
 import { CreateProjectService } from './organization/projects/create-project/create-project.service';
-import { GetProjectsService } from './organization/projects/get-projects/get-projects.service';
-import { UpdateUserService } from './update-user/update-user-service.service';
-import { GetProjectsResponse } from './organization/projects/get-projects/get-projects-response.dto';
-import { UpdateProjectResponse } from './organization/projects/update-project/update-project-response.dto';
-import { UpdateProjectRequest } from './organization/projects/update-project/update-project-request.dto';
-import { UpdateProjectService } from './organization/projects/update-project/update-project.service';
+import { PrintProjectsService } from './organization/projects/print-projects/print-projects.service';
+import { PrintProjectsResponse } from './organization/projects/print-projects/print-projects-response.dto';
+import { LogInRequest } from './login/login.request';
+import { LogInResponse } from './login/login.response';
+import { LoginService } from './login/login.service';
+
 
 describe('UsersController', () => {
   let controller: UserController;
@@ -19,18 +19,18 @@ describe('UsersController', () => {
   const signInServiceMock = {
     signIn: jest.fn(),
   }
-  const updateUserServiceMock = {
-    update: jest.fn(),
-  }
+  
   const createProjectServiceMock = {
     createProject: jest.fn(),
   }
-  const getProjectsServiceMock = {
-    getProjects: jest.fn(),
+  const printProjectsServiceMock = {
+    printProjects: jest.fn(),
   }
-  const updateProjectServiceMock = {
-    updateProject: jest.fn(),
+
+  const loginServiceMock = {
+    logIn: jest.fn(),
   }
+ 
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -41,21 +41,17 @@ describe('UsersController', () => {
           useValue: signInServiceMock,
         },
         {
-          provide: UpdateUserService,
-          useValue: updateUserServiceMock
-        },
-        {
           provide: CreateProjectService,
           useValue: createProjectServiceMock
         },
         {
-          provide: GetProjectsService,
-          useValue: getProjectsServiceMock
+          provide: PrintProjectsService,
+          useValue: printProjectsServiceMock
         },
         {
-          provide: UpdateProjectService,
-          useValue: updateProjectServiceMock
-        },
+          provide: LoginService,
+          useValue: loginServiceMock,
+        }
 
       ],
     }).compile();
@@ -94,6 +90,32 @@ describe('UsersController', () => {
   });
 
 
+  describe('logIn', () => {
+    it('should logIn a user', async () => {
+      
+      const logInRequest: LogInRequest = new LogInRequest();
+      logInRequest.email = "pepe@mail.com";
+      logInRequest.password = "changeme";
+     
+
+      const logInResponseMock: LogInResponse = new LogInResponse();
+      logInResponseMock.id = 1;
+      logInResponseMock.email = "pepe@mail.com";
+      logInResponseMock.name = "pepe";
+     
+
+      jest.spyOn(loginServiceMock, 'logIn').mockResolvedValue(logInResponseMock);
+
+      const logInResponse: LogInResponse = await controller.logiIn(logInRequest);
+
+      expect(loginServiceMock.logIn).toHaveBeenCalled();
+      expect(loginServiceMock.logIn).toHaveBeenCalledWith(logInRequest);
+      expect(logInResponse.email).toEqual(logInRequest.email);
+      expect(logInResponse.name).toEqual("pepe");
+    });
+  });
+
+
   describe('createProject', () => {
     it('should create a new project', async () => {
       const createProjectRequest: CreateProjectRequest = new CreateProjectRequest();
@@ -113,9 +135,9 @@ describe('UsersController', () => {
     })
   });
 
-  describe('getProjects', () => {
+  describe('printProjects', () => {
     it('should return all projects by organization', async () => {
-      const getProjectsResponseMock: GetProjectsResponse[] = [
+      const printProjectsResponseMock: PrintProjectsResponse[] = [
         {
           projectId: 1,
           projectName: 'pepe1'
@@ -126,13 +148,13 @@ describe('UsersController', () => {
         },
       ];
 
-      jest.spyOn(getProjectsServiceMock, 'getProjects').mockResolvedValue(getProjectsResponseMock);
+      jest.spyOn(printProjectsServiceMock, 'printProjects').mockResolvedValue(printProjectsResponseMock);
 
-      const getProjectsResponse: GetProjectsResponse[] = await controller.getProjects(1);
+      const printProjectsResponse: PrintProjectsResponse[] = await controller.printProjects(1);
 
-      expect(getProjectsServiceMock.getProjects).toHaveBeenCalled();
-      expect(getProjectsServiceMock.getProjects).toHaveBeenCalledWith(1);
-      expect(getProjectsResponse).toEqual(getProjectsResponseMock);
+      expect(printProjectsServiceMock.printProjects).toHaveBeenCalled();
+      expect(printProjectsServiceMock.printProjects).toHaveBeenCalledWith(1);
+      expect(printProjectsResponse).toEqual(printProjectsResponseMock);
     })
     it('should return a void array', async () => {
 
@@ -140,27 +162,6 @@ describe('UsersController', () => {
 
   });
 
-  describe('updateProject', () => {
-    it('should return a project updated', async () => {
-      const projectId = 1;
-
-      const updateProjectRequest: UpdateProjectRequest = new UpdateProjectRequest();
-      updateProjectRequest.name = 'pepe-project';
-
-      const updateProjectResponseMock: UpdateProjectResponse = new UpdateProjectResponse();
-      updateProjectResponseMock.id = projectId;
-      updateProjectResponseMock.name = 'pepe-project2';
-
-      jest.spyOn(updateProjectServiceMock, 'updateProject').mockResolvedValue(updateProjectResponseMock);
-
-      const updateProjectResponse: UpdateProjectResponse = await controller.updateProject(projectId, updateProjectRequest);
-      
-      expect(updateProjectServiceMock.updateProject).toHaveBeenCalled();
-      expect(updateProjectServiceMock.updateProject).toHaveBeenCalledWith(projectId, updateProjectRequest);
-      expect(updateProjectResponse.id).toEqual(projectId);
-      expect(updateProjectResponse.name).toEqual('pepe-project2');
-      
-    })
-  });
+  
 
 });

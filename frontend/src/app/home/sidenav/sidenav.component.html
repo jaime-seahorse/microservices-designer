@@ -2,7 +2,7 @@
 	<mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
 		[mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
 		<mat-toolbar>Bounded Context<br>List</mat-toolbar>
-		<app-print-bounded-contexts/> <!--* Bounded Context list-->
+		<bounded-contexts-list/> <bounded-contexts-list/>
 	</mat-sidenav>
 	<mat-sidenav-content>
 		<app-appbar (onHandsetDrawerClick)="drawer.toggle()"></app-appbar>

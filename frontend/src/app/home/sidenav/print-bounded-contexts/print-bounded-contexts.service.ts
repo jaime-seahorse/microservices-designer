@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PrintBoundedContextsResponse } from './print-bounded-contexts-response.dto';
+import { PrintBoundedContextsResponse } from './bounded-contexts-list-response.dto';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
