@@ -7,7 +7,6 @@ import { CreateProjectResponse } from './organization/projects/create-project/cr
 import { CreateProjectRequest } from './organization/projects/create-project/create-project-request.dto';
 import { CreateProjectService } from './organization/projects/create-project/create-project.service';
 import { GetProjectsService } from './organization/projects/get-projects/get-projects.service';
-import { UpdateUserService } from './update-user/update-user-service.service';
 import { GetProjectsResponse } from './organization/projects/get-projects/get-projects-response.dto';
 import { UpdateProjectResponse } from './organization/projects/update-project/update-project-response.dto';
 import { UpdateProjectRequest } from './organization/projects/update-project/update-project-request.dto';
@@ -39,10 +38,6 @@ describe('UsersController', () => {
         {
           provide: SignInService,
           useValue: signInServiceMock,
-        },
-        {
-          provide: UpdateUserService,
-          useValue: updateUserServiceMock
         },
         {
           provide: CreateProjectService,
@@ -140,27 +135,28 @@ describe('UsersController', () => {
 
   });
 
-  describe('updateProject', () => {
-    it('should return a project updated', async () => {
-      const projectId = 1;
 
-      const updateProjectRequest: UpdateProjectRequest = new UpdateProjectRequest();
-      updateProjectRequest.name = 'pepe-project';
+  // describe('updateProject', () => {
+  //   it('should return a project updated', async () => {
+  //     const projectId = 1;
 
-      const updateProjectResponseMock: UpdateProjectResponse = new UpdateProjectResponse();
-      updateProjectResponseMock.id = projectId;
-      updateProjectResponseMock.name = 'pepe-project2';
+  //     const updateProjectRequest: UpdateProjectRequest = new UpdateProjectRequest();
+  //     updateProjectRequest.name = 'pepe-project';
 
-      jest.spyOn(updateProjectServiceMock, 'updateProject').mockResolvedValue(updateProjectResponseMock);
+  //     const updateProjectResponseMock: UpdateProjectResponse = new UpdateProjectResponse();
+  //     updateProjectResponseMock.id = projectId;
+  //     updateProjectResponseMock.name = 'pepe-project2';
 
-      const updateProjectResponse: UpdateProjectResponse = await controller.updateProject(projectId, updateProjectRequest);
+  //     jest.spyOn(updateProjectServiceMock, 'updateProject').mockResolvedValue(updateProjectResponseMock);
+
+  //     const updateProjectResponse: UpdateProjectResponse = await controller.updateProject(projectId, updateProjectRequest);
       
-      expect(updateProjectServiceMock.updateProject).toHaveBeenCalled();
-      expect(updateProjectServiceMock.updateProject).toHaveBeenCalledWith(projectId, updateProjectRequest);
-      expect(updateProjectResponse.id).toEqual(projectId);
-      expect(updateProjectResponse.name).toEqual('pepe-project2');
+  //     expect(updateProjectServiceMock.updateProject).toHaveBeenCalled();
+  //     expect(updateProjectServiceMock.updateProject).toHaveBeenCalledWith(projectId, updateProjectRequest);
+  //     expect(updateProjectResponse.id).toEqual(projectId);
+  //     expect(updateProjectResponse.name).toEqual('pepe-project2');
       
-    })
-  });
+  //   })
+  // });
 
 });

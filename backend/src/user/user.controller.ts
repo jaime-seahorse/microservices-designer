@@ -36,12 +36,6 @@ export class UserController {
     }
   }
 
-  @Patch()
-  @HttpCode(HttpStatus.OK)
-  @ApiResponse({ status: 200, description: 'User updated.' })
-  async updateUser(@Param() id: number, updateUserRequest: UpdateUserRequestDto) {
-    return await this.updateUserServe.update(id, updateUserRequest);
-  }
 
   @ApiOperation({ summary: 'Create a project' })
   @ApiResponse({
