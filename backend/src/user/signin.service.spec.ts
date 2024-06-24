@@ -1,12 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SignInService } from './signin.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { User } from '../user.entity';
+import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import { SignInRequest } from './signin-request.dto';
 import { SignInResponse } from './signin-response.dto';
-import { CreateOrganizationService } from '../organization/create-organization/create-organization.service';
-import { Organization } from '../organization/organization.entity';
+import { Organization } from './organization/organization.entity';
 
 describe('UsersService', () => {
   let service: SignInService;
@@ -17,7 +16,7 @@ describe('UsersService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         SignInService,
-        CreateOrganizationService,
+      
         {
           provide: USER_REPOSITORY_TOKEN,
           useValue: {},

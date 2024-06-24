@@ -1,10 +1,12 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { User } from '../user.entity';
+import { Injectable, InternalServerErrorException} from '@nestjs/common';
+
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm'
 import { SignInRequest } from './signin-request.dto';
 import { SignInResponse } from './signin-response.dto';
-import { Organization } from '../organization/organization.entity';
+import { Organization } from './organization/organization.entity';
+import { User } from './user.entity';
+
 
 @Injectable()
 export class SignInService {
