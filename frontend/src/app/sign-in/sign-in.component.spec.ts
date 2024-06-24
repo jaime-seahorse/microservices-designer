@@ -15,7 +15,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 import { SignInComponent } from './sign-in.component';
-import { SignInService } from './sign-in.service';
+import { MakeSignInService } from './make-sign-in.service';
 
 let loader: HarnessLoader;
 let fixture: ComponentFixture<SignInComponent>;
@@ -35,7 +35,7 @@ describe('SignInComponent', () => {
 					HttpClientTestingModule
 				],
 				providers: [
-					SignInService,
+					MakeSignInService,
 					provideRouter(routes),
 					provideAnimationsAsync(),
 				]

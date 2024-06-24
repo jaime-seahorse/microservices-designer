@@ -6,8 +6,10 @@ import { SignInService } from './signin/signin.service';
 import { CreateProjectService } from './organization/projects/create-project/create-project.service';
 import { CreateProjectRequest } from './organization/projects/create-project/create-project-request.dto';
 import { CreateProjectResponse } from './organization/projects/create-project/create-project-response.dto';
-import { GetProjectsResponse } from './organization/projects/get-projects/get-projects-response.dto';
-import { GetProjectsService } from './organization/projects/get-projects/get-projects.service';
+import { PrintProjectsResponse } from './organization/projects/print-projects/print-projects-response.dto';
+import { PrintProjectsService } from './organization/projects/print-projects/print-projects.service';
+import { LoginService } from './login/login.service';
+import { LogInResponse } from './login/login.response';
 
 @ApiTags("Users")
 @ApiBearerAuth()
@@ -16,8 +18,9 @@ export class UserController {
 
   constructor(
     private readonly signInService: SignInService,
+    private readonly logInService: LoginService,
     private readonly createProjectService: CreateProjectService,
-    private readonly getProjectsService: GetProjectsService
+    private readonly printProjectsService: PrintProjectsService
   ) { }
 
   @Post()
@@ -37,6 +40,23 @@ export class UserController {
   }
 
 
+  @Patch()
+  @HttpCode(HttpStatus.CREATED)
+  @ApiResponse({ status: 200, description: 'User logged.', type: SignInResponse })
+  @ApiResponse({ status: 404, description: 'The user is not exist.' })
+  @ApiExtraModels(SignInResponse)
+  async logiIn(@Body() signInRequest: SignInRequest): Promise<LogInResponse> {
+    try {
+      return await this.logInService.logIn(signInRequest);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(error)
+        throw new InternalServerErrorException(error.message);
+      }
+    }
+  }
+
+  
   @ApiOperation({ summary: 'Create a project' })
   @ApiResponse({
     status: HttpStatus.CREATED, description: 'The project has been created', type: CreateProjectResponse
@@ -57,14 +77,14 @@ export class UserController {
 
   @ApiOperation({ summary: 'Get all projects by organization' })
   @ApiResponse({
-    status: HttpStatus.OK, description: 'Projects founded', type: GetProjectsResponse
+    status: HttpStatus.OK, description: 'Projects founded', type: PrintProjectsResponse
   })
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Projects could not be founded'
   })
   @Get('projects/:organizationId')
-  async getProjects(@Param('organizationId') organizationId: number): Promise<GetProjectsResponse[]> {
-    return this.getProjectsService.getProjects(organizationId);
+  async printProjects(@Param('organizationId') organizationId: number): Promise<PrintProjectsResponse[]> {
+    return this.printProjectsService.printProjects(organizationId);
   }
 }
 

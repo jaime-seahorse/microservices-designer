@@ -3,9 +3,9 @@ import { ProjectsController } from './projects.controller';
 import { CreateProjectService } from './create-project/create-project.service';
 import { CreateProjectRequest } from './create-project/create-project-request.dto';
 import { CreateProjectResponse } from './create-project/create-project-response.dto';
-import { GetProjectsRequest } from './get-projects/get-project-request.dto';
-import { GetProjectsService } from './get-projects/get-projects.service';
-import { GetProjectsResponse } from './get-projects/get-projects-response.dto';
+import { GetProjectsRequest } from './print-projects/get-project-request.dto';
+import { PrintProjectsService } from './print-projects/print-projects.service';
+import { PrintProjectsResponse } from './print-projects/print-projects-response.dto';
 
 describe('ProjectsController', () => {
   let controller: ProjectsController;
@@ -27,7 +27,7 @@ describe('ProjectsController', () => {
           useValue: createProjectServiceMock
         },
         {
-          provide: GetProjectsService,
+          provide: PrintProjectsService,
           useValue: getProjectsServiceMock
         }
       ]
@@ -59,7 +59,7 @@ describe('ProjectsController', () => {
       const getProjectsRequest: GetProjectsRequest = new GetProjectsRequest();
       getProjectsRequest.organizationId = 1;
 
-      const getProjectsResponse: GetProjectsResponse[] = await controller.getProjects(getProjectsRequest, 1);
+      const getProjectsResponse: PrintProjectsResponse[] = await controller.getProjects(getProjectsRequest, 1);
       jest.spyOn(getProjectsServiceMock, 'getProjects').mockReturnValue(getProjectsResponse);
 
       expect(getProjectsServiceMock.getProjects).toHaveBeenCalled();
