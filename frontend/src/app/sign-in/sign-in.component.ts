@@ -10,7 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { SignInRequest } from './sign-in-request.dto';
-import { SignInService } from './sign-in.service';
+import { MakeSignInService } from './make-sign-in.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -35,7 +35,7 @@ export class SignInComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private signInService: SignInService,
+    private signInService: MakeSignInService,
 		private router: Router
   ){
     this.form = this.formBuilder.group({

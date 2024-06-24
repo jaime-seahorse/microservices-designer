@@ -14,7 +14,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
-import { CreateProjectComponent } from './create-project.component';
+import { CreateProjectComponent } from './new-project-button.component';
 
 import { MatProgressSpinnerHarness } from '@angular/material/progress-spinner/testing';
 

@@ -24,7 +24,7 @@ import { CreateBoundedContextService } from './create-bounded-context.service';
 	],
   templateUrl: './create-bounded-context.component.html',
 })
-export class CreateBoundedContextComponent {
+export class NewBoundedContextButtonComponent {
   form: FormGroup;
 	globalMessage: string = '';
 

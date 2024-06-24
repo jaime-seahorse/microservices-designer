@@ -11,7 +11,7 @@ import { routes } from '../../../../../app.routes';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
-import { AvatarComponent } from './print-avatar.component';
+import { AvatarComponent } from './avatar.component';
 import { MatButtonHarness } from '@angular/material/button/testing';
 
 let loader: HarnessLoader;

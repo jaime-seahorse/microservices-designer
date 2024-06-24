@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SignInService } from './sign-in.service';
+import { MakeSignInService } from './make-sign-in.service';
 import { SignInRequest } from './sign-in-request.dto';
 import { SignInResponse } from './sign-in-response.dto';
 
@@ -8,7 +8,7 @@ import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@an
 import { HttpErrorResponse } from '@angular/common/http';
 
 describe('SignInService', () => {
-  let signInService: SignInService;
+  let signInService: MakeSignInService;
 	let httpTestController: HttpTestingController;
 	let mockRequest: TestRequest;
 	let httpError: HttpErrorResponse;
@@ -17,7 +17,7 @@ describe('SignInService', () => {
     TestBed.configureTestingModule({
 			imports: [HttpClientTestingModule]
 		});
-    signInService = TestBed.inject(SignInService);
+    signInService = TestBed.inject(MakeSignInService);
 		httpTestController = TestBed.inject(HttpTestingController);
   });
 

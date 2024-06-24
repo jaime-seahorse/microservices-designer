@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { PrintProjectsService } from './project-menu.service';
+import { PrintProjectsService } from './print-projects.service';
 import { PrintProjectsResponse } from './print-projects-response.dto';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
