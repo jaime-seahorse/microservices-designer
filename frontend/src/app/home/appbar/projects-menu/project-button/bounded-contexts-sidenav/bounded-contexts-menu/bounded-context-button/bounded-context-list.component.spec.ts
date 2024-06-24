@@ -13,7 +13,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
-import { PrintBoundedContextsComponent } from './print-bounded-contexts.component';
+import { PrintBoundedContextsComponent } from '../bounded-contexts-menu/print-bounded-contexts.component';
 import { EventEmitter } from '@angular/core';
 
 let loader: HarnessLoader;

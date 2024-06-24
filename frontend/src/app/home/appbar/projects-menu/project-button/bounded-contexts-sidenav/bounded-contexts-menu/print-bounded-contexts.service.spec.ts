@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
-import { PrintBoundedContextsService } from './print-bounded-contexts.service';
-import { PrintBoundedContextsResponse } from './bounded-contexts-list-response.dto';
+import { PrintBoundedContextsService } from './bounded-context-button/print-bounded-contexts.service';
+import { PrintBoundedContextsResponse } from '../bounded-context-button/bounded-contexts-list-response.dto';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 describe('PrintBoundedContextsService', () => {

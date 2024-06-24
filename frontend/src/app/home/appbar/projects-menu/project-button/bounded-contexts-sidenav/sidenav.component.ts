@@ -8,8 +8,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import { AppbarComponent } from './appbar/appbar.component';
-import { PrintBoundedContextsComponent } from './bounded-context-list/print-bounded-contexts/print-bounded-contexts.component';
+import { AppbarComponent } from '../../../../appbar.component';
+import { PrintBoundedContextsComponent } from './bounded-contexts-menu/print-bounded-contexts.component';
 
 @Component({
   selector: 'app-sidenav',

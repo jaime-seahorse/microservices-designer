@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
 import { MatExpansionModule } from '@angular/material/expansion';
-import { BoundedContext } from './bounded-context.dto';
+import { BoundedContext } from '../bounded-context-button/bounded-context.dto';
 
 @Component({
   selector: 'app-print-bounded-contexts',
