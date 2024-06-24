@@ -1,0 +1,18 @@
+{
+  "devDependencies": {
+    "@cucumber/cucumber": "^10.8.0",
+    "@cucumber/pretty-formatter": "^1.0.1",
+    "@types/supertest": "^6.0.2",
+    "chai": "^5.1.1",
+    "supertest": "^7.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.2"
+  },
+  "dependencies": {
+    "glob": "^10.4.2",
+    "inflight": "^1.0.6",
+    "reflect-metadata": "^0.2.2",
+    "testcontainers": "^10.10.0",
+    "typeorm-naming-strategies": "^4.1.0"
+  }
+}

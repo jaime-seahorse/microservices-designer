@@ -1,8 +1,8 @@
-import { Body, Injectable, InternalServerErrorException } from '@nestjs/common';
+import {Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrintProjectsResponse } from './print-projects-response.dto';
 import { Repository } from 'typeorm';
-import { Project } from '../project.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Project } from './project.entity';
 
 @Injectable()
 export class PrintProjectsService {

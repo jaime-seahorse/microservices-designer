@@ -1,9 +1,9 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateProjectResponse } from './create-project-response.dto';
 import { CreateProjectRequest } from './create-project-request.dto';
-import { Project } from '../project.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm'
+import { Project } from './project.entity';
 
 @Injectable()
 export class CreateProjectService {

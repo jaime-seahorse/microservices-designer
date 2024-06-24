@@ -3,24 +3,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
 import { UsersModule } from './user/user.module';
 import { Organization } from './user/organization/organization.entity';
-import { ProjectsModule } from './user/organization/projects/projects.module';
 import { Project } from './user/organization/projects/project.entity';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-  imports: [
-    TypeOrmModule.forRoot({
-      type: "mysql",
-      host: "localhost",
-      port: 3306,
-      username: "root",
-      password: "1234",
-      database: "seahorse",
-      entities: [User, Organization,Project],
-      synchronize: true
-    }),
-    TypeOrmModule.forFeature([User, Organization, Project]),
+  imports: [MongooseModule.forRoot('mongodb://root:seahorse@mongo:27017/'),
     UsersModule,
-    ProjectsModule
   ],
   controllers: [],
   providers: [],

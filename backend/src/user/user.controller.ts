@@ -1,15 +1,16 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, InternalServerErrorException, Param, Patch, Post} from '@nestjs/common';
 import { ApiBearerAuth, ApiExtraModels, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { SignInResponse } from './signin/signin-response.dto';
-import { SignInRequest } from './signin/signin-request.dto';
-import { SignInService } from './signin/signin.service';
-import { CreateProjectService } from './organization/projects/create-project/create-project.service';
-import { CreateProjectRequest } from './organization/projects/create-project/create-project-request.dto';
-import { CreateProjectResponse } from './organization/projects/create-project/create-project-response.dto';
-import { PrintProjectsResponse } from './organization/projects/print-projects/print-projects-response.dto';
-import { PrintProjectsService } from './organization/projects/print-projects/print-projects.service';
-import { LoginService } from './login/login.service';
-import { LogInResponse } from './login/login.response';
+import { LogInResponse } from './login.response';
+import { LoginService } from './login.service';
+import { CreateProjectRequest } from './organization/projects/create-project-request.dto';
+import { CreateProjectResponse } from './organization/projects/create-project-response.dto';
+import { CreateProjectService } from './organization/projects/create-project.service';
+import { PrintProjectsResponse } from './organization/projects/print-projects-response.dto';
+import { PrintProjectsService } from './organization/projects/print-projects.service';
+import { SignInRequest } from './signin-request.dto';
+import { SignInResponse } from './signin-response.dto';
+import { SignInService } from './signin.service';
+
 
 @ApiTags("Users")
 @ApiBearerAuth()
