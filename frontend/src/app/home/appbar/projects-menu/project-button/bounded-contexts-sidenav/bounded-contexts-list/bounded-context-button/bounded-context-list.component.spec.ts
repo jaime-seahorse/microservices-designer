@@ -7,14 +7,14 @@ import { MatNavListHarness } from '@angular/material/list/testing';
 import { MatButtonHarness } from '@angular/material/button/testing';
 
 import { provideRouter } from '@angular/router';
-import { routes } from '../../../../app.routes';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
-import { PrintBoundedContextsComponent } from '../bounded-contexts-menu/print-bounded-contexts.component';
+
 import { EventEmitter } from '@angular/core';
+import { PrintBoundedContextsComponent } from '../bounded-context-list.component';
 
 let loader: HarnessLoader;
 let fixture: ComponentFixture<PrintBoundedContextsComponent>;

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { PrintBoundedContextsResponse } from './bounded-contexts-list-response.dto';
+
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { PrintBoundedContextsResponse } from './bounded-context-button/bounded-contexts-list-response.dto';
 
 @Injectable({
   providedIn: 'root'

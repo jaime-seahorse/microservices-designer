@@ -14,7 +14,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { AsyncPipe } from '@angular/common';
 import { NgClass } from '@angular/common';
-import { SidenavComponent } from './sidenav/sidenav.component';
+import { SidenavComponent } from './appbar/projects-menu/project-button/bounded-contexts-sidenav/sidenav.component';
+
 
 @Component({
   selector: 'app-home',
