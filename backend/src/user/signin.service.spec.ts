@@ -1,47 +1,41 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SignInService } from './signin.service';
-import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import { SignInRequest } from './signin-request.dto';
 import { SignInResponse } from './signin-response.dto';
-import { Organization } from './organization/organization.entity';
+import { getModelToken, } from '@nestjs/mongoose';
 
 describe('UsersService', () => {
   let service: SignInService;
-  let userRepository: Repository<User>;
-  const USER_REPOSITORY_TOKEN = getRepositoryToken(User);
-  const ORGANIZATION_REPOSITORY_TOKEN = getRepositoryToken(Organization)
+
   beforeEach(async () => {
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         SignInService,
-      
         {
-          provide: USER_REPOSITORY_TOKEN,
-          useValue: {},
+          provide: getModelToken('User'),
+          useValue: {}
         },
         {
-          provide: ORGANIZATION_REPOSITORY_TOKEN,
+          provide: getModelToken('Organization'),
           useValue: {}
         }
       ],
-    }).compile();
 
+    }).compile();
     service = module.get<SignInService>(SignInService);
-    userRepository = module.get<Repository<User>>(USER_REPOSITORY_TOKEN);
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  it('userRepository should be defined', () => {
-    expect(userRepository).toBeDefined();
-  });
+
 
   describe('SignIn', () => {
-    it('should signin a new user', async () => {
+    it('should signin a new user (The user fills good the form to sign in)', async () => {
       const signInRequest: SignInRequest = new SignInRequest();
       signInRequest.email = "pepe@mail.com";
       signInRequest.name = "Pepe";
@@ -53,7 +47,7 @@ describe('UsersService', () => {
       signInResponseMock.name = "Pepe";
       signInResponseMock.id = 1;
       signInResponseMock.organizationName = "PepeOrganization";
-      
+
       jest.spyOn(service, 'signIn').mockResolvedValue(signInResponseMock);
       let signInResponseService: SignInResponse = await service.signIn(signInRequest);
       expect(signInRequest.email).toEqual(signInResponseService.email);
@@ -62,6 +56,18 @@ describe('UsersService', () => {
       expect(signInRequest.password).toBeDefined();
       expect(1).toEqual(signInResponseService.id);
     });
+
+    // it('should exists a user (The user fills good the form but user exist in database)', async () => {
+    //   const signInRequest: SignInRequest = new SignInRequest();
+    //   signInRequest.email = "pepe@mail.com";
+    //   signInRequest.name = "Pepe";
+    //   signInRequest.password = "changeme";
+    //   signInRequest.organizationName = "PepeOrganization";
+
+    //   jest.spyOn(service, 'signIn').mockRejectedValue;
+    //   let signInResponseService: SignInResponse = await service.signIn(signInRequest);
+    //   expect(signInResponseService).toThrow(new Error);
+    // });
   });
 
 });

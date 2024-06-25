@@ -1,29 +1,31 @@
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IsEmail, IsNumber, IsString, Length, } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import mongoose, { HydratedDocument, ObjectId } from 'mongoose';
 
-@Entity()
+export type UserDocument = HydratedDocument<User>;
+
+
+@Schema()
 export class User {
-
-    @PrimaryGeneratedColumn()
-    id: number;
 
     @IsString({ message: 'Should be a valid username' })
     @Length(3, 18)
-    @Column({ type: 'varchar', length: 100,  nullable: false })
+    @Prop()
     name: string;
 
     @IsEmail({}, { message: 'Should be a valid email' })
-    @Column({ type: 'varchar', length: 100, unique: true, nullable: false })
+    @Prop()
     email: string;
 
     @IsString({ message: 'Should be a valid password' })
     @Length(6, 60)
-    @Column({ type: 'varchar', length: 100, nullable: false })
+    @Prop()
     password: string;
 
-    @IsNumber({}, {message: 'Should be a valid id of organization'})
-    @Column()
-    organizationId: number;
+    @Prop()
+    organizationId: mongoose.Types.ObjectId;
+    user: mongoose.Types.ObjectId;
 
 
 }
+export const UserSchema = SchemaFactory.createForClass(User)

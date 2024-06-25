@@ -1,20 +1,20 @@
-import { IsNumber, IsString, IsArray } from 'class-validator';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { IsArray, IsString } from 'class-validator';
+import mongoose, { HydratedDocument, ObjectId } from 'mongoose';
 
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+export type OrganizationDocument = HydratedDocument<Organization>;
 
 
-@Entity()
+@Schema()
 export class Organization {
 
-    @PrimaryGeneratedColumn()
-    @IsNumber()
-    id: number;
-
-    @Column({ unique: true })
+    @Prop({ unique: true })
     @IsString()
     name: string;
 
-    // @Column()
-    // @IsArray()
-    // userIds : number[]
+    @Prop()
+    @IsArray()
+    userIds : mongoose.Types.ObjectId[];
 }
+
+export const OrganizationSchema = SchemaFactory.createForClass(Organization)

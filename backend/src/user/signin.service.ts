@@ -1,22 +1,21 @@
-import { Injectable, InternalServerErrorException} from '@nestjs/common';
-
-import { InjectRepository } from '@nestjs/typeorm';
+import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Repository } from 'typeorm'
 import { SignInRequest } from './signin-request.dto';
 import { SignInResponse } from './signin-response.dto';
-import { Organization } from './organization/organization.entity';
-import { User } from './user.entity';
+import { Organization, OrganizationDocument } from './organization/organization.entity';
+import { User, UserDocument } from './user.entity';
+import { InjectModel } from '@nestjs/mongoose';
+import mongoose, { Model, ObjectId } from 'mongoose';
 
 
 @Injectable()
 export class SignInService {
 
   constructor(
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
-    @InjectRepository(Organization)
-    private organizationRepository: Repository<Organization>
-
+    @InjectModel(User.name)
+    private userModel: Model<User>,
+    @InjectModel(Organization.name)
+    private organizationModel: Model<Organization>
   ) { }
 
   async signIn(signInRequest: SignInRequest): Promise<SignInResponse> {
@@ -26,32 +25,36 @@ export class SignInService {
       const organization: Organization = new Organization();
       organization.name = signInRequest.organizationName;
 
-      const organizationCreated: Organization = await this.createOrganization(organization);
+      const organizationDocument: OrganizationDocument = await this.createOrganization(organization);
 
-      const user: User = this.setUserEntity(signInRequest, organizationCreated.id);
+      const userDocument: UserDocument = this.setUserDocument(signInRequest, organizationDocument._id);
 
-      if (await this.userRepository.findOneBy({ email: signInRequest.email })) {
+      if (await this.userModel.findOne({ email: signInRequest.email })) {
         console.log('Email already exists')
         throw new Error('This email already exists')
       }
 
-      const UserCreated: User = await this.userRepository.save(user);
+      organizationDocument.userIds.push(userDocument._id);
+      const userCreated = await userDocument.save();
+      const organizationCreated = await organizationDocument.save();
 
-      return this.setUserResponse(UserCreated, organizationCreated.name);
+      return this.setUserResponse(userCreated, organizationCreated.name);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
   }
 
 
-  async createOrganization(organization: Organization): Promise<Organization> {
+  async createOrganization(organization: Organization): Promise<OrganizationDocument> {
     try {
 
-      if (await this.organizationRepository.findOneBy({ name: organization.name })) {
+      if (await this.organizationModel.findOne({ name: organization.name })) {
         throw new Error('This organization already exists')
       }
 
-      const organizationCreated: Organization = await this.organizationRepository.save(organization);
+      const organizationCreated = new this.organizationModel(organization);
+      console.log(organizationCreated)
+
       return organizationCreated;
 
     } catch (error) {
@@ -59,16 +62,16 @@ export class SignInService {
     }
   }
 
-  private setUserEntity(signInRequest: SignInRequest, organizationId: number): User {
+  private setUserDocument(signInRequest: SignInRequest, organizationId: mongoose.Types.ObjectId): UserDocument {
     const user: User = new User();
     user.email = signInRequest.email;
     user.name = signInRequest.name;
     user.password = signInRequest.password;
     user.organizationId = organizationId;
-    return user;
+    return new this.userModel(user);
   }
 
-  private setUserResponse(userCreated: User, organization: string): SignInResponse {
+  private setUserResponse(userCreated: UserDocument, organization: string): SignInResponse {
     const signInResponse: SignInResponse = new SignInResponse();
     signInResponse.email = userCreated.email;
     signInResponse.name = userCreated.name;
