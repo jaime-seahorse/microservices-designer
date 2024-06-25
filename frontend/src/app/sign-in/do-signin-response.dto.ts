@@ -1,4 +1,4 @@
-import { SignInErrorResponse } from "./sign-in-error-response.dto"
+import { SignInErrorResponse } from "./do-signin-error-response.dto"
 
 export interface SignInResponse {
 	errors?: SignInErrorResponse,

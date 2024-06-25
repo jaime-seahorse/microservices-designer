@@ -15,7 +15,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 import { LogInComponent } from './log-in.component';
-import { LogInService } from './log-in.service';
+import { LogInService } from './do-login.service';
 
 let loader: HarnessLoader;
 let fixture: ComponentFixture<LogInComponent>;

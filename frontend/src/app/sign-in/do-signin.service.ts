@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { SignInRequest } from './sign-in-request.dto';
-import { SignInResponse } from './sign-in-response.dto';
+import { SignInRequest } from './do-signin-request.dto';
+import { SignInResponse } from './do-signin-response.dto';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 

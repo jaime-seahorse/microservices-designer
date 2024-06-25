@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
-import { MakeSignInService } from './make-sign-in.service';
-import { SignInRequest } from './sign-in-request.dto';
-import { SignInResponse } from './sign-in-response.dto';
+import { MakeSignInService } from './do-signin.service';
+import { SignInRequest } from './do-signin-request.dto';
+import { SignInResponse } from './do-signin-response.dto';
 
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { HttpErrorResponse } from '@angular/common/http';

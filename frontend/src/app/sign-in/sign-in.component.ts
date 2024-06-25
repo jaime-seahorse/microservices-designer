@@ -3,14 +3,14 @@ import { NgClass } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { confirmPasswordValidator } from './sign-in-confirm-password-validator';
+import { confirmPasswordValidator } from './confirm-password-validator';
 
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { SignInRequest } from './sign-in-request.dto';
-import { MakeSignInService } from './make-sign-in.service';
+import { SignInRequest } from './do-signin-request.dto';
+import { MakeSignInService } from './do-signin.service';
 
 @Component({
   selector: 'app-sign-in',

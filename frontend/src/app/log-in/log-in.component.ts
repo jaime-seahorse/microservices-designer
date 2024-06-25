@@ -6,8 +6,8 @@ import { ReactiveFormsModule, FormsModule, FormBuilder, FormGroup, Validators } 
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { LogInRequest } from './log-in-request.dto';
-import { LogInService } from './log-in.service';
+import { LogInRequest } from './do-login-request.dto';
+import { LogInService } from './do-login.service';
 
 // import { usernameOrEmailValidator } from './username-or-email-validator';
 

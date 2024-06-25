@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 
-import { LogInService } from './log-in.service';
-import { LogInRequest } from './log-in-request.dto';
+import { LogInService } from './do-login.service';
+import { LogInRequest } from './do-login-request.dto';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
-import { LogInResponse } from './log-in-response.dto';
+import { LogInResponse } from './do-login-response.dto';
 
 describe('LogInService', () => {
   let logInService: LogInService;

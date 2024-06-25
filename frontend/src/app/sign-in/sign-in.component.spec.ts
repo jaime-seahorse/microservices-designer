@@ -15,7 +15,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 import { SignInComponent } from './sign-in.component';
-import { MakeSignInService } from './make-sign-in.service';
+import { MakeSignInService } from './do-signin.service';
 
 let loader: HarnessLoader;
 let fixture: ComponentFixture<SignInComponent>;
