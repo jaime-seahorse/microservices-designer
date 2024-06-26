@@ -1,19 +1,21 @@
-import {Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrintProjectsResponse } from './print-projects-response.dto';
 import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Project } from './project.entity';
+
+import { Project, ProjectDocument } from './project.schema';
+import { InjectModel } from '@nestjs/mongoose';
+import mongoose from 'mongoose';
 
 @Injectable()
 export class PrintProjectsService {
     constructor(
-        @InjectRepository(Project)
-        private readonly projectRepository: Repository<Project>
+        @InjectModel(Project.name)
+        private readonly projectRepository: Repository<ProjectDocument>
     ) { }
 
-    async printProjects(organizationId: number): Promise<PrintProjectsResponse[]> {
+    async printProjects(organizationId: mongoose.Types.ObjectId): Promise<PrintProjectsResponse[]> {
         try {
-            const projectsByOrganization: Project[]
+            const projectsByOrganization: ProjectDocument[]
                 = await this.projectRepository.find({ where: { organizationId: organizationId } });
 
             if (projectsByOrganization.length === 0) {
@@ -27,9 +29,9 @@ export class PrintProjectsService {
     }
 
 
-    private prepareGetProjectsResponse(projectsByOrganization: Project[]): PrintProjectsResponse[] {
-        return projectsByOrganization.map((project: Project) => ({
-            projectId: project.id,
+    private prepareGetProjectsResponse(projectsByOrganization: ProjectDocument[]): PrintProjectsResponse[] {
+        return projectsByOrganization.map((project: ProjectDocument) => ({
+            projectId: project._id,
             projectName: project.name
         }));
     }

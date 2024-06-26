@@ -1,11 +1,10 @@
-import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
-import { Repository } from 'typeorm'
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { SignInRequest } from './signin-request.dto';
 import { SignInResponse } from './signin-response.dto';
 import { Organization, OrganizationDocument } from './organization/organization.entity';
 import { User, UserDocument } from './user.entity';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model, ObjectId } from 'mongoose';
+import mongoose, { Model} from 'mongoose';
 
 
 @Injectable()
@@ -13,9 +12,9 @@ export class SignInService {
 
   constructor(
     @InjectModel(User.name)
-    private userModel: Model<User>,
+    private userModel: Model<UserDocument>,
     @InjectModel(Organization.name)
-    private organizationModel: Model<Organization>
+    private organizationModel: Model<OrganizationDocument>
   ) { }
 
   async signIn(signInRequest: SignInRequest): Promise<SignInResponse> {
@@ -52,10 +51,10 @@ export class SignInService {
         throw new Error('This organization already exists')
       }
 
-      const organizationCreated = new this.organizationModel(organization);
-      console.log(organizationCreated)
+      const organizationModel = new this.organizationModel(organization);
+      console.log(organizationModel)
 
-      return organizationCreated;
+      return organizationModel;
 
     } catch (error) {
       throw new InternalServerErrorException(error);

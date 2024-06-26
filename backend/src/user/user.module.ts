@@ -7,6 +7,7 @@ import { PrintProjectsService } from './organization/project/print-projects.serv
 import { CreateProjectService } from './organization/project/create-project.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Organization, OrganizationSchema } from './organization/organization.entity';
+import { Project, ProjectSchema } from './organization/project/project.schema';
 
 @Module({
   controllers: [UserController],
@@ -14,7 +15,8 @@ import { Organization, OrganizationSchema } from './organization/organization.en
   imports: [MongooseModule.forFeature([
     { name: User.name, schema: UserSchema },
     { name: Organization.name, schema: OrganizationSchema },
-    
+    { name: Project.name, schema: ProjectSchema },
+
   ])]
 })
 export class UsersModule { }

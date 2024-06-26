@@ -1,13 +1,16 @@
 import { ApiProperty } from "@nestjs/swagger";
+import mongoose from "mongoose";
 
 
 export class LogInResponse {
-    
     @ApiProperty()
-    name: string;
+    userId: mongoose.Types.ObjectId;
     @ApiProperty()
     email: string;
     @ApiProperty()
-    id: number;
-    
+    name: string;
+    @ApiProperty()
+    organizationId: mongoose.Types.ObjectId;
+    @ApiProperty()
+    organizationName: string;
 }

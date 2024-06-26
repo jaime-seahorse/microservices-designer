@@ -1,36 +1,30 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateProjectService } from './create-project.service';
 import { Repository } from 'typeorm'
-import { Project } from '../project.entity';
-import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreateProjectRequest } from './create-project-request.dto';
 import { CreateProjectResponse } from './create-project-response.dto';
+import { Project } from './project.schema';
+import { getModelToken } from '@nestjs/mongoose';
 
 describe('CreateProjectService', () => {
   let service: CreateProjectService;
-  let projectRepository: Repository<Project>;
-  const PROJECT_REPOSITORY_TOKEN = getRepositoryToken(Project);
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CreateProjectService,
         {
-          provide: PROJECT_REPOSITORY_TOKEN,
+          provide: getModelToken('Project'),
           useValue: {}
         }
       ],
     }).compile();
     service = module.get<CreateProjectService>(CreateProjectService);
-    projectRepository = module.get<Repository<Project>>(PROJECT_REPOSITORY_TOKEN);
+
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
-  });
-
-  it('project repository should be defined', () => {
-    expect(projectRepository).toBeDefined();
   });
 
 
@@ -43,11 +37,11 @@ describe('CreateProjectService', () => {
       createProjectResponseMock.projectId = 1;
       createProjectResponseMock.name = "pepe-project";
 
-      jest.spyOn(service, 'create').mockResolvedValue(createProjectResponseMock);
-      let createProjectResponse: CreateProjectResponse = await service.create(createProjectRequest, 2);
+      jest.spyOn(service, 'createProject').mockResolvedValue(createProjectResponseMock);
+      let createProjectResponse: CreateProjectResponse = await service.createProject(createProjectRequest, 2);
       expect(createProjectRequest.name).toEqual(createProjectResponse.name);
       expect(1).toEqual(createProjectResponse.projectId);
-      
+
     })
   })
 

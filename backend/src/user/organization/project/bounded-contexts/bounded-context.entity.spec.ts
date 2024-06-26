@@ -1,6 +1,6 @@
 import { plainToInstance } from "class-transformer";
 import { validate } from "class-validator";
-import { Project } from "../project.entity"
+import { Project } from "../project.schema"
 import { BoundedContextEntity } from "./bounded-context.entity";
 import { ValidationError } from "@nestjs/common";
 

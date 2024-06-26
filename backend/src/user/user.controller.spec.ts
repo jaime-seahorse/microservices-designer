@@ -1,16 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from './user.controller';
-import { SignInService } from './signin/signin.service';
-import { SignInRequest } from './signin/signin-request.dto';
-import { SignInResponse } from './signin/signin-response.dto';
-import { CreateProjectResponse } from './organization/projects/create-project/create-project-response.dto';
-import { CreateProjectRequest } from './organization/projects/create-project/create-project-request.dto';
-import { CreateProjectService } from './organization/projects/create-project/create-project.service';
-import { PrintProjectsService } from './organization/projects/print-projects/print-projects.service';
-import { PrintProjectsResponse } from './organization/projects/print-projects/print-projects-response.dto';
-import { LogInRequest } from './login/login.request';
-import { LogInResponse } from './login/login.response';
-import { LoginService } from './login/login.service';
+import { SignInService } from './signin.service';
+import { LogInRequest } from './login.request';
+import { LogInResponse } from './login.response';
+import { LoginService } from './login.service';
+import { CreateProjectRequest } from './organization/project/create-project-request.dto';
+import { CreateProjectResponse } from './organization/project/create-project-response.dto';
+import { CreateProjectService } from './organization/project/create-project.service';
+import { PrintProjectsResponse } from './organization/project/print-projects-response.dto';
+import { PrintProjectsService } from './organization/project/print-projects.service';
+import { SignInRequest } from './signin-request.dto';
+import { SignInResponse } from './signin-response.dto';
+import mongoose from 'mongoose';
+
 
 
 describe('UsersController', () => {
@@ -19,7 +21,7 @@ describe('UsersController', () => {
   const signInServiceMock = {
     signIn: jest.fn(),
   }
-  
+
   const createProjectServiceMock = {
     createProject: jest.fn(),
   }
@@ -30,7 +32,7 @@ describe('UsersController', () => {
   const loginServiceMock = {
     logIn: jest.fn(),
   }
- 
+
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -92,17 +94,17 @@ describe('UsersController', () => {
 
   describe('logIn', () => {
     it('should logIn a user', async () => {
-      
+
       const logInRequest: LogInRequest = new LogInRequest();
       logInRequest.email = "pepe@mail.com";
       logInRequest.password = "changeme";
-     
+
 
       const logInResponseMock: LogInResponse = new LogInResponse();
-      logInResponseMock.id = 1;
+      logInResponseMock.userId = new mongoose.Types.ObjectId();
       logInResponseMock.email = "pepe@mail.com";
       logInResponseMock.name = "pepe";
-     
+
 
       jest.spyOn(loginServiceMock, 'logIn').mockResolvedValue(logInResponseMock);
 
@@ -120,13 +122,13 @@ describe('UsersController', () => {
     it('should create a new project', async () => {
       const createProjectRequest: CreateProjectRequest = new CreateProjectRequest();
       createProjectRequest.name = "pepe-project";
-
+      const projectId = new mongoose.Types.ObjectId();
       const createProjectResponseMock: CreateProjectResponse = new CreateProjectResponse();
-      createProjectResponseMock.projectId = 1;
+      createProjectResponseMock.projectId = projectId;
       createProjectResponseMock.name = createProjectRequest.name;
 
       jest.spyOn(createProjectServiceMock, 'createProject').mockResolvedValue(createProjectResponseMock);
-      const createProjectResponse: CreateProjectResponse = await controller.createProject(createProjectRequest, 1);
+      const createProjectResponse: CreateProjectResponse = await controller.createProject(createProjectRequest, projectId);
       console.log(createProjectResponse);
 
       expect(createProjectServiceMock.createProject).toHaveBeenCalled();
@@ -139,18 +141,18 @@ describe('UsersController', () => {
     it('should return all projects by organization', async () => {
       const printProjectsResponseMock: PrintProjectsResponse[] = [
         {
-          projectId: 1,
+          projectId: new mongoose.Types.ObjectId(),
           projectName: 'pepe1'
         },
         {
-          projectId: 2,
+          projectId: new mongoose.Types.ObjectId(),
           projectName: 'pepe2'
         },
       ];
 
       jest.spyOn(printProjectsServiceMock, 'printProjects').mockResolvedValue(printProjectsResponseMock);
 
-      const printProjectsResponse: PrintProjectsResponse[] = await controller.printProjects(1);
+      const printProjectsResponse: PrintProjectsResponse[] = await controller.printProjects(printProjectsResponseMock[0].projectId);
 
       expect(printProjectsServiceMock.printProjects).toHaveBeenCalled();
       expect(printProjectsServiceMock.printProjects).toHaveBeenCalledWith(1);
@@ -162,32 +164,5 @@ describe('UsersController', () => {
 
   });
 
-<<<<<<< HEAD
-
-  // describe('updateProject', () => {
-  //   it('should return a project updated', async () => {
-  //     const projectId = 1;
-
-  //     const updateProjectRequest: UpdateProjectRequest = new UpdateProjectRequest();
-  //     updateProjectRequest.name = 'pepe-project';
-
-  //     const updateProjectResponseMock: UpdateProjectResponse = new UpdateProjectResponse();
-  //     updateProjectResponseMock.id = projectId;
-  //     updateProjectResponseMock.name = 'pepe-project2';
-
-  //     jest.spyOn(updateProjectServiceMock, 'updateProject').mockResolvedValue(updateProjectResponseMock);
-
-  //     const updateProjectResponse: UpdateProjectResponse = await controller.updateProject(projectId, updateProjectRequest);
-      
-  //     expect(updateProjectServiceMock.updateProject).toHaveBeenCalled();
-  //     expect(updateProjectServiceMock.updateProject).toHaveBeenCalledWith(projectId, updateProjectRequest);
-  //     expect(updateProjectResponse.id).toEqual(projectId);
-  //     expect(updateProjectResponse.name).toEqual('pepe-project2');
-      
-  //   })
-  // });
-=======
-  
->>>>>>> ccf9ed1cd5aedb03fa85848b1a7b640c5778294c
 
 });

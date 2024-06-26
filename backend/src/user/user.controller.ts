@@ -2,15 +2,17 @@ import { Body, Controller, Get, HttpCode, HttpStatus, InternalServerErrorExcepti
 import { ApiBearerAuth, ApiExtraModels, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LogInResponse } from './login.response';
 import { LoginService } from './login.service';
-import { CreateProjectRequest } from './organization/projects/create-project-request.dto';
-import { CreateProjectResponse } from './organization/projects/create-project-response.dto';
-import { CreateProjectService } from './organization/projects/create-project.service';
-import { PrintProjectsResponse } from './organization/projects/print-projects-response.dto';
-import { PrintProjectsService } from './organization/projects/print-projects.service';
+
 import { SignInRequest } from './signin-request.dto';
 import { SignInResponse } from './signin-response.dto';
 import { SignInService } from './signin.service';
-
+import { CreateProjectRequest } from './organization/project/create-project-request.dto';
+import { CreateProjectResponse } from './organization/project/create-project-response.dto';
+import { CreateProjectService } from './organization/project/create-project.service';
+import { PrintProjectsResponse } from './organization/project/print-projects-response.dto';
+import { PrintProjectsService } from './organization/project/print-projects.service';
+import mongoose from 'mongoose';
+import { LogInRequest } from './login.request';
 
 @ApiTags("Users")
 @ApiBearerAuth()
@@ -46,9 +48,9 @@ export class UserController {
   @ApiResponse({ status: 200, description: 'User logged.', type: SignInResponse })
   @ApiResponse({ status: 404, description: 'The user is not exist.' })
   @ApiExtraModels(SignInResponse)
-  async logiIn(@Body() signInRequest: SignInRequest): Promise<LogInResponse> {
+  async logiIn(@Body() logInRequest: LogInRequest): Promise<LogInResponse> {
     try {
-      return await this.logInService.logIn(signInRequest);
+      return await this.logInService.logIn(logInRequest);
     } catch (error) {
       if (error instanceof Error) {
         console.log(error)
@@ -66,7 +68,7 @@ export class UserController {
     status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'The project could not be created'
   })
   @Post('organizations/:organizationId/projects')
-  async createProject(@Body() createProjectRequest: CreateProjectRequest, @Param('organizationId') organizationId: number): Promise<CreateProjectResponse> {
+  async createProject(@Body() createProjectRequest: CreateProjectRequest, @Param('organizationId') organizationId: mongoose.Types.ObjectId): Promise<CreateProjectResponse> {
     try {
       return this.createProjectService.createProject(createProjectRequest, organizationId);
     } catch (error) {
@@ -84,7 +86,7 @@ export class UserController {
     status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Projects could not be founded'
   })
   @Get('projects/:organizationId')
-  async printProjects(@Param('organizationId') organizationId: number): Promise<PrintProjectsResponse[]> {
+  async printProjects(@Param('organizationId') organizationId: mongoose.Types.ObjectId): Promise<PrintProjectsResponse[]> {
     return this.printProjectsService.printProjects(organizationId);
   }
 }

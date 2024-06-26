@@ -1,7 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SignInService } from './signin.service';
-import { User } from './user.entity';
-import { Repository } from 'typeorm';
 import { SignInRequest } from './signin-request.dto';
 import { SignInResponse } from './signin-response.dto';
 import { getModelToken, } from '@nestjs/mongoose';
@@ -26,6 +24,10 @@ describe('UsersService', () => {
 
     }).compile();
     service = module.get<SignInService>(SignInService);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks(); 
   });
 
   it('should be defined', () => {
@@ -57,17 +59,47 @@ describe('UsersService', () => {
       expect(1).toEqual(signInResponseService.id);
     });
 
-    // it('should exists a user (The user fills good the form but user exist in database)', async () => {
-    //   const signInRequest: SignInRequest = new SignInRequest();
-    //   signInRequest.email = "pepe@mail.com";
-    //   signInRequest.name = "Pepe";
-    //   signInRequest.password = "changeme";
-    //   signInRequest.organizationName = "PepeOrganization";
+    it('should exists a user (The user fills good the form but user or organization exist in database)', async () => {
+      const signInRequest: SignInRequest = new SignInRequest();
+      signInRequest.email = "pepe@mail.com";
+      signInRequest.name = "Pepe";
+      signInRequest.password = "changeme";
+      signInRequest.organizationName = "PepeOrganization";
 
-    //   jest.spyOn(service, 'signIn').mockRejectedValue;
-    //   let signInResponseService: SignInResponse = await service.signIn(signInRequest);
-    //   expect(signInResponseService).toThrow(new Error);
-    // });
+      const mockError: Error = {
+        name: '',
+        message: 'This email already exists',
+      }
+      try {
+        jest.spyOn(service, 'signIn').mockRejectedValueOnce(mockError);
+        await service.signIn(signInRequest);
+      } catch (error) {
+        console.log(error);
+        expect(error.message).toEqual(mockError.message);
+        expect(typeof error).toBe(typeof mockError)
+      }
+    });
+    
+    it('should exists a user (The user fills good the form but user or organization exist in database)', async () => {
+      const signInRequest: SignInRequest = new SignInRequest();
+      signInRequest.email = "pepe@mail.com";
+      signInRequest.name = "Pepe";
+      signInRequest.password = "changeme";
+      signInRequest.organizationName = "PepeOrganization";
+
+      const mockError: Error = {
+        name: '',
+        message: 'This organization already exists',
+      }
+      try {
+        jest.spyOn(service, 'signIn').mockRejectedValueOnce(mockError);
+        await service.signIn(signInRequest);
+      } catch (error) {
+        console.log(error);
+        expect(error.message).toEqual(mockError.message);
+        expect(typeof error).toBe(typeof mockError)
+      }
+    })
   });
 
 });

@@ -4,7 +4,6 @@ import mongoose, { HydratedDocument, ObjectId } from 'mongoose';
 
 export type UserDocument = HydratedDocument<User>;
 
-
 @Schema()
 export class User {
 
@@ -24,7 +23,6 @@ export class User {
 
     @Prop()
     organizationId: mongoose.Types.ObjectId;
-    user: mongoose.Types.ObjectId;
 
 
 }
