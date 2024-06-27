@@ -10,28 +10,31 @@ import { Organization, OrganizationDocument } from './organization/organization.
 describe('LoginService', () => {
   let service: LoginService;
   let userModel: Model<UserDocument>;
+  const userModelToken = getModelToken('User');
   let organizationModel: Model<OrganizationDocument>;
+  const organizationModelToken = getModelToken('Organization')
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         LoginService,
         {
-          provide: getModelToken(User.name),
+          provide: userModelToken,
           useValue: {
             findOne: jest.fn(),
           }
         },
         {
-          provide: getModelToken(Organization.name),
+          provide: organizationModelToken,
           useValue: {
             findOne: jest.fn(),
+            findById: jest.fn()
           }
         },
       ],
     }).compile();
-    userModel = module.get<Model<UserDocument>>(getModelToken(User.name));
-    organizationModel = module.get<Model<OrganizationDocument>>(getModelToken(Organization.name));
+    userModel = module.get<Model<UserDocument>>(userModelToken);
+    organizationModel = module.get<Model<OrganizationDocument>>(organizationModelToken);
     service = module.get<LoginService>(LoginService);
   });
 
@@ -98,7 +101,6 @@ describe('LoginService', () => {
       expect(logInResponse.name).toEqual(userModelMock.name);
       expect(logInResponse.organizationId).toEqual(userModelMock.organizationId);
       expect(logInResponse.organizationName).toEqual(userModelMock.organizationName);
-      expect(service.logIn).toHaveBeenCalledWith(logInRequest)
     });
   });
 

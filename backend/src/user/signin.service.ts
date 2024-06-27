@@ -4,7 +4,7 @@ import { SignInResponse } from './signin-response.dto';
 import { Organization, OrganizationDocument } from './organization/organization.entity';
 import { User, UserDocument } from './user.entity';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model} from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 
 
 @Injectable()
@@ -32,7 +32,7 @@ export class SignInService {
         console.log('Email already exists')
         throw new Error('This email already exists')
       }
-
+      
       organizationDocument.userIds.push(userDocument._id);
       const userCreated = await userDocument.save();
       const organizationCreated = await organizationDocument.save();
