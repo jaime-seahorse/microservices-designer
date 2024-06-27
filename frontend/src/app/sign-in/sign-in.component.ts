@@ -3,7 +3,6 @@ import { NgClass } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { confirmPasswordValidator } from './confirm-password-validator';
 
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -11,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { SignInRequest } from './do-signin-request.dto';
 import { MakeSignInService } from './do-signin.service';
+import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
 
 @Component({
   selector: 'app-sign-in',
@@ -39,22 +39,32 @@ export class SignInComponent {
 		private router: Router
   ){
     this.form = this.formBuilder.group({
-      username: ['', Validators.required],
-      email: ['', [
+      userName: ['', Validators.required],
+      userEmail: ['', [
           Validators.required,
           Validators.email
         ]
       ],
       organizationName: ['', Validators.required],
-      password: ['', [
+      userPassword: ['', [
           Validators.required,
           Validators.minLength(8),
           Validators.maxLength(50)
         ]
       ],
-      passwordConfirm: ['', Validators.required],
-    }, {validators: confirmPasswordValidator, updateOn: 'submit'});
+      userPasswordConfirm: ['', [
+					Validators.required, 
+					this.confirmPasswordValidator
+				]
+			],
+    }, { updateOn: 'submit' });
   }
+
+	confirmPasswordValidator: ValidatorFn = (control: AbstractControl): null | ValidationErrors => {
+		let userPassword = control.parent?.get('userPassword')?.value;
+		let userPasswordConfirm = control.parent?.get('userPasswordConfirm')?.value;
+		return userPassword === userPasswordConfirm ? null : {unconfirmed: true}
+	};
 
   onSubmit(): void {
     if (this.form.valid) {

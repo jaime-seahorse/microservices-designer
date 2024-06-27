@@ -9,10 +9,9 @@
       <input
         type="text"
         matInput
-        formControlName="username"
+        formControlName="userName"
       >
-      <!-- username errors -->
-        @if(form.get('username')?.hasError('required')) {
+        @if(form.get('userName')?.hasError('required')) {
           <mat-error>username is required</mat-error>
         }
     </mat-form-field>
@@ -22,13 +21,12 @@
       <input
         type="email"
         matInput
-        formControlName="email"
+        formControlName="userEmail"
       >
-      <!-- email errors -->
-        @if(form.get('email')?.errors) {
+        @if(form.get('userEmail')?.errors) {
           <mat-error>
-            @if(form.get('email')?.hasError('email')) {email is invalid}
-            @else if(form.get('email')?.hasError('required')) {email is required}
+            @if(form.get('userEmail')?.hasError('email')) {email is invalid}
+            @else if(form.get('userEmail')?.hasError('required')) {email is required}
           </mat-error>
         }
     </mat-form-field>
@@ -52,14 +50,12 @@
         #password
         type="password"
         matInput
-        formControlName="password"
+        formControlName="userPassword"
       >
-      <!-- <mat-hint align="end">{{password.value.length}}/{{ minlength }}</mat-hint> -->
-      <!-- password errors -->
-      @if(form.get('password')?.errors) {
+      @if(form.get('userPassword')?.errors) {
         <mat-error>
-          @if(form.get('password')?.hasError('required')) {password is required}
-          @else if(form.get('password')?.hasError('minlength') || form.get('password')?.hasError('maxlength')) {
+          @if(form.get('userPassword')?.hasError('required')) {password is required}
+          @else if(form.get('userPassword')?.hasError('minlength') || form.get('userPassword')?.hasError('maxlength')) {
             password must be between 8 and 50 characters
           }
         </mat-error>
@@ -71,12 +67,12 @@
       <input
         type="password"
         matInput
-        formControlName="passwordConfirm"
+        formControlName="userPasswordConfirm"
       >
-      <!-- passwordConfirm errors -->
-        @if(form.hasError('unconfirmed')) {
-          <mat-error>both passwords must be the same</mat-error>
-        }
+			<mat-error>
+				@if(form.get('userPasswordConfirm')?.hasError('required')) {password confirmation is required}
+				@else if(form.get('userPasswordConfirm')?.hasError('unconfirmed')) {both passwords must be the same}
+			</mat-error>
     </mat-form-field>
 
     <button mat-raised-button>Sign In</button>
