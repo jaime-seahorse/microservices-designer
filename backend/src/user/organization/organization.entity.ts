@@ -9,9 +9,6 @@ export type OrganizationDocument = HydratedDocument<Organization>;
 @Schema()
 export class Organization {
 
-    @Prop()
-    @Type(() => mongoose.Types.ObjectId)
-    _id: mongoose.Types.ObjectId;
 
     @Prop({ unique: true })
     @IsString()

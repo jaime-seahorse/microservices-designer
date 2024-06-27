@@ -1,8 +1,8 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { SignInRequest } from './signin-request.dto';
 import { SignInResponse } from './signin-response.dto';
-import { Organization, OrganizationDocument } from './organization/organization.entity';
-import { User, UserDocument } from './user.entity';
+import { Organization, OrganizationDocument } from '../organization/organization.entity';
+import { User, UserDocument } from '../user.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 

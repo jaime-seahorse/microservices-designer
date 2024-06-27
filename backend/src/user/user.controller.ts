@@ -1,18 +1,18 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, InternalServerErrorException, Param, Patch, Post} from '@nestjs/common';
 import { ApiBearerAuth, ApiExtraModels, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { LogInResponse } from './login.response';
-import { LoginService } from './login.service';
+import { LogInResponse } from './user-login-use-case/login.response';
+import { LoginService } from './user-login-use-case/login.service';
 
-import { SignInRequest } from './signin-request.dto';
-import { SignInResponse } from './signin-response.dto';
-import { SignInService } from './signin.service';
+import { SignInRequest } from './user-signin-use-case/signin-request.dto';
+import { SignInResponse } from './user-signin-use-case/signin-response.dto';
+import { SignInService } from './user-signin-use-case/signin.service';
 import { CreateProjectRequest } from './organization/project/create-project-request.dto';
 import { CreateProjectResponse } from './organization/project/create-project-response.dto';
 import { CreateProjectService } from './organization/project/create-project.service';
 import { PrintProjectsResponse } from './organization/project/print-projects-response.dto';
 import { PrintProjectsService } from './organization/project/print-projects.service';
 import mongoose from 'mongoose';
-import { LogInRequest } from './login.request';
+import { LogInRequest } from './user-login-use-case/login.request';
 
 @ApiTags("Users")
 @ApiBearerAuth()

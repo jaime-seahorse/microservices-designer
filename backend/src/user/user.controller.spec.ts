@@ -1,16 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from './user.controller';
-import { SignInService } from './signin.service';
-import { LogInRequest } from './login.request';
-import { LogInResponse } from './login.response';
-import { LoginService } from './login.service';
+import { SignInService } from './user-signin-use-case/signin.service';
+import { LogInRequest } from './user-login-use-case/login.request';
+import { LogInResponse } from './user-login-use-case/login.response';
+import { LoginService } from './user-login-use-case/login.service';
 import { CreateProjectRequest } from './organization/project/create-project-request.dto';
 import { CreateProjectResponse } from './organization/project/create-project-response.dto';
 import { CreateProjectService } from './organization/project/create-project.service';
 import { PrintProjectsResponse } from './organization/project/print-projects-response.dto';
 import { PrintProjectsService } from './organization/project/print-projects.service';
-import { SignInRequest } from './signin-request.dto';
-import { SignInResponse } from './signin-response.dto';
+import { SignInRequest } from './user-signin-use-case/signin-request.dto';
+import { SignInResponse } from './user-signin-use-case/signin-response.dto';
 import mongoose from 'mongoose';
 
 

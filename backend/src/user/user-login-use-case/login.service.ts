@@ -2,9 +2,9 @@ import { Injectable, InternalServerErrorException, NotFoundException, Unauthoriz
 import { LogInRequest } from './login.request';
 import { LogInResponse } from './login.response';
 import { InjectModel } from '@nestjs/mongoose';
-import { User, UserDocument } from './user.entity';
+import { User, UserDocument } from '../user.entity';
 import mongoose, { Model } from 'mongoose';
-import { Organization, OrganizationDocument } from './organization/organization.entity';
+import { Organization, OrganizationDocument } from '../organization/organization.entity';
 
 @Injectable()
 export class LoginService {

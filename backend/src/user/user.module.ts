@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { UserController } from './user.controller';
 import { User, UserSchema } from './user.entity';
-import { SignInService } from './signin.service';
-import { LoginService } from './login.service';
+import { SignInService } from './user-signin-use-case/signin.service';
+import { LoginService } from './user-login-use-case/login.service';
 import { PrintProjectsService } from './organization/project/print-projects.service';
 import { CreateProjectService } from './organization/project/create-project.service';
 import { MongooseModule } from '@nestjs/mongoose';
