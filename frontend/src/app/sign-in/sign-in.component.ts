@@ -31,6 +31,7 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
 })
 export class SignInComponent {
   protected form: FormGroup;
+	existingUserMessage: string;
   // protected minlength: number = 8;
 
   constructor(
@@ -38,6 +39,7 @@ export class SignInComponent {
     private signInService: MakeSignInService,
 		private router: Router
   ){
+		this.existingUserMessage = '';
     this.form = this.formBuilder.group({
       userName: ['', Validators.required],
       userEmail: ['', [

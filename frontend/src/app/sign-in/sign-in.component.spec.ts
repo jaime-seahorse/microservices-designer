@@ -16,9 +16,11 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 
 import { SignInComponent } from './sign-in.component';
 import { MakeSignInService } from './do-signin.service';
+import { screen } from '@testing-library/angular';
 
 let loader: HarnessLoader;
 let fixture: ComponentFixture<SignInComponent>;
+let signInComponent: SignInComponent
 let userNameFormField: MatFormFieldHarness;
 let userEmailFormField: MatFormFieldHarness;
 let organizationNameFormField: MatFormFieldHarness;
@@ -43,6 +45,7 @@ describe('SignInComponent', () => {
 			.compileComponents();
 
 		fixture = TestBed.createComponent(SignInComponent);
+		signInComponent = fixture.componentInstance;
 		loader = TestbedHarnessEnvironment.loader(fixture);
 
 		let formFields = await loader.getAllHarnesses(MatFormFieldHarness);
@@ -65,29 +68,29 @@ describe('SignInComponent', () => {
 	// 	expect(submitButton).toBeTruthy();
 	// });
 	
-	// test('should signin a new user (The user fills good the form to sign in)', async () => {
-	// 	let userNameInput = await userNameFormField.getControl(MatInputHarness) as MatInputHarness;
-	// 	let userEmailInput = await userEmailFormField.getControl(MatInputHarness) as MatInputHarness;
-	// 	let organizationNameInput = await organizationNameFormField.getControl(MatInputHarness) as MatInputHarness;
-	// 	let userPasswordInput = await userPasswordFormField.getControl(MatInputHarness) as MatInputHarness;
-	// 	let userPasswordConfirmInput = await userPasswordConfirmFormField.getControl(MatInputHarness) as MatInputHarness;
-	// 	await userNameInput.setValue('pepe');
-	// 	await userEmailInput.setValue('pepe@gmail.com');
-	// 	await organizationNameInput.setValue('Pepe Organization');
-	// 	await userPasswordInput.setValue('pepe1234');
-	// 	await userPasswordConfirmInput.setValue('pepe1234');
-	// 	await submitButton.click();
-	// 	expect(await userNameInput.getValue()).toEqual('pepe');
-	// 	expect(await userEmailInput.getValue()).toEqual('pepe@gmail.com');
-	// 	expect(await organizationNameInput.getValue()).toEqual('Pepe Organization');
-	// 	expect(await userPasswordInput.getValue()).toEqual('pepe1234');
-	// 	expect(await userPasswordConfirmInput.getValue()).toEqual('pepe1234');
-	// 	expect(await userNameFormField.hasErrors()).toBeFalsy();
-	// 	expect(await userEmailFormField.hasErrors()).toBeFalsy();
-	// 	expect(await organizationNameFormField.hasErrors()).toBeFalsy();
-	// 	expect(await userPasswordFormField.hasErrors()).toBeFalsy();
-	// 	expect(await userPasswordConfirmFormField.hasErrors()).toBeFalsy();
-	// });
+	test('should signin a new user (The user fills good the form to sign in)', async () => {
+		let userNameInput = await userNameFormField.getControl(MatInputHarness) as MatInputHarness;
+		let userEmailInput = await userEmailFormField.getControl(MatInputHarness) as MatInputHarness;
+		let organizationNameInput = await organizationNameFormField.getControl(MatInputHarness) as MatInputHarness;
+		let userPasswordInput = await userPasswordFormField.getControl(MatInputHarness) as MatInputHarness;
+		let userPasswordConfirmInput = await userPasswordConfirmFormField.getControl(MatInputHarness) as MatInputHarness;
+		await userNameInput.setValue('pepe');
+		await userEmailInput.setValue('pepe@gmail.com');
+		await organizationNameInput.setValue('Pepe Organization');
+		await userPasswordInput.setValue('pepe1234');
+		await userPasswordConfirmInput.setValue('pepe1234');
+		expect(await userNameInput.getValue()).toEqual('pepe');
+		expect(await userEmailInput.getValue()).toEqual('pepe@gmail.com');
+		expect(await organizationNameInput.getValue()).toEqual('Pepe Organization');
+		expect(await userPasswordInput.getValue()).toEqual('pepe1234');
+		expect(await userPasswordConfirmInput.getValue()).toEqual('pepe1234');
+		await signInButton.click();
+		expect(await userNameFormField.hasErrors()).toBeFalsy();
+		expect(await userEmailFormField.hasErrors()).toBeFalsy();
+		expect(await organizationNameFormField.hasErrors()).toBeFalsy();
+		expect(await userPasswordFormField.hasErrors()).toBeFalsy();
+		expect(await userPasswordConfirmFormField.hasErrors()).toBeFalsy();
+	});
 
 	test('form should show errors (The user fills bad the form to sign in)', async () => {
 		let userNameInput = await userNameFormField.getControl(MatInputHarness) as MatInputHarness;
@@ -123,6 +126,33 @@ describe('SignInComponent', () => {
 		await userPasswordConfirmInput.setValue('');
 		await signInButton.click();
 		expect(await userPasswordConfirmFormField.hasErrors()).toBeTruthy();
+	});
+
+	test('should show existing-user message (The user fills good the form but user or organization exist in database)', async () => {
+		let userNameInput = await userNameFormField.getControl(MatInputHarness) as MatInputHarness;
+		let userEmailInput = await userEmailFormField.getControl(MatInputHarness) as MatInputHarness;
+		let organizationNameInput = await organizationNameFormField.getControl(MatInputHarness) as MatInputHarness;
+		let userPasswordInput = await userPasswordFormField.getControl(MatInputHarness) as MatInputHarness;
+		let userPasswordConfirmInput = await userPasswordConfirmFormField.getControl(MatInputHarness) as MatInputHarness;
+		await userNameInput.setValue('pepe');
+		await userEmailInput.setValue('pepe@gmail.com');
+		await organizationNameInput.setValue('Pepe Organization');
+		await userPasswordInput.setValue('pepe1234');
+		await userPasswordConfirmInput.setValue('pepe1234');
+		expect(await userNameInput.getValue()).toEqual('pepe');
+		expect(await userEmailInput.getValue()).toEqual('pepe@gmail.com');
+		expect(await organizationNameInput.getValue()).toEqual('Pepe Organization');
+		expect(await userPasswordInput.getValue()).toEqual('pepe1234');
+		expect(await userPasswordConfirmInput.getValue()).toEqual('pepe1234');
+		await signInButton.click();
+		expect(await userNameFormField.hasErrors()).toBeFalsy();
+		expect(await userEmailFormField.hasErrors()).toBeFalsy();
+		expect(await organizationNameFormField.hasErrors()).toBeFalsy();
+		expect(await userPasswordFormField.hasErrors()).toBeFalsy();
+		expect(await userPasswordConfirmFormField.hasErrors()).toBeFalsy();
+		signInComponent.existingUserMessage = 'The user already exists';
+		fixture.detectChanges();
+		expect(screen.getByText(signInComponent.existingUserMessage)).toBeTruthy();
 	});
 
   //-> Sync Validation
