@@ -17,6 +17,9 @@ export class LoginService {
 
   async logIn(logInRequest: LogInRequest): Promise<LogInResponse> {
     try {
+      console.log(typeof this.organizationModel)
+      console.log(typeof this.userModel)
+      
       const userFounded: UserDocument = await this.userModel.findOne({
         where: {
           email: logInRequest.email,

@@ -9,7 +9,6 @@ export type OrganizationDocument = HydratedDocument<Organization>;
 @Schema()
 export class Organization {
 
-
     @Prop({ unique: true })
     @IsString()
     name: string;
