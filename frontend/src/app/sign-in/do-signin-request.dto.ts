@@ -1,6 +1,6 @@
 export interface SignInRequest {
-	username: string,
-	email: string,
+	userName: string,
+	userEmail: string,
 	organizationName: string,
-	password: string
+	userPassword: string
 }

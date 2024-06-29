@@ -6,11 +6,12 @@ import { SignInResponse } from './do-signin-response.dto';
 
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { HttpErrorResponse } from '@angular/common/http';
+import { screen } from '@testing-library/angular';
 
 describe('SignInService', () => {
   let signInService: MakeSignInService;
 	let httpTestController: HttpTestingController;
-	let mockRequest: TestRequest;
+	let mockSignInRequest: TestRequest;
 	let httpError: HttpErrorResponse;
 
   beforeEach(() => {
@@ -25,32 +26,30 @@ describe('SignInService', () => {
 		httpTestController.verify();
 	});
 
-  it('should be created', () => {
+  test('should be created', () => {
     expect(signInService).toBeTruthy();
   });
 
-	it('should register a new user (The user fills good the form to sign in)', () => {
-		let newUserData: SignInRequest = {
-			username: "paul7777",
-			email: "paul7777@hotmail.com",
+	test('should send the user and organization to the backend (The user fills good the form to sign in or The user fills good the form but user or organization exist in database)', () => {
+		let userAndOrganizationData: SignInRequest = {
+			userName: "paul7777",
+			userEmail: "paul7777@hotmail.com",
 			organizationName: "Paul's Organization",
-			password: "1234"
+			userPassword: "1234"
 		};
 		
-		let mockSignInResponse: SignInResponse = {
-			message: 'User registered successfully!!'
-		};
+		let successfulSignInMessage: string = '';
 
-		let responseMessage: string = '';
+		signInService.signInUser(userAndOrganizationData).subscribe(
+			signInResponse => successfulSignInMessage = signInResponse.body?.message as string
+		);
 
-		signInService.signInUser(newUserData).subscribe((response) => {
-			responseMessage = response.body?.message as string;
-		});
+		mockSignInRequest = httpTestController.expectOne(`${signInService.apiURL}/signin`);
+		expect(mockSignInRequest.request.method).toEqual("POST");
 
-		mockRequest = httpTestController.expectOne(`${signInService.apiURL}/signin`);
-		expect(mockRequest.request.method).toEqual("POST");
-		mockRequest.flush(mockSignInResponse);
-		expect(responseMessage).toEqual(mockSignInResponse.message!);
+		let mockSuccessMessage: SignInResponse = { message: 'User registered successfully!!' };
+		mockSignInRequest.flush(mockSuccessMessage);
+		expect(successfulSignInMessage).toEqual(mockSuccessMessage.message);
 	});
 
 	// it('should be able to handle errors when trying to register a new user', () => {

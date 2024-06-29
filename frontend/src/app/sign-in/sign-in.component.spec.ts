@@ -74,17 +74,14 @@ describe('SignInComponent', () => {
 		let organizationNameInput = await organizationNameFormField.getControl(MatInputHarness) as MatInputHarness;
 		let userPasswordInput = await userPasswordFormField.getControl(MatInputHarness) as MatInputHarness;
 		let userPasswordConfirmInput = await userPasswordConfirmFormField.getControl(MatInputHarness) as MatInputHarness;
+
 		await userNameInput.setValue('pepe');
 		await userEmailInput.setValue('pepe@gmail.com');
 		await organizationNameInput.setValue('Pepe Organization');
 		await userPasswordInput.setValue('pepe1234');
 		await userPasswordConfirmInput.setValue('pepe1234');
-		expect(await userNameInput.getValue()).toEqual('pepe');
-		expect(await userEmailInput.getValue()).toEqual('pepe@gmail.com');
-		expect(await organizationNameInput.getValue()).toEqual('Pepe Organization');
-		expect(await userPasswordInput.getValue()).toEqual('pepe1234');
-		expect(await userPasswordConfirmInput.getValue()).toEqual('pepe1234');
 		await signInButton.click();
+
 		expect(await userNameFormField.hasErrors()).toBeFalsy();
 		expect(await userEmailFormField.hasErrors()).toBeFalsy();
 		expect(await organizationNameFormField.hasErrors()).toBeFalsy();
@@ -98,34 +95,52 @@ describe('SignInComponent', () => {
 		let userOrganizationNameInput = await organizationNameFormField.getControl(MatInputHarness) as MatInputHarness;
 		let userPasswordInput = await userPasswordFormField.getControl(MatInputHarness) as MatInputHarness;
 		let userPasswordConfirmInput = await userPasswordConfirmFormField.getControl(MatInputHarness) as MatInputHarness;
+
 		await userNameInput.setValue('');
 		await signInButton.click();
 		expect(await userNameFormField.hasErrors()).toBeTruthy();
-		await userEmailInput.setValue('invalid email');
-		await signInButton.click();
-		expect(await userEmailFormField.hasErrors()).toBeTruthy();
+		expect(screen.getByText('username is required')).toBeTruthy();
+
 		await userEmailInput.setValue('');
 		await signInButton.click();
 		expect(await userEmailFormField.hasErrors()).toBeTruthy();
+		expect(screen.getByText('email is required')).toBeTruthy();
+
+		await userEmailInput.setValue('invalid email');
+		await signInButton.click();
+		expect(await userEmailFormField.hasErrors()).toBeTruthy();
+		expect(screen.getByText('email is invalid')).toBeTruthy();
+		
 		await userOrganizationNameInput.setValue('');
 		await signInButton.click();
 		expect(await organizationNameFormField.hasErrors()).toBeTruthy();
-		await userPasswordInput.setValue('1234567');
-		await signInButton.click();
-		expect(await userPasswordFormField.hasErrors()).toBeTruthy();
-		await userPasswordInput.setValue('111111111111111111111111111111111111111111111111111111111111');
-		await signInButton.click();
-		expect(await userPasswordFormField.hasErrors()).toBeTruthy();
+		expect(screen.getByText('organization name is required')).toBeTruthy();
+
 		await userPasswordInput.setValue('');
 		await signInButton.click();
 		expect(await userPasswordFormField.hasErrors()).toBeTruthy();
-		await userPasswordInput.setValue('12345678');
-		await userPasswordConfirmInput.setValue('90123456');
+		expect(screen.getByText('password is required')).toBeTruthy();
+
+		await userPasswordInput.setValue('7 chars');
 		await signInButton.click();
-		expect(await userPasswordConfirmFormField.hasErrors()).toBeTruthy();
+		expect(await userPasswordFormField.hasErrors()).toBeTruthy();
+		expect(screen.getByText('password must be between 8 and 50 characters')).toBeTruthy();
+
+		await userPasswordInput.setValue('More than 50 characters More than 50 characters....');
+		await signInButton.click();
+		expect(await userPasswordFormField.hasErrors()).toBeTruthy();
+		expect(screen.getByText('password must be between 8 and 50 characters')).toBeTruthy();
+
 		await userPasswordConfirmInput.setValue('');
 		await signInButton.click();
 		expect(await userPasswordConfirmFormField.hasErrors()).toBeTruthy();
+		expect(screen.getByText('password confirmation is required')).toBeTruthy();
+
+		await userPasswordInput.setValue('one password');
+		await userPasswordConfirmInput.setValue('another password');
+		await signInButton.click();
+		expect(await userPasswordConfirmFormField.hasErrors()).toBeTruthy();
+		expect(screen.getByText('both passwords must be the same')).toBeTruthy();
 	});
 
 	test('should show existing-user message (The user fills good the form but user or organization exist in database)', async () => {
@@ -134,22 +149,20 @@ describe('SignInComponent', () => {
 		let organizationNameInput = await organizationNameFormField.getControl(MatInputHarness) as MatInputHarness;
 		let userPasswordInput = await userPasswordFormField.getControl(MatInputHarness) as MatInputHarness;
 		let userPasswordConfirmInput = await userPasswordConfirmFormField.getControl(MatInputHarness) as MatInputHarness;
+
 		await userNameInput.setValue('pepe');
 		await userEmailInput.setValue('pepe@gmail.com');
 		await organizationNameInput.setValue('Pepe Organization');
 		await userPasswordInput.setValue('pepe1234');
 		await userPasswordConfirmInput.setValue('pepe1234');
-		expect(await userNameInput.getValue()).toEqual('pepe');
-		expect(await userEmailInput.getValue()).toEqual('pepe@gmail.com');
-		expect(await organizationNameInput.getValue()).toEqual('Pepe Organization');
-		expect(await userPasswordInput.getValue()).toEqual('pepe1234');
-		expect(await userPasswordConfirmInput.getValue()).toEqual('pepe1234');
 		await signInButton.click();
+
 		expect(await userNameFormField.hasErrors()).toBeFalsy();
 		expect(await userEmailFormField.hasErrors()).toBeFalsy();
 		expect(await organizationNameFormField.hasErrors()).toBeFalsy();
 		expect(await userPasswordFormField.hasErrors()).toBeFalsy();
 		expect(await userPasswordConfirmFormField.hasErrors()).toBeFalsy();
+		
 		signInComponent.existingUserMessage = 'The user already exists';
 		fixture.detectChanges();
 		expect(screen.getByText(signInComponent.existingUserMessage)).toBeTruthy();

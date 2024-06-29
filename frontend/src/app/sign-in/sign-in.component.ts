@@ -71,10 +71,10 @@ export class SignInComponent {
   onSubmit(): void {
     if (this.form.valid) {
 			const newUserData: SignInRequest = {
-				username: this.form.get('username')?.value,
-				email: this.form.get('email')?.value,
+				userName: this.form.get('username')?.value,
+				userEmail: this.form.get('email')?.value,
 				organizationName: this.form.get('organizationName')?.value,
-				password: this.form.get('password')?.value,
+				userPassword: this.form.get('password')?.value,
 			}
 			
 			this.signInService.signInUser(newUserData).subscribe((response) => {
