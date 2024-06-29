@@ -4,9 +4,11 @@ import { SignInRequest } from './signin-request.dto';
 import { SignInResponse } from './signin-response.dto';
 import { getModelToken, } from '@nestjs/mongoose';
 import { User, UserDocument } from '../user.entity';
-import mongoose, { Model } from 'mongoose';
+import mongoose, { Model, Query } from 'mongoose';
 import { Organization, OrganizationDocument, } from '../organization/organization.entity';
 import { IOrganizationTest, IUserTest } from '../user.interface';
+import { InternalServerErrorException } from '@nestjs/common';
+import { createMock } from '@golevelup/ts-jest';
 
 describe('UsersService', () => {
   let service: SignInService;
@@ -22,15 +24,15 @@ describe('UsersService', () => {
         {
           provide: userModeltoken,
           useValue: {
-            save: jest.fn(),
             findOne: jest.fn(),
             create: jest.fn(),
+            findOneAndUpdate: jest.fn(),
+            exec: jest.fn(),
           }
         },
         {
           provide: organizationModelToken,
           useValue: {
-            save: jest.fn(),
             findOne: jest.fn(),
             create: jest.fn(),
           }
@@ -43,13 +45,14 @@ describe('UsersService', () => {
     service = module.get<SignInService>(SignInService);
   });
 
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
+
 
 
   describe('SignIn', () => {
@@ -80,7 +83,7 @@ describe('UsersService', () => {
         email: user.email,
         name: user.name,
         password: user.password,
-        organizationId: organizationId,
+        organizationId: undefined,
       };
 
       const organizationDocumentMock = {
@@ -90,61 +93,59 @@ describe('UsersService', () => {
         userIds: [userId],
       };
 
-      let saveSpy: jest.SpyInstance;
-      let constructorSpy: jest.SpyInstance;
 
       jest.spyOn(userModel, 'findOne').mockResolvedValue(false);
       jest.spyOn(organizationModel, 'findOne').mockResolvedValue(false);
-      saveSpy = jest.spyOn(userModel.prototype, 'save').mockResolvedValue(userDocumentMock)
-      saveSpy = jest.spyOn(organizationModel.prototype, 'save').mockResolvedValue(organizationDocumentMock)
-
+      jest.spyOn(userModel, 'create')
+        .mockImplementationOnce(() => Promise.resolve(userDocumentMock as any))
+      jest.spyOn(organizationModel, 'create')
+        .mockImplementationOnce(() => Promise.resolve(organizationDocumentMock as any))
+      userDocumentMock.organizationId = organizationId;
+      jest.spyOn(userModel, 'findOneAndUpdate').mockReturnValueOnce(
+        createMock<Query<UserDocument, UserDocument>>({
+          exec: jest.fn().mockResolvedValueOnce({
+            userDocumentMock
+          })
+        })
+      )
       const signInResponse: SignInResponse = await service.signIn(sigInRequest);
+      console.log('siginnn: ',signInResponse)
       expect(signInResponse.name).toEqual(userDocumentMock.name);
       // expect()
     });
 
 
-    //   it('should exists a user (The user fills good the form but user or organization exist in database)', async () => {
-    //     const signInRequest: SignInRequest = new SignInRequest();
-    //     signInRequest.email = "pepe@mail.com";
-    //     signInRequest.name = "Pepe";
-    //     signInRequest.password = "changeme";
-    //     signInRequest.organizationName = "PepeOrganization";
+    it('should exists a user (The user fills good the form but user or organization exist in database)', async () => {
+      const signInRequest: SignInRequest = new SignInRequest();
+      signInRequest.email = "pepe@mail.com";
+      signInRequest.name = "Pepe";
+      signInRequest.password = "changeme";
+      signInRequest.organizationName = "PepeOrganization";
 
-    //     const mockError: Error = {
-    //       name: '',
-    //       message: 'This email already exists',
-    //     }
-    //     try {
-    //       jest.spyOn(service, 'signIn').mockRejectedValueOnce(mockError);
-    //       await service.signIn(signInRequest);
-    //     } catch (error) {
-    //       console.log(error);
-    //       expect(error.message).toEqual(mockError.message);
-    //       expect(typeof error).toBe(typeof mockError)
-    //     }
-    //   });
 
-    //   it('should exists a user (The user fills good the form but user or organization exist in database)', async () => {
-    //     const signInRequest: SignInRequest = new SignInRequest();
-    //     signInRequest.email = "pepe@mail.com";
-    //     signInRequest.name = "Pepe";
-    //     signInRequest.password = "changeme";
-    //     signInRequest.organizationName = "PepeOrganization";
+      await expect(service.signIn(signInRequest)).rejects.toThrow(InternalServerErrorException);
+    });
 
-    //     const mockError: Error = {
-    //       name: '',
-    //       message: 'This organization already exists',
-    //     }
-    //     try {
-    //       jest.spyOn(service, 'signIn').mockRejectedValueOnce(mockError);
-    //       await service.signIn(signInRequest);
-    //     } catch (error) {
-    //       console.log(error);
-    //       expect(error.message).toEqual(mockError.message);
-    //       expect(typeof error).toBe(typeof mockError)
-    //     }
-    //   })
+    it('should exists a user (The user fills good the form but user or organization exist in database)', async () => {
+      const signInRequest: SignInRequest = new SignInRequest();
+      signInRequest.email = "pepe@mail.com";
+      signInRequest.name = "Pepe";
+      signInRequest.password = "changeme";
+      signInRequest.organizationName = "PepeOrganization";
+
+      const mockError: Error = {
+        name: '',
+        message: 'This organization already exists',
+      }
+      try {
+        jest.spyOn(service, 'signIn').mockRejectedValueOnce(mockError);
+        await service.signIn(signInRequest);
+      } catch (error) {
+        console.log(error);
+        expect(error.message).toEqual(mockError.message);
+        expect(typeof error).toBe(typeof mockError)
+      }
+    })
   });
 
 });

@@ -17,7 +17,7 @@ export class Organization {
     @IsArray()
     userIds: mongoose.Types.ObjectId[];
 
-    @Prop()
+    @Prop({ type: mongoose.Types.ObjectId, ref: 'User' })
     @IsArray()
     projectIds: mongoose.Types.ObjectId[];
 }

@@ -6,11 +6,9 @@ export const MongooseObjectId = new mongoose.Types.ObjectId()
 export type MongooseTypeObjectId = mongoose.Types.ObjectId;
 
 export interface IUserTest extends User {
-    _id: MongooseTypeObjectId;
     save?: typeof jest.fn;
 }
 
 export interface IOrganizationTest extends Organization {
-    _id: MongooseTypeObjectId;
     save?: typeof jest.fn;
 }

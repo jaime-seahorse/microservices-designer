@@ -44,6 +44,7 @@
   "devDependencies": {
     "@cucumber/cucumber": "^10.8.0",
     "@cucumber/pretty-formatter": "^1.0.1",
+    "@golevelup/ts-jest": "^0.5.0",
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
     "@nestjs/testing": "^10.0.0",

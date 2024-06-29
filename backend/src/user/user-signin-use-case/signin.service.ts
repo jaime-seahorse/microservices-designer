@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { SignInRequest } from './signin-request.dto';
 import { SignInResponse } from './signin-response.dto';
 import { Organization, OrganizationDocument } from '../organization/organization.entity';
@@ -21,61 +21,63 @@ export class SignInService {
 
     try {
 
-      const organization: Organization = new Organization();
-      organization.name = signInRequest.organizationName;
+      const organizationDocument: Organization = await this.createOrganization(signInRequest.organizationName);
 
-      const organizationDocument: OrganizationDocument = await this.createOrganization(organization);
-
-      const userDocument: UserDocument = this.setUserDocument(signInRequest, organizationDocument._id);
+      const userDocument = this.setUser(signInRequest);
 
       if (await this.userModel.findOne({ email: signInRequest.email })) {
         console.log('Email already exists')
-        throw new Error('This email already exists')
+        throw new ConflictException('This email already exists')
       }
-      
-      organizationDocument.userIds.push(userDocument._id);
-      const userCreated = await userDocument.save();
-      const organizationCreated = await organizationDocument.save();
 
-      return this.setUserResponse(userCreated, organizationCreated.name);
+      const userCreated = await this.userModel.create(userDocument);
+      console.log('User created: ', userCreated)
+      organizationDocument.userIds.push(userCreated._id);
+      const organizationCreated = await this.organizationModel.create(organizationDocument);
+      console.log('Organziation created: ', organizationCreated);
+      const userUpdated: UserDocument = await this.userModel
+        .findOneAndUpdate({ _id: userCreated._id }, { organizationId: organizationCreated.id }).exec()
+      console.log('User updated: ', userUpdated);
+      return this.setUserResponse(userUpdated, organizationCreated);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
   }
 
 
-  async createOrganization(organization: Organization): Promise<OrganizationDocument> {
+  async createOrganization(organizationName: string): Promise<Organization> {
     try {
 
-      if (await this.organizationModel.findOne({ name: organization.name })) {
+      if (await this.organizationModel.findOne({ name: organizationName })) {
         throw new Error('This organization already exists')
       }
+      const organization: Organization = new Organization();
+      organization.name = organizationName;
+      organization.userIds = [];
+      organization.projectIds = [];
 
-      const organizationModel = new this.organizationModel(organization);
-      console.log(organizationModel)
-
-      return organizationModel;
+      return organization;
 
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
   }
 
-  private setUserDocument(signInRequest: SignInRequest, organizationId: mongoose.Types.ObjectId): UserDocument {
+  private setUser(signInRequest: SignInRequest): User {
     const user: User = new User();
     user.email = signInRequest.email;
     user.name = signInRequest.name;
     user.password = signInRequest.password;
-    user.organizationId = organizationId;
-    return new this.userModel(user);
+    return user;
   }
 
-  private setUserResponse(userCreated: UserDocument, organization: string): SignInResponse {
+  private setUserResponse(userCreated: UserDocument, organization: OrganizationDocument): SignInResponse {
     const signInResponse: SignInResponse = new SignInResponse();
     signInResponse.email = userCreated.email;
     signInResponse.name = userCreated.name;
     signInResponse.id = userCreated.id;
-    signInResponse.organizationName = organization;
+    signInResponse.organizationName = organization.name;
+    signInResponse.organizationId = organization._id;
     return signInResponse;
   }
 
