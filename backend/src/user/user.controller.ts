@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, InternalServerErrorException, Param, Patch, Post} from '@nestjs/common';
+import { Body, ConflictException, Controller, Get, HttpCode, HttpStatus, InternalServerErrorException, Param, Patch, Post} from '@nestjs/common';
 import { ApiBearerAuth, ApiExtraModels, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LogInResponse } from './user-login-use-case/login.response';
 // import { LoginService } from './user-login-use-case/login.service';
@@ -35,9 +35,9 @@ export class UserController {
     try {
       return await this.signInService.signIn(signInRequest);
     } catch (error) {
-      if (error instanceof Error) {
+      if (error instanceof ConflictException) {
         console.log(error)
-        throw new InternalServerErrorException(error.message);
+        throw error;
       }
     }
   }

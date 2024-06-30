@@ -7,7 +7,7 @@ import { User, UserDocument } from '../user.entity';
 import mongoose, { Model, Query } from 'mongoose';
 import { Organization, OrganizationDocument, } from '../organization/organization.entity';
 import { IOrganizationTest, IUserTest } from '../user.interface';
-import { InternalServerErrorException } from '@nestjs/common';
+import { ConflictException, InternalServerErrorException } from '@nestjs/common';
 import { createMock } from '@golevelup/ts-jest';
 
 describe('UsersService', () => {
@@ -58,37 +58,26 @@ describe('UsersService', () => {
   describe('SignIn', () => {
     it('should signin a new user and create an organization (The user fills good the form to sign in)', async () => {
       const sigInRequest: SignInRequest = {
-        name: 'pepe',
-        email: 'pepe@gmail.com',
-        password: 'pepe1234',
-        organizationName: 'pepe-organization'
+        name: "pepe",
+        email: "pepe@gmail.com",
+        password: "pepe1234",
+        organizationName: "pepe-organization"
       }
 
       const userId = new mongoose.Types.ObjectId();
       const organizationId = new mongoose.Types.ObjectId();
 
-      const organization = new Organization();
-      organization.name = sigInRequest.organizationName;
-      organization.projectIds = [];
-      organization.userIds = [userId];
-
-      const user = new User();
-      user.name = sigInRequest.name;
-      user.email = sigInRequest.email;
-      user.password = sigInRequest.password;
-      user.organizationId = organizationId;
-
-      const userDocumentMock = {
+      const userDocumentMock: IUserTest = {
         _id: userId,
-        email: user.email,
-        name: user.name,
-        password: user.password,
+        email: sigInRequest.email,
+        name: sigInRequest.name,
+        password: sigInRequest.password,
         organizationId: undefined,
       };
 
-      const organizationDocumentMock = {
+      const organizationDocumentMock: IOrganizationTest = {
         _id: organizationId,
-        name: organization.name,
+        name: sigInRequest.organizationName,
         projectIds: [],
         userIds: [userId],
       };
@@ -96,22 +85,24 @@ describe('UsersService', () => {
 
       jest.spyOn(userModel, 'findOne').mockResolvedValue(false);
       jest.spyOn(organizationModel, 'findOne').mockResolvedValue(false);
+
       jest.spyOn(userModel, 'create')
         .mockImplementationOnce(() => Promise.resolve(userDocumentMock as any))
       jest.spyOn(organizationModel, 'create')
         .mockImplementationOnce(() => Promise.resolve(organizationDocumentMock as any))
       userDocumentMock.organizationId = organizationId;
+
       jest.spyOn(userModel, 'findOneAndUpdate').mockReturnValueOnce(
         createMock<Query<UserDocument, UserDocument>>({
-          exec: jest.fn().mockResolvedValueOnce({
-            userDocumentMock
-          })
-        })
-      )
+          exec: jest.fn().mockResolvedValueOnce(userDocumentMock)
+        }))
+
       const signInResponse: SignInResponse = await service.signIn(sigInRequest);
-      console.log('siginnn: ',signInResponse)
-      expect(signInResponse.name).toEqual(userDocumentMock.name);
-      // expect()
+      console.log('siginnn: ', signInResponse)
+      expect(signInResponse.name).toEqual(sigInRequest.name);
+      expect(signInResponse.email).toEqual(sigInRequest.email);
+      expect(signInResponse.organizationName).toEqual(sigInRequest.organizationName);
+      expect(signInResponse.organizationId).toEqual(organizationId);
     });
 
 
@@ -122,29 +113,25 @@ describe('UsersService', () => {
       signInRequest.password = "changeme";
       signInRequest.organizationName = "PepeOrganization";
 
+      jest.spyOn(userModel, 'findOne').mockResolvedValue(true);
+      jest.spyOn(organizationModel, 'findOne').mockResolvedValue(false);
 
-      await expect(service.signIn(signInRequest)).rejects.toThrow(InternalServerErrorException);
+      await expect(service.signIn(signInRequest)).rejects.toThrow(new ConflictException('This email already exists'));
     });
 
-    it('should exists a user (The user fills good the form but user or organization exist in database)', async () => {
+    it('should exists a organization (The user fills good the form but user or organization exist in database)', async () => {
       const signInRequest: SignInRequest = new SignInRequest();
       signInRequest.email = "pepe@mail.com";
       signInRequest.name = "Pepe";
       signInRequest.password = "changeme";
       signInRequest.organizationName = "PepeOrganization";
 
-      const mockError: Error = {
-        name: '',
-        message: 'This organization already exists',
-      }
-      try {
-        jest.spyOn(service, 'signIn').mockRejectedValueOnce(mockError);
-        await service.signIn(signInRequest);
-      } catch (error) {
-        console.log(error);
-        expect(error.message).toEqual(mockError.message);
-        expect(typeof error).toBe(typeof mockError)
-      }
+      jest.spyOn(userModel, 'findOne').mockResolvedValue(false);
+      jest.spyOn(organizationModel, 'findOne').mockResolvedValue(true);
+
+      await expect(service.signIn(signInRequest)).rejects.toThrow(new ConflictException('This organization already exists'));
+      
+
     })
   });
 

@@ -40,6 +40,9 @@ export class SignInService {
       console.log('User updated: ', userUpdated);
       return this.setUserResponse(userUpdated, organizationCreated);
     } catch (error) {
+      if (error instanceof ConflictException) {
+        throw error;
+      }
       throw new InternalServerErrorException(error);
     }
   }
@@ -49,7 +52,7 @@ export class SignInService {
     try {
 
       if (await this.organizationModel.findOne({ name: organizationName })) {
-        throw new Error('This organization already exists')
+        throw new ConflictException('This organization already exists')
       }
       const organization: Organization = new Organization();
       organization.name = organizationName;
@@ -59,6 +62,9 @@ export class SignInService {
       return organization;
 
     } catch (error) {
+      if(error instanceof ConflictException) {
+        throw error;
+      }
       throw new InternalServerErrorException(error);
     }
   }
