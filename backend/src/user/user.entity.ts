@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IsEmail, IsNumber, IsString, Length, } from 'class-validator';
-import mongoose, { HydratedDocument, ObjectId } from 'mongoose';
+import mongoose, { HydratedDocument, } from 'mongoose';
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -21,9 +21,10 @@ export class User {
     @Prop()
     password: string;
 
-    @Prop()
+    @Prop({ type: mongoose.Types.ObjectId, ref: 'Organization' })
     organizationId: mongoose.Types.ObjectId;
 
 
 }
-export const UserSchema = SchemaFactory.createForClass(User)
+
+export const UserSchema = SchemaFactory.createForClass(User);

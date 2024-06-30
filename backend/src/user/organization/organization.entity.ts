@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Type } from 'class-transformer';
 import { IsArray, IsString } from 'class-validator';
 import mongoose, { HydratedDocument } from 'mongoose';
 
@@ -16,7 +17,7 @@ export class Organization {
     @IsArray()
     userIds: mongoose.Types.ObjectId[];
 
-    @Prop()
+    @Prop({ type: mongoose.Types.ObjectId, ref: 'User' })
     @IsArray()
     projectIds: mongoose.Types.ObjectId[];
 }
