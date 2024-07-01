@@ -2,11 +2,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { LoginService } from './login.service';
 import { LogInRequest } from './login.request';
 import { LogInResponse } from './login.response';
-import mongoose, { Model } from 'mongoose';
+import { Model } from 'mongoose';
 import { getModelToken } from '@nestjs/mongoose';
-import { User, UserDocument } from '../user.entity';
-import { Organization, OrganizationDocument } from '../organization/organization.entity';
-import { IOrganizationTest, IUserTest, MongooseObjectId } from '../user.interface';
+import { UserDocument } from '../user.entity';
+import { OrganizationDocument } from '../organization/organization.entity';
+import { IOrganizationTest, IUserTest, MongooseObjectId } from '../user.interface.test';
+import { UnauthorizedException } from '@nestjs/common';
 
 describe('LoginService', () => {
   let service: LoginService;
@@ -50,7 +51,7 @@ describe('LoginService', () => {
 
   describe('logIn', () => {
 
-    it('should login a user when the form is filled correctly and the user is registered', async () => {
+    test('should login a user when the form is filled correctly and the user is registered', async () => {
       const logInRequest: LogInRequest = {
         email: 'pepe@gmail.com',
         password: 'pepe1234',
@@ -69,7 +70,7 @@ describe('LoginService', () => {
         name: 'pepe-organization',
         userIds: [userModelMock._id],
         projectIds: []
-      }
+      };
 
       jest.spyOn(userModel, 'findOne').mockResolvedValue(userModelMock);
       jest.spyOn(organizationModel, 'findById').mockResolvedValue(organizationModelMock);
@@ -86,6 +87,26 @@ describe('LoginService', () => {
       expect(organizationModel.findById).toHaveBeenCalledTimes(1);
       expect(userModel.findOne).toHaveBeenCalledTimes(1);
     });
+
+    test('should not exists a user (The user fills correctly the form to log in and the user is not registered)', async () => {
+      const logInRequest: LogInRequest = {
+        email: 'pepe@gmail.com',
+        password: 'pepe1234',
+      };
+      jest.spyOn(userModel, 'findOne').mockResolvedValue(false);
+      await expect(service.logIn(logInRequest))
+        .rejects.toThrow(new UnauthorizedException('Email or password incorrect'))
+    })
+
+    test('should not exists a user (The user fills correctly the form to log in and the user is not registered)', async () => {
+      const logInRequest: LogInRequest = {
+        email: 'pepe@gmail.com',
+        password: 'pepe1234',
+      };
+      jest.spyOn(userModel, 'findOne').mockResolvedValue(false);
+      await expect(service.logIn(logInRequest))
+        .rejects.toThrow(new UnauthorizedException('Email or password incorrect'))
+    })
   });
 
 

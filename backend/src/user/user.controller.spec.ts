@@ -75,7 +75,7 @@ describe('UsersController', () => {
       signInRequest.organizationName = "pepe-organization";
 
       const signInResponseMock: SignInResponse = new SignInResponse();
-      signInResponseMock.id = 1;
+      signInResponseMock.id = new mongoose.Types.ObjectId();
       signInResponseMock.email = signInRequest.email;
       signInResponseMock.name = signInRequest.name;
       signInResponseMock.organizationName = signInRequest.organizationName;
@@ -138,7 +138,7 @@ describe('UsersController', () => {
   });
 
   describe('printProjects', () => {
-    it('should return all projects by organization', async () => {
+    it('should return all projects by organization (Show the list of all projects of a user)', async () => {
       const printProjectsResponseMock: PrintProjectsResponse[] = [
         {
           projectId: new mongoose.Types.ObjectId(),
@@ -158,10 +158,6 @@ describe('UsersController', () => {
       expect(printProjectsServiceMock.printProjects).toHaveBeenCalledWith(1);
       expect(printProjectsResponse).toEqual(printProjectsResponseMock);
     })
-    it('should return a void array', async () => {
-
-    });
-
   });
 
 

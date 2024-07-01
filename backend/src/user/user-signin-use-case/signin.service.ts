@@ -32,11 +32,14 @@ export class SignInService {
 
       const userCreated = await this.userModel.create(userDocument);
       console.log('User created: ', userCreated)
+
       organizationDocument.userIds.push(userCreated._id);
       const organizationCreated = await this.organizationModel.create(organizationDocument);
       console.log('Organziation created: ', organizationCreated);
+
       const userUpdated: UserDocument = await this.userModel
         .findOneAndUpdate({ _id: userCreated._id }, { organizationId: organizationCreated.id }).exec()
+        
       console.log('User updated: ', userUpdated);
       return this.setUserResponse(userUpdated, organizationCreated);
     } catch (error) {

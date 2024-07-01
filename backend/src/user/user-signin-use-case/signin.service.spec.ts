@@ -6,7 +6,7 @@ import { getModelToken, } from '@nestjs/mongoose';
 import { User, UserDocument } from '../user.entity';
 import mongoose, { Model, Query } from 'mongoose';
 import { Organization, OrganizationDocument, } from '../organization/organization.entity';
-import { IOrganizationTest, IUserTest } from '../user.interface';
+import { IOrganizationTest, IUserTest } from '../user.interface.test';
 import { ConflictException, InternalServerErrorException } from '@nestjs/common';
 import { createMock } from '@golevelup/ts-jest';
 
@@ -54,9 +54,8 @@ describe('UsersService', () => {
   });
 
 
-
   describe('SignIn', () => {
-    it('should signin a new user and create an organization (The user fills good the form to sign in)', async () => {
+    test('should signin a new user and create an organization (The user fills good the form to sign in)', async () => {
       const sigInRequest: SignInRequest = {
         name: "pepe",
         email: "pepe@gmail.com",
@@ -106,7 +105,7 @@ describe('UsersService', () => {
     });
 
 
-    it('should exists a user (The user fills good the form but user or organization exist in database)', async () => {
+    test('should exists a user (The user fills good the form but user or organization exist in database)', async () => {
       const signInRequest: SignInRequest = new SignInRequest();
       signInRequest.email = "pepe@mail.com";
       signInRequest.name = "Pepe";
@@ -119,7 +118,7 @@ describe('UsersService', () => {
       await expect(service.signIn(signInRequest)).rejects.toThrow(new ConflictException('This email already exists'));
     });
 
-    it('should exists a organization (The user fills good the form but user or organization exist in database)', async () => {
+    test('should exists a organization (The user fills good the form but user or organization exist in database)', async () => {
       const signInRequest: SignInRequest = new SignInRequest();
       signInRequest.email = "pepe@mail.com";
       signInRequest.name = "Pepe";
@@ -130,7 +129,7 @@ describe('UsersService', () => {
       jest.spyOn(organizationModel, 'findOne').mockResolvedValue(true);
 
       await expect(service.signIn(signInRequest)).rejects.toThrow(new ConflictException('This organization already exists'));
-      
+
 
     })
   });

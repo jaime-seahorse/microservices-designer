@@ -1,8 +1,7 @@
-import { Body, ConflictException, Controller, Get, HttpCode, HttpStatus, InternalServerErrorException, Param, Patch, Post} from '@nestjs/common';
+import { Body, ConflictException, Controller, Get, HttpCode, HttpStatus, InternalServerErrorException, Param, Patch, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiExtraModels, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LogInResponse } from './user-login-use-case/login.response';
-// import { LoginService } from './user-login-use-case/login.service';
-
+import { LoginService } from './user-login-use-case/login.service';
 import { SignInRequest } from './user-signin-use-case/signin-request.dto';
 import { SignInResponse } from './user-signin-use-case/signin-response.dto';
 import { SignInService } from './user-signin-use-case/signin.service';
@@ -21,11 +20,12 @@ export class UserController {
 
   constructor(
     private readonly signInService: SignInService,
-    // private readonly logInService: LoginService,
+    private readonly logInService: LoginService,
     private readonly createProjectService: CreateProjectService,
     private readonly printProjectsService: PrintProjectsService
   ) { }
 
+  @ApiOperation({ summary: 'Sigin a user' })
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiResponse({ status: 201, description: 'User created.', type: SignInResponse })
@@ -42,24 +42,24 @@ export class UserController {
     }
   }
 
+  @ApiOperation({ summary: 'Login a user' })
+  @Patch()
+  @HttpCode(HttpStatus.CREATED)
+  @ApiResponse({ status: 200, description: 'User logged.', type: SignInResponse })
+  @ApiResponse({ status: 404, description: 'The user is not exist.' })
+  @ApiExtraModels(LogInResponse)
+  async logiIn(@Body() logInRequest: LogInRequest): Promise<LogInResponse> {
+    try {
+      return await this.logInService.logIn(logInRequest);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(error)
+        throw new InternalServerErrorException(error.message);
+      }
+    }
+  }
 
-  // @Patch()
-  // @HttpCode(HttpStatus.CREATED)
-  // @ApiResponse({ status: 200, description: 'User logged.', type: SignInResponse })
-  // @ApiResponse({ status: 404, description: 'The user is not exist.' })
-  // @ApiExtraModels(SignInResponse)
-  // async logiIn(@Body() logInRequest: LogInRequest): Promise<LogInResponse> {
-  //   try {
-  //     return await this.logInService.logIn(logInRequest);
-  //   } catch (error) {
-  //     if (error instanceof Error) {
-  //       console.log(error)
-  //       throw new InternalServerErrorException(error.message);
-  //     }
-  //   }
-  // }
 
-  
   @ApiOperation({ summary: 'Create a project' })
   @ApiResponse({
     status: HttpStatus.CREATED, description: 'The project has been created', type: CreateProjectResponse
@@ -95,27 +95,27 @@ export class UserController {
 
 
 // @ApiOperation({ summary: 'Update a project' })
-  // @ApiResponse({
-  //   status: HttpStatus.OK, description: 'Project has been updated', type: UpdateProjectResponse
-  // })
-  // @ApiResponse({
-  //   status: HttpStatus.BAD_REQUEST
-  // })
-  // @ApiResponse({
-  //   status: HttpStatus.NOT_FOUND, description: 'Project not founded'
-  // })
-  // @ApiResponse({
-  //   status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'The project could not be updated'
-  // })
-  // @Patch('projects/:id')
-  // async updateProject(@Param('id') id: number, @Body() updateProjectRequest: UpdateProjectRequest) {
-  //   try {
-  //     return this.updateProjectService.updateProject(id, updateProjectRequest);
-  //   } catch (error) {
-  //     if (error instanceof BadRequestException) {
-  //       throw new BadRequestException(error.message);
-  //     } else if (error instanceof NotFoundException) {
-  //       throw new NotFoundException(error.message);
-  //     }
-  //   }
-  // }
+// @ApiResponse({
+//   status: HttpStatus.OK, description: 'Project has been updated', type: UpdateProjectResponse
+// })
+// @ApiResponse({
+//   status: HttpStatus.BAD_REQUEST
+// })
+// @ApiResponse({
+//   status: HttpStatus.NOT_FOUND, description: 'Project not founded'
+// })
+// @ApiResponse({
+//   status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'The project could not be updated'
+// })
+// @Patch('projects/:id')
+// async updateProject(@Param('id') id: number, @Body() updateProjectRequest: UpdateProjectRequest) {
+//   try {
+//     return this.updateProjectService.updateProject(id, updateProjectRequest);
+//   } catch (error) {
+//     if (error instanceof BadRequestException) {
+//       throw new BadRequestException(error.message);
+//     } else if (error instanceof NotFoundException) {
+//       throw new NotFoundException(error.message);
+//     }
+//   }
+// }
