@@ -7,7 +7,7 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/mat
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
-import { CreateProjectRequest } from './create-project-request.dto';
+import { CreateProjectRequest } from './create-project-use-case/create-project-request.dto';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { CreateProjectService } from './create-project.service';
 

@@ -15,7 +15,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 import { SignInComponent } from './sign-in.component';
-import { MakeSignInService } from './do-signin.service';
+import { MakeSignInService } from './do-signin-use-case/do-signin.service';
 import { screen } from '@testing-library/angular';
 
 let loader: HarnessLoader;

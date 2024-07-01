@@ -8,8 +8,8 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/mat
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { SignInRequest } from './do-signin-request.dto';
-import { MakeSignInService } from './do-signin.service';
+import { SignInRequest } from './do-signin-use-case/do-signin-request.dto';
+import { MakeSignInService } from './do-signin-use-case/do-signin.service';
 import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
 
 @Component({

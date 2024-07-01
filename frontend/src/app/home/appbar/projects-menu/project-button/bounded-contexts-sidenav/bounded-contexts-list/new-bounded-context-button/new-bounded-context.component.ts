@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CreateBoundedContextRequest } from './create-bounded-context-request.dto';
+import { CreateBoundedContextRequest } from './create-bounded-context-use-case/create-bounded-context-request.dto';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { NgClass } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
-import { CreateBoundedContextService } from './create-bounded-context.service';
+import { CreateBoundedContextService } from './create-bounded-context-use-case/create-bounded-context.service';
 
 @Component({
   selector: 'app-create-bounded-context-form',

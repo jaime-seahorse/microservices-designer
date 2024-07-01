@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { PrintUserProfileService } from './print-user-profile.service';
+import { PrintUserProfileService } from '../print-user-profile.service';
 
 describe('PrintAvatarService', () => {
   let service: PrintUserProfileService;
